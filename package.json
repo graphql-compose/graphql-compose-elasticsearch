@@ -1,0 +1,77 @@
+{
+  "name": "graphql-compose-elasticsearch",
+  "version": "0.0.0-semantically-released",
+  "description": "Elastic search via GraphQL",
+  "files": [
+    "es",
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "jsnext:main": "es/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodkz/graphql-compose-elasticsearch.git"
+  },
+  "keywords": [
+    "graphql",
+    "elastic",
+    "elasticsearch",
+    "graphql-compose"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodkz/graphql-compose-elasticsearch/issues"
+  },
+  "homepage": "https://github.com/nodkz/graphql-compose-elasticsearch#readme",
+  "dependencies": {},
+  "peerDependencies": {
+    "graphql": "^0.9.1",
+    "graphql-compose": "^1.14.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.22.0",
+    "babel-preset-env": "^1.1.8",
+    "cz-conventional-changelog": "^2.0.0",
+    "dox": "^0.9.0",
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-config-prettier": "^1.0.2",
+    "eslint-plugin-flowtype": "^2.30.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-prettier": "^2.0.0",
+    "flow-bin": "^0.41.0",
+    "graphql": "^0.9.1",
+    "graphql-compose": "^1.14.0",
+    "jest": "^19.0.2",
+    "jest-babel": "^1.0.1",
+    "npm-run-all": "^4.0.1",
+    "prettier": "^0.21.0",
+    "rimraf": "^2.5.4",
+    "semantic-release": "^6.3.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/scripts"
+    ]
+  },
+  "scripts": {
+    "build": "npm-run-all build:*",
+    "build:lib": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
+    "build:flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
+    "coverage": "jest --coverage",
+    "lint": "eslint src test *.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "watch": "npm run test:watch",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+  }
+}
