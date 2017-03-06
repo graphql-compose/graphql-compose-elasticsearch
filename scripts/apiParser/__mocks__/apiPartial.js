@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Perform a [search](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-search.html) request
  *
@@ -416,4 +418,76 @@ api.updateByQuery = ca({
     }
   ],
   method: 'POST'
+});
+
+/**
+ * Perform a [cat.allocation](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/cat-allocation.html) request
+ *
+ * @param {Object} params - An object with parameters used to carry out this action
+ * @param {<<api-param-type-string,`String`>>} params.format - a short version of the Accept header, e.g. json, yaml
+ * @param {<<api-param-type-string,`String`>>} params.bytes - The unit in which to display byte values
+ * @param {<<api-param-type-boolean,`Boolean`>>} params.local - Return local information, do not retrieve the state from master node (default: false)
+ * @param {<<api-param-type-duration-string,`DurationString`>>} params.masterTimeout - Explicit operation timeout for connection to master node
+ * @param {<<api-param-type-string,`String`>>, <<api-param-type-string-array,`String[]`>>, <<api-param-type-boolean,`Boolean`>>} params.h - Comma-separated list of column names to display
+ * @param {<<api-param-type-boolean,`Boolean`>>} params.help - Return help information
+ * @param {<<api-param-type-string,`String`>>, <<api-param-type-string-array,`String[]`>>, <<api-param-type-boolean,`Boolean`>>} params.s - Comma-separated list of column names or column aliases to sort by
+ * @param {<<api-param-type-boolean,`Boolean`>>} params.v - Verbose mode. Display column headers
+ * @param {<<api-param-type-string,`String`>>, <<api-param-type-string-array,`String[]`>>, <<api-param-type-boolean,`Boolean`>>} params.nodeId - A comma-separated list of node IDs or names to limit the returned information
+ */
+api.cat.prototype.allocation = ca({
+  params: {
+    format: {
+      type: 'string'
+    },
+    bytes: {
+      type: 'enum',
+      options: [
+        'b',
+        'k',
+        'kb',
+        'm',
+        'mb',
+        'g',
+        'gb',
+        't',
+        'tb',
+        'p',
+        'pb'
+      ]
+    },
+    local: {
+      type: 'boolean'
+    },
+    masterTimeout: {
+      type: 'time',
+      name: 'master_timeout'
+    },
+    h: {
+      type: 'list'
+    },
+    help: {
+      type: 'boolean',
+      'default': false
+    },
+    s: {
+      type: 'list'
+    },
+    v: {
+      type: 'boolean',
+      'default': false
+    }
+  },
+  urls: [
+    {
+      fmt: '/_cat/allocation/<%=nodeId%>',
+      req: {
+        nodeId: {
+          type: 'list'
+        }
+      }
+    },
+    {
+      fmt: '/_cat/allocation'
+    }
+  ]
 });
