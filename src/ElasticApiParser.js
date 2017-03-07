@@ -39,6 +39,7 @@ export type ElasticApiParserOptsT = {
     | '1_0'
     | '0_90',
   prefix?: string,
+  elasticApiFilesPath?: string,
 };
 
 export type ElasticParamConfigT = {
@@ -63,26 +64,26 @@ export type ElasticCaSettingsT = {
   urls?: ElasticCaSettingsUrlT[],
 };
 
-export const elasticApiFilesPath = './node_modules/elasticsearch/src/lib/apis/';
-
 export default class ElasticApiParser {
   cachedEnums: {
     [fieldName: string]: { [valsStringified: string]: GraphQLEnumType },
   };
   version: string;
   prefix: string;
+  elasticApiFilesPath: string;
 
   constructor(opts: ElasticApiParserOptsT = {}) {
     // derived from installed package `elasticsearch`
     // from ../../node_modules/elasticsearch/src/lib/apis/VERSION.js
     this.version = opts.version || '5_0';
     this.prefix = opts.prefix || 'Elastic';
+    this.elasticApiFilesPath = opts.elasticApiFilesPath || './node_modules/elasticsearch/src/lib/apis/';
     this.cachedEnums = {};
   }
 
   run() {
     this.cachedEnums = {};
-    const apiFilePath = path.resolve(elasticApiFilesPath, `${this.version}.js`);
+    const apiFilePath = path.resolve(this.elasticApiFilesPath, `${this.version}.js`);
     const source = this.loadApiFile(apiFilePath);
     return this.parseSource(source);
   }
