@@ -6,17 +6,12 @@ import ElasticApiParser from '../scripts/apiParser/ElasticApiParser';
 
 const expressPort = process.env.port || process.env.PORT || 9201;
 
-const elasticClient = new elasticsearch.Client({
-  host: 'http://localhost:9200',
-  apiVersion: '5.0',
-  log: 'trace',
-});
-
 const generatedSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
-    // see node_modules/elasticsearch/src/lib/apis/ for available versions
     fields: {
+      // see node_modules/elasticsearch/src/lib/apis/ for available versions
+      
       elastic50: {
         description: 'Elastic v5.0',
         type: new GraphQLObjectType({
@@ -88,7 +83,11 @@ server.use('/', graphqlHTTP({
   schema: generatedSchema,
   graphiql: true,
   context: {
-    // elasticClient,
+    // elasticClient: new elasticsearch.Client({
+    //   host: 'http://localhost:9200',
+    //   apiVersion: '5.0',
+    //   log: 'trace',
+    // }),
   },
 }));
 
