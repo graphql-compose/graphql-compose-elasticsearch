@@ -1,0 +1,307 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ElasticApiParser parseSource() should return GraphQLInputFieldMap 1`] = `
+Object {
+  "cat": Object {
+    "type": "ElasticMethods_Cat",
+  },
+  "search": Object {
+    "args": Object {
+      "_source": Object {
+        "description": "True or false to return the _source field or not, or a list of fields to return",
+        "type": "JSON",
+      },
+      "_sourceExclude": Object {
+        "description": "A list of fields to exclude from the returned _source field",
+        "type": "JSON",
+      },
+      "_sourceInclude": Object {
+        "description": "A list of fields to extract and return from the _source field",
+        "type": "JSON",
+      },
+      "allowNoIndices": Object {
+        "description": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+        "type": "Boolean",
+      },
+      "analyzeWildcard": Object {
+        "description": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+        "type": "Boolean",
+      },
+      "analyzer": Object {
+        "description": "The analyzer to use for the query string",
+        "type": "String",
+      },
+      "defaultOperator": Object {
+        "defaultValue": "OR",
+        "type": "ElasticEnum_DefaultOperator",
+      },
+      "df": Object {
+        "description": "The field to use as default where no field prefix is given in the query string",
+        "type": "String",
+      },
+      "docvalueFields": Object {
+        "description": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+        "type": "JSON",
+      },
+      "expandWildcards": Object {
+        "defaultValue": "open",
+        "type": "ElasticEnum_ExpandWildcards",
+      },
+      "explain": Object {
+        "description": "Specify whether to return detailed information about score computation as part of a hit",
+        "type": "Boolean",
+      },
+      "fielddataFields": Object {
+        "description": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+        "type": "JSON",
+      },
+      "from": Object {
+        "description": "Starting offset (default: 0)",
+        "type": "Float",
+      },
+      "ignoreUnavailable": Object {
+        "description": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+        "type": "Boolean",
+      },
+      "index": Object {
+        "description": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+        "type": "JSON",
+      },
+      "lenient": Object {
+        "description": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+        "type": "Boolean",
+      },
+      "preference": Object {
+        "description": "Specify the node or shard the operation should be performed on (default: random)",
+        "type": "String",
+      },
+      "q": Object {
+        "description": "Query in the Lucene query string syntax",
+        "type": "String",
+      },
+      "requestCache": Object {
+        "description": "Specify if request cache should be used for this request or not, defaults to index level setting",
+        "type": "Boolean",
+      },
+      "routing": Object {
+        "description": "A comma-separated list of specific routing values",
+        "type": "JSON",
+      },
+      "scroll": Object {
+        "description": "Specify how long a consistent view of the index should be maintained for scrolled search",
+        "type": "String",
+      },
+      "searchType": Object {
+        "description": "Search operation type",
+        "type": "ElasticEnum_SearchType",
+      },
+      "size": Object {
+        "description": "Number of hits to return (default: 10)",
+        "type": "Float",
+      },
+      "sort": Object {
+        "description": "A comma-separated list of <field>:<direction> pairs",
+        "type": "JSON",
+      },
+      "stats": Object {
+        "description": "Specific 'tag' of the request for logging and statistical purposes",
+        "type": "JSON",
+      },
+      "storedFields": Object {
+        "description": "A comma-separated list of stored fields to return as part of a hit",
+        "type": "JSON",
+      },
+      "suggestField": Object {
+        "description": "Specify which field to use for suggestions",
+        "type": "String",
+      },
+      "suggestMode": Object {
+        "defaultValue": "missing",
+        "type": "ElasticEnum_SuggestMode",
+      },
+      "suggestSize": Object {
+        "description": "How many suggestions to return in response",
+        "type": "Float",
+      },
+      "suggestText": Object {
+        "description": "The source text for which the suggestions should be returned",
+        "type": "String",
+      },
+      "terminateAfter": Object {
+        "description": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+        "type": "Float",
+      },
+      "timeout": Object {
+        "description": "Explicit operation timeout",
+        "type": "String",
+      },
+      "trackScores": Object {
+        "description": "Whether to calculate and return scores even if they are not used for sorting",
+        "type": "Boolean",
+      },
+      "type": Object {
+        "description": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+        "type": "JSON",
+      },
+      "version": Object {
+        "description": "Specify whether to return document version as part of a hit",
+        "type": "Boolean",
+      },
+    },
+    "description": "Perform a [search](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-search.html) request",
+    "resolve": [Function],
+    "type": "JSON",
+  },
+  "updateByQuery": Object {
+    "args": Object {
+      "_source": Object {
+        "description": "True or false to return the _source field or not, or a list of fields to return",
+        "type": "JSON",
+      },
+      "_sourceExclude": Object {
+        "description": "A list of fields to exclude from the returned _source field",
+        "type": "JSON",
+      },
+      "_sourceInclude": Object {
+        "description": "A list of fields to extract and return from the _source field",
+        "type": "JSON",
+      },
+      "allowNoIndices": Object {
+        "description": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+        "type": "Boolean",
+      },
+      "analyzeWildcard": Object {
+        "description": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+        "type": "Boolean",
+      },
+      "analyzer": Object {
+        "description": "The analyzer to use for the query string",
+        "type": "String",
+      },
+      "conflicts": Object {
+        "defaultValue": "abort",
+        "type": "ElasticEnum_Conflicts",
+      },
+      "defaultOperator": Object {
+        "defaultValue": "OR",
+        "type": "ElasticEnum_DefaultOperator",
+      },
+      "df": Object {
+        "description": "The field to use as default where no field prefix is given in the query string",
+        "type": "String",
+      },
+      "expandWildcards": Object {
+        "defaultValue": "open",
+        "type": "ElasticEnum_ExpandWildcards",
+      },
+      "from": Object {
+        "description": "Starting offset (default: 0)",
+        "type": "Float",
+      },
+      "ignoreUnavailable": Object {
+        "description": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+        "type": "Boolean",
+      },
+      "index": Object {
+        "description": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+        "type": "JSON",
+      },
+      "lenient": Object {
+        "description": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+        "type": "Boolean",
+      },
+      "pipeline": Object {
+        "description": "Ingest pipeline to set on index requests made by this action. (default: none)",
+        "type": "String",
+      },
+      "preference": Object {
+        "description": "Specify the node or shard the operation should be performed on (default: random)",
+        "type": "String",
+      },
+      "q": Object {
+        "description": "Query in the Lucene query string syntax",
+        "type": "String",
+      },
+      "refresh": Object {
+        "description": "Should the effected indexes be refreshed?",
+        "type": "Boolean",
+      },
+      "requestCache": Object {
+        "description": "Specify if request cache should be used for this request or not, defaults to index level setting",
+        "type": "Boolean",
+      },
+      "requestsPerSecond": Object {
+        "description": "The throttle to set on this request in sub-requests per second. -1 means no throttle.",
+        "type": "Float",
+      },
+      "routing": Object {
+        "description": "A comma-separated list of specific routing values",
+        "type": "JSON",
+      },
+      "scroll": Object {
+        "description": "Specify how long a consistent view of the index should be maintained for scrolled search",
+        "type": "String",
+      },
+      "scrollSize": Object {
+        "description": "Size on the scroll request powering the update_by_query",
+        "type": "Float",
+      },
+      "searchTimeout": Object {
+        "description": "Explicit timeout for each search request. Defaults to no timeout.",
+        "type": "String",
+      },
+      "searchType": Object {
+        "description": "Search operation type",
+        "type": "ElasticEnum_SearchType",
+      },
+      "size": Object {
+        "description": "Number of hits to return (default: 10)",
+        "type": "Float",
+      },
+      "slices": Object {
+        "defaultValue": 1,
+        "type": "Float",
+      },
+      "sort": Object {
+        "description": "A comma-separated list of <field>:<direction> pairs",
+        "type": "JSON",
+      },
+      "stats": Object {
+        "description": "Specific 'tag' of the request for logging and statistical purposes",
+        "type": "JSON",
+      },
+      "terminateAfter": Object {
+        "description": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+        "type": "Float",
+      },
+      "timeout": Object {
+        "defaultValue": "1m",
+        "type": "String",
+      },
+      "type": Object {
+        "description": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+        "type": "JSON",
+      },
+      "version": Object {
+        "description": "Specify whether to return document version as part of a hit",
+        "type": "Boolean",
+      },
+      "versionType": Object {
+        "description": "Should the document increment the version number (internal) on hit or not (reindex)",
+        "type": "Boolean",
+      },
+      "waitForActiveShards": Object {
+        "description": "Sets the number of shard copies that must be active before proceeding with the update by query operation. Defaults to 1, meaning the primary shard only. Set to \`all\` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)",
+        "type": "String",
+      },
+      "waitForCompletion": Object {
+        "description": "Should the request should block until the update by query operation is complete.",
+        "type": "Boolean",
+      },
+    },
+    "description": "Perform a [updateByQuery](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/docs-update-by-query.html) request",
+    "resolve": [Function],
+    "type": "JSON",
+  },
+}
+`;
