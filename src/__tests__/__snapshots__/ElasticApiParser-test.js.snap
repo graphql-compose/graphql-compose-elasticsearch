@@ -3,6 +3,7 @@
 exports[`ElasticApiParser parseSource() should return GraphQLInputFieldMap 1`] = `
 Object {
   "cat": Object {
+    "resolve": [Function],
     "type": "ElasticMethods_Cat",
   },
   "search": Object {

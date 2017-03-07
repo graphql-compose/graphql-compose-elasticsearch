@@ -28,6 +28,7 @@ const generatedSchema = new GraphQLSchema({
           context.elasticClient = new elasticsearch.Client({ // eslint-disable-line no-param-reassign
             host: args.host,
             apiVersion: '5.0',
+            log: 'trace',
           });
           return {};
         },

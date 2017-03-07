@@ -63,8 +63,7 @@
   },
   "jest": {
     "roots": [
-      "<rootDir>/src",
-      "<rootDir>/scripts"
+      "<rootDir>/src"
     ]
   },
   "scripts": {

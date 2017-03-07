@@ -348,6 +348,7 @@ export default class ElasticApiParser {
               // $FlowFixMe
               fields: () => {},
             }),
+            resolve: () => { return {}; },
           };
         }
         TypeComposer.create(result[name[0]].type).setField(name[1], fields[k]);
