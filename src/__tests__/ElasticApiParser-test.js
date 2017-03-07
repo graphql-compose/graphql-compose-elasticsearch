@@ -201,16 +201,13 @@ describe('ElasticApiParser', () => {
     it('should convert to GraphQLEnumType', () => {
       const type = parser.getEnumType('f1', ['AND', 'OR']);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      // $FlowFixMe
       expect(type._values[0]).toMatchObject({ name: 'AND', value: 'AND' });
-      // $FlowFixMe
       expect(type._values[1]).toMatchObject({ name: 'OR', value: 'OR' });
     });
 
     it("should convert '' to empty_string", () => {
       const type = parser.getEnumType('f1', ['']);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      // $FlowFixMe
       expect(type._values[0]).toMatchObject({
         name: 'empty_string',
         value: '',
@@ -218,9 +215,9 @@ describe('ElasticApiParser', () => {
     });
 
     it('should convert 1 to number_1', () => {
+      // $FlowFixMe
       const type = parser.getEnumType('f1', [1]);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      // $FlowFixMe
       expect(type._values[0]).toMatchObject({ name: 'number_1', value: 1 });
     });
 
@@ -261,6 +258,15 @@ describe('ElasticApiParser', () => {
       ).toMatchObject({
         type: GraphQLString,
         defaultValue: 'ABC',
+      });
+    });
+
+    it('should set defaultValue="json" for `format` argument', () => {
+      expect(
+        parser.paramToGraphQLArgConfig({ type: 'string' }, 'format')
+      ).toMatchObject({
+        type: GraphQLString,
+        defaultValue: 'json',
       });
     });
   });

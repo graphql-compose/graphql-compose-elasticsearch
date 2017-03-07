@@ -222,6 +222,8 @@ export default class ElasticApiParser {
     };
     if (paramCfg.default) {
       result.defaultValue = paramCfg.default;
+    } else if(fieldName === 'format') {
+      result.defaultValue = 'json';
     }
 
     return result;
