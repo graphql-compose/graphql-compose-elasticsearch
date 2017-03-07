@@ -12,9 +12,9 @@ import {
 } from 'graphql';
 import { GraphQLJSON, TypeComposer } from 'graphql-compose';
 
-import ElasticApiParser from './ElasticApiParser';
+import ElasticApiParser from '../ElasticApiParser';
 
-const apiPartialPath = path.resolve(__dirname, '__mocks__/apiPartial.js');
+const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
 const apiPartialSource = new ElasticApiParser().loadApiFile(apiPartialPath);
 
 const code = `
