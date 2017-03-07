@@ -2,7 +2,7 @@ import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
 import elasticsearch from 'elasticsearch';
-import ElasticApiParser from '../scripts/apiParser/ElasticApiParser';
+import ElasticApiParser from '../src/ElasticApiParser';
 
 const expressPort = process.env.port || process.env.PORT || 9201;
 
@@ -11,7 +11,7 @@ const generatedSchema = new GraphQLSchema({
     name: 'Query',
     fields: {
       // see node_modules/elasticsearch/src/lib/apis/ for available versions
-      
+
       elastic50: {
         description: 'Elastic v5.0',
         type: new GraphQLObjectType({
