@@ -10,6 +10,7 @@ import {
   GraphQLBoolean,
   GraphQLObjectType,
   GraphQLEnumType,
+  GraphQLNonNull,
 } from 'graphql';
 import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
 
@@ -62,6 +63,8 @@ export type ElasticCaSettingsT = {
   },
   url?: ElasticCaSettingsUrlT,
   urls?: ElasticCaSettingsUrlT[],
+  needBody?: true,
+  method?: string,
 };
 
 export default class ElasticApiParser {
@@ -296,7 +299,14 @@ export default class ElasticApiParser {
     settings: ?ElasticCaSettingsT
   ): GraphQLFieldConfigArgumentMap {
     const result = {};
-    const { params, urls, url } = settings || {};
+    const { params, urls, url, method, needBody } = settings || {};
+
+    if (method === 'POST' || method === 'PUT') {
+      result.body = {
+        type: needBody ? new GraphQLNonNull(GraphQLJSON) : GraphQLJSON,
+      };
+    }
+
     if (params) {
       Object.keys(params).forEach(k => {
         const fieldConfig = this.paramToGraphQLArgConfig(params[k], k);

@@ -32,6 +32,9 @@ Object {
         "description": "The analyzer to use for the query string",
         "type": "String",
       },
+      "body": Object {
+        "type": "JSON",
+      },
       "defaultOperator": Object {
         "defaultValue": "OR",
         "type": "ElasticEnum_DefaultOperator",
@@ -178,6 +181,9 @@ Object {
       "analyzer": Object {
         "description": "The analyzer to use for the query string",
         "type": "String",
+      },
+      "body": Object {
+        "type": "JSON",
       },
       "conflicts": Object {
         "defaultValue": "abort",

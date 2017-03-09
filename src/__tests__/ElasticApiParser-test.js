@@ -9,6 +9,7 @@ import {
   GraphQLBoolean,
   GraphQLObjectType,
   GraphQLEnumType,
+  GraphQLNonNull,
 } from 'graphql';
 import { GraphQLJSON, TypeComposer } from 'graphql-compose';
 
@@ -272,6 +273,25 @@ describe('ElasticApiParser', () => {
   });
 
   describe('settingsToArgMap()', () => {
+    it ('should create body arg if POST or PUT method', () => {
+      const args = parser.settingsToArgMap({
+        params: {},
+        method: 'POST',
+      });
+      expect(args).toMatchObject({ body: {} });
+      expect(args.body.type).toEqual(GraphQLJSON);
+    });
+
+    it ('should create required body arg if POST or PUT method', () => {
+      const args = parser.settingsToArgMap({
+        params: {},
+        method: 'POST',
+        needBody: true,
+      });
+      expect(args).toMatchObject({ body: {} });
+      expect(args.body.type).toBeInstanceOf(GraphQLNonNull);
+    });
+
     it('should traverse params', () => {
       expect(
         parser.settingsToArgMap({
