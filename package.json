@@ -70,6 +70,7 @@
     "build": "npm-run-all build:*",
     "build:lib": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
     "build:flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
+    "example": "nodemon -e js --exec ./node_modules/.bin/babel-node ./examples/elastic50/index.js",
     "coverage": "jest --coverage",
     "lint": "eslint src test *.js",
     "test": "jest",

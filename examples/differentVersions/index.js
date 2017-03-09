@@ -2,7 +2,7 @@ import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
 import elasticsearch from 'elasticsearch';
-import ElasticApiParser from '../src/ElasticApiParser';
+import ElasticApiParser from '../../src/ElasticApiParser'; // or import { ElasticApiParser } from 'graphql-compose-elasticsearch';
 
 const expressPort = process.env.port || process.env.PORT || 9201;
 
