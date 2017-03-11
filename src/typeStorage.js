@@ -1,4 +1,5 @@
 /* @flow */
+
 import { isFunction } from 'graphql-compose';
 
 class TypeStorage extends Map {

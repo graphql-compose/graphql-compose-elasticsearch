@@ -2,20 +2,23 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC } from './Query/Query';
-import { getTypeName, getOrSetType } from '../utils';
+import { getTypeName, getOrSetType, desc } from '../utils';
 
-export function getSearchBodyITC(opts = {}): InputTypeComposer {
-  const typeName = getTypeName('SearchBody', opts);
+export function getSearchBodyITC(opts: mixed = {}): InputTypeComposer {
+  const name = getTypeName('SearchBody', opts);
+  const description = desc(`
+    The search request can be executed with a search DSL, which includes
+    the [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html),
+    within its body.
+  `);
 
-  return getOrSetType(typeName, () => {
-    const SearchBodyITC = InputTypeComposer.create(typeName);
-    SearchBodyITC.setDescription(
-      'A query that matches documents matching boolean combinations of other queries. The bool query maps to Lucene BooleanQuery. It is built using one or more boolean clauses, each clause with a typed occurrence. '
-    );
-    SearchBodyITC.setFields({
-      query: () => getQueryITC(opts),
-    });
-
-    return SearchBodyITC;
-  });
+  return getOrSetType(name, () =>
+    // $FlowFixMe
+    InputTypeComposer.create({
+      name,
+      description,
+      fields: {
+        query: () => getQueryITC(opts),
+      },
+    }));
 }
