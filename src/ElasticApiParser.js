@@ -13,13 +13,14 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
+import { getSearchBodyITC } from './ElasticDSL/SearchBody';
 
 import type {
   GraphQLArgumentConfig,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldMap,
   GraphQLInputType,
-} from 'graphql/type/definition';
+} from 'graphql/type/definition'; // eslint-disable-line
 
 export type ElasticApiParserOptsT = {
   version?:
@@ -124,6 +125,12 @@ export default class ElasticApiParser {
       });
 
       const elasticMethod = this.getMethodName(item.ctx.string);
+
+      if (elasticMethod === 'search') {
+        argMap.body.type = getSearchBodyITC({
+          prefix: this.prefix,
+        }).getType();
+      }
 
       result[item.ctx.string] = {
         type: GraphQLJSON,
@@ -253,8 +260,12 @@ export default class ElasticApiParser {
           return this.getEnumType(fieldName, paramCfg.options);
         }
         return GraphQLString;
+      case undefined:
+        // some fields may not have type definition in API file,
+        // eg '@param {anything} params.operationThreading - ?'
+        return GraphQLJSON;
       default:
-        console.log(`New type '${paramCfg.type}' in elastic params setting.`); // eslint-disable-line
+        console.log(`New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`); // eslint-disable-line
         return GraphQLJSON;
     }
   }

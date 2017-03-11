@@ -33,7 +33,7 @@ Object {
         "type": "String",
       },
       "body": Object {
-        "type": "JSON",
+        "type": "ElasticSearchBody",
       },
       "defaultOperator": Object {
         "defaultValue": "OR",

@@ -19,11 +19,12 @@
       "functions": "ignore",
     }],
     "no-plusplus": 0,
-    "import/no-extraneous-dependencies": 0
+    "import/no-extraneous-dependencies": 0,
+    "import/prefer-default-export": 0,
   },
   "env": {
     "jasmine": true,
-    "jest": true
+    "jest": true,
   },
   "plugins": [
     "flowtype",
