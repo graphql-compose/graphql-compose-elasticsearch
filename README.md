@@ -18,5 +18,11 @@ Some parts are not ready yet. More features will be landed in near future.
 ## Live demos
 [Introspection of Elasticsearch API via Graphiql](https://graphql-compose.herokuapp.com/elasticsearch/)
 
+<img width="1316" alt="screen shot 2017-03-07 at 22 26 17" src="https://cloud.githubusercontent.com/assets/1946920/23859886/61066f40-082f-11e7-89d0-8443aa2ae930.png">
+
+<img width="1314" alt="screen shot 2017-03-07 at 22 34 01" src="https://cloud.githubusercontent.com/assets/1946920/23859892/65e71744-082f-11e7-8c1a-cafeb87e08e6.png">
+
+<img width="423" alt="screen shot 2017-03-07 at 22 34 54" src="https://cloud.githubusercontent.com/assets/1946920/23859897/6964583c-082f-11e7-8ada-c4d2a1628a52.png">
+
 ## License
 [MIT](https://github.com/nodkz/graphql-compose-elasticsearch/blob/master/LICENSE.md)
