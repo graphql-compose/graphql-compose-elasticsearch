@@ -111,8 +111,8 @@ input Elastic_QueryBool_50 {
   # minimum_should_match parameter. 
   should: Elastic_Query_50
 
-  # The minimum number of should clauses to match can be set using the minimum_should_match parameter. 
-  minimum_should_match: Int
+  # The minimum number of should clauses to match. 
+  minimum_should_match: String
 
   # The clause (query) must not appear in the matching documents. Clauses are
   # executed in filter context meaning that scoring is ignored and clauses are

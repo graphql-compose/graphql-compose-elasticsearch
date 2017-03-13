@@ -47,10 +47,9 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
           `),
         },
         minimum_should_match: {
-          type: 'Int',
+          type: 'String',
           description: desc(`
-            The minimum number of should clauses to match can be set using
-            the minimum_should_match parameter.
+            The minimum number of should clauses to match.
           `),
         },
         must_not: {
