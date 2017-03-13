@@ -1,7 +1,7 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../utils';
+import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getTermsITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryTerms', opts);

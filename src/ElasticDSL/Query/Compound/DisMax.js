@@ -1,0 +1,29 @@
+/* @flow */
+
+import { InputTypeComposer } from 'graphql-compose';
+import { getQueryITC } from '../Query';
+import { getTypeName, getOrSetType, desc } from "../../../utils";
+
+export function getDisMaxITC(opts: mixed = {}): InputTypeComposer {
+  const name = getTypeName('QueryDisMax', opts);
+  const description = desc(`
+    A query that generates the union of documents produced by its subqueries,
+    and that scores each document with the maximum score for that document
+    as produced by any subquery, plus a tie breaking increment
+    for any additional matching subqueries.
+    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-dis-max-query.html)
+  `);
+
+  return getOrSetType(name, () =>
+    // $FlowFixMe
+    InputTypeComposer.create({
+      name,
+      description,
+      fields: {
+        queries: () => [getQueryITC(opts)],
+        boost: 'Float',
+        tie_breaker: 'Float',
+      },
+    })
+  );
+}

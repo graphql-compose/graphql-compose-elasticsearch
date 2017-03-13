@@ -31,7 +31,7 @@
     "graphql-compose": "^1.14.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
+    "babel-cli": "^6.24.0",
     "babel-eslint": "^7.1.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
@@ -48,7 +48,7 @@
     "express-graphql": "^0.6.3",
     "flow-bin": "^0.41.0",
     "graphql": "^0.9.1",
-    "graphql-compose": "^1.15.0",
+    "graphql-compose": "^1.17.1",
     "jest": "^19.0.2",
     "jest-babel": "^1.0.1",
     "npm-run-all": "^4.0.1",
@@ -70,7 +70,7 @@
     "build": "npm-run-all build:*",
     "build:lib": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
     "build:flow": "find ./src -name '*.js' -not -path '*/__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
-    "example": "nodemon -e js --ignore *test* --exec ./node_modules/.bin/babel-node ./examples/elastic50/index.js",
+    "dev": "nodemon -e js --ignore *test* --exec ./node_modules/.bin/babel-node ./examples/elastic50/index.js",
     "coverage": "jest --coverage",
     "lint": "eslint --ext .js ./src",
     "test": "jest",

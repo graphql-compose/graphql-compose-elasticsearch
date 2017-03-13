@@ -14,5 +14,5 @@ export function getOrSetType<T>(typeName: string, typeOrThunk: (() => T) | T): T
 
 // Remove newline multiline in descriptions
 export function desc(str: string): string {
-  return str.replace(/\n\s+/, ' ');
+  return str.replace(/\n\s+/ig, ' ').replace(/^\s+/, '');
 }

@@ -1,8 +1,8 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getQueryITC } from './Query';
-import { getTypeName, getOrSetType, desc } from "../../utils";
+import { getQueryITC } from '../Query';
+import { getTypeName, getOrSetType, desc } from "../../../utils";
 
 export function getBoolITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryBool', opts);
@@ -11,6 +11,7 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
     of other queries. The bool query maps to Lucene BooleanQuery.
     It is built using one or more boolean clauses, each clause
     with a typed occurrence.
+    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html)
   `);
 
   return getOrSetType(name, () =>
@@ -62,9 +63,7 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
             is returned.
           `),
         },
-        boost: {
-          type: 'Float',
-        },
+        boost: 'Float',
       },
     })
   );
