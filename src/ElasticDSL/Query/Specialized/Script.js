@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from "../../../utils";
+import { getCommonsScriptITC } from '../../Commons/Script';
 
 export function getScriptITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryScript', opts);
@@ -16,11 +17,7 @@ export function getScriptITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        script: `input ${getTypeName('QueryScriptScript', opts)} {
-          inline: String!
-          lang: String!
-          params: JSON
-        }`,
+        script: () => getCommonsScriptITC(),
       },
     })
   );

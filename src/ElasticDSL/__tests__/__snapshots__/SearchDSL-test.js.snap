@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Elastic DSL Query should match 1`] = `
+exports[`Elastic Search DSL Query DSL 1`] = `
 "schema {
   query: RootQuery
 }
@@ -302,13 +302,7 @@ enum Elastic_QueryQueryStringOperatorEnum_50 {
 # A query allowing to define scripts as queries. They are typically used in a
 # filter context. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-query.html) 
 input Elastic_QueryScript_50 {
-  script: Elastic_QueryScriptScript_50
-}
-
-input Elastic_QueryScriptScript_50 {
-  inline: String!
-  lang: String!
-  params: JSON
+  script: ElasticCommonsScript
 }
 
 # A query that uses the SimpleQueryParser to parse its context. Unlike the regular
@@ -334,6 +328,13 @@ input Elastic_QuerySimpleQueryString_50 {
 enum Elastic_QuerySimpleQueryStringOperatorEnum_50 {
   and
   or
+}
+
+# The scripting module enables you to use scripts to evaluate custom expressions. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) 
+input ElasticCommonsScript {
+  lang: String!
+  inline: String!
+  params: JSON
 }
 
 # The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).

@@ -13,7 +13,7 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
-import { getSearchBodyITC } from './ElasticDSL/SearchBody';
+import { getSearchBodyITC, prepareSearchArgs } from './ElasticDSL/SearchBody';
 
 import type {
   GraphQLArgumentConfig,
@@ -24,7 +24,7 @@ import type {
 
 export type ElasticApiParserOptsT = {
   version?:
-    '5_0'
+    | '5_0'
     | '5_x'
     | '2_4'
     | '2_3'
@@ -81,15 +81,40 @@ export default class ElasticApiParser {
     // from ../../node_modules/elasticsearch/src/lib/apis/VERSION.js
     this.version = opts.version || '5_0';
     this.prefix = opts.prefix || 'Elastic';
-    this.elasticApiFilesPath = opts.elasticApiFilesPath || './node_modules/elasticsearch/src/lib/apis/';
+    this.elasticApiFilesPath = opts.elasticApiFilesPath ||
+      './node_modules/elasticsearch/src/lib/apis/';
     this.cachedEnums = {};
   }
 
-  run() {
+  run(): GraphQLFieldMap<*, *> {
     this.cachedEnums = {};
-    const apiFilePath = path.resolve(this.elasticApiFilesPath, `${this.version}.js`);
+    const apiFilePath = path.resolve(
+      this.elasticApiFilesPath,
+      `${this.version}.js`
+    );
     const source = this.loadApiFile(apiFilePath);
-    return this.parseSource(source);
+    return this.addTypedSearch(this.parseSource(source));
+  }
+
+  addTypedSearch(fields: GraphQLFieldMap<*, *>): GraphQLFieldMap<*, *> {
+    if (fields.search) {
+      const { type, description, args, resolve } = fields.search;
+      const searchTyped = {
+        type,
+        description,
+        resolve: prepareSearchArgs(resolve),
+        // $FlowFixMe
+        args: Object.assign({}, args, {
+          body: {
+            type: getSearchBodyITC({
+              prefix: this.prefix,
+            }).getType(),
+          },
+        }),
+      };
+      return { searchTyped, ...fields };
+    }
+    return fields;
   }
 
   parseSource(source: string): GraphQLFieldMap<*, *> {
@@ -125,12 +150,6 @@ export default class ElasticApiParser {
       });
 
       const elasticMethod = this.getMethodName(item.ctx.string);
-
-      if (elasticMethod === 'search') {
-        argMap.body.type = getSearchBodyITC({
-          prefix: this.prefix,
-        }).getType();
-      }
 
       result[item.ctx.string] = {
         type: GraphQLJSON,
@@ -232,7 +251,7 @@ export default class ElasticApiParser {
     };
     if (paramCfg.default) {
       result.defaultValue = paramCfg.default;
-    } else if(fieldName === 'format') {
+    } else if (fieldName === 'format') {
       result.defaultValue = 'json';
     }
 
@@ -265,7 +284,9 @@ export default class ElasticApiParser {
         // eg '@param {anything} params.operationThreading - ?'
         return GraphQLJSON;
       default:
-        console.log(`New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`); // eslint-disable-line
+        console.log(
+          `New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`
+        ); // eslint-disable-line
         return GraphQLJSON;
     }
   }
@@ -369,7 +390,9 @@ export default class ElasticApiParser {
               // $FlowFixMe
               fields: () => {},
             }),
-            resolve: () => { return {}; },
+            resolve: () => {
+              return {};
+            },
           };
         }
         TypeComposer.create(result[name[0]].type).setField(name[1], fields[k]);

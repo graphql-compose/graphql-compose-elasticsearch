@@ -1,9 +1,9 @@
 /* @flow */
 import { printSchema, GraphQLSchema, GraphQLObjectType, GraphQLInt } from 'graphql';
-import { getQueryITC } from './Query';
+import { getQueryITC } from '../Query/Query';
 
-describe('Elastic DSL Query', () => {
-  it('should match', () => {
+describe('Elastic Search DSL', () => {
+  it('Query DSL', () => {
     const schema = new GraphQLSchema({
       query: new GraphQLObjectType({
         name: 'RootQuery',
