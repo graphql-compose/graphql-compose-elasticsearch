@@ -17,7 +17,7 @@ export function getScriptITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        script: () => getCommonsScriptITC(),
+        script: () => getCommonsScriptITC(opts),
       },
     })
   );

@@ -1,0 +1,34 @@
+/* @flow */
+
+import { InputTypeComposer } from 'graphql-compose';
+import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getCommonsScriptITC } from '../../Commons/Script';
+
+export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
+  const name = getTypeName('AggsDiversifiedSampler', opts);
+  const description = desc(
+    `
+    A filtering aggregation used to limit any sub aggregations' processing to
+    a sample of the top-scoring documents. Diversity settings are used to
+    limit the number of matches that share a common value such as an "author".
+    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-diversified-sampler-aggregation.html)
+  `
+  );
+
+  return getOrSetType(name, () =>
+    // $FlowFixMe
+    InputTypeComposer.create({
+      name,
+      description,
+      fields: {
+        shard_size: {
+          type: 'String',
+          defaultValue: 100,
+        },
+        field: 'String',
+        max_docs_per_value: 'Int',
+        script: () => getCommonsScriptITC(opts),
+        execution_hint: 'String',
+      },
+    }));
+}

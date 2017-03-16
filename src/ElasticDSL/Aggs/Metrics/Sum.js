@@ -4,15 +4,15 @@ import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 
-export function getExtendedStatsITC(opts: mixed = {}): InputTypeComposer {
-  const name = getTypeName('AggsExtendedStats', opts);
+export function getSumITC(opts: mixed = {}): InputTypeComposer {
+  const name = getTypeName('AggsSum', opts);
   const description = desc(
     `
-    A multi-value metrics aggregation that computes stats over numeric values
+    A single-value metrics aggregation that sums up numeric values that are
     extracted from the aggregated documents. These values can be extracted
     either from specific numeric fields in the documents, or be generated
     by a provided script.
-    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-extendedstats-aggregation.html)
+    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-sum-aggregation.html)
   `
   );
 
@@ -23,7 +23,6 @@ export function getExtendedStatsITC(opts: mixed = {}): InputTypeComposer {
       description,
       fields: {
         field: 'String',
-        sigma: 'Float',
         missing: 'Float',
         script: () => getCommonsScriptITC(opts),
       },

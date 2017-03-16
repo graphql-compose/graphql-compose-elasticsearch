@@ -33,7 +33,7 @@ export function getCardinalityITC(opts: mixed = {}): InputTypeComposer {
           ),
         },
         missing: 'String',
-        script: () => getCommonsScriptITC(),
+        script: () => getCommonsScriptITC(opts),
       },
     }));
 }
