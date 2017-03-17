@@ -1,0 +1,36 @@
+/* @flow */
+
+import { InputTypeComposer } from 'graphql-compose';
+import { getTypeName, getOrSetType, desc } from '../../../utils';
+
+export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
+  const name = getTypeName('AggsHistogram', opts);
+  const description = desc(
+    `
+    A multi-bucket values source based aggregation that can be applied on
+    numeric values extracted from the documents. It dynamically builds fixed
+    size (a.k.a. interval) buckets over the values.
+    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html)
+  `
+  );
+
+  return getOrSetType(name, () =>
+    // $FlowFixMe
+    InputTypeComposer.create({
+      name,
+      description,
+      fields: {
+        field: 'String',
+        interval: 'Float',
+        missing: 'Float',
+        min_doc_count: 'Int',
+        extended_bounds: `input ${getTypeName('AggsHistogramBounds', opts)} {
+          min: Float
+          max: Float
+        }`,
+        order: 'JSON',
+        offset: 'Int',
+        keyed: 'Boolean',
+      },
+    }));
+}
