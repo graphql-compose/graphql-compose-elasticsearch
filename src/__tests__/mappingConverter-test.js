@@ -13,12 +13,13 @@ import {
 
 import {
   convertToSourceTC,
-  propertyToGraphQLType,
+  propertyToSourceGraphQLType,
   convertToAggregatableITC,
   inputPropertiesToGraphQLTypes,
   convertToSearchableITC,
   convertToAnalyzedITC,
-} from '../PropertiesConverter';
+  getSubFields,
+} from '../mappingConverter';
 
 const mapping = {
   properties: {
@@ -84,54 +85,69 @@ describe('PropertiesConverter', () => {
     });
 
     it('should make singular and plural fields', () => {
-      const tc = convertToSourceTC(mapping, 'TestMapping');
-      const singular: any = tc.getField('name');
+      const tc1 = convertToSourceTC(mapping, 'TestMapping');
+      const singular: any = tc1.getField('name');
       expect(singular.type).toBe(GraphQLString);
 
-      const plural: any = tc.getField('nameA');
+      const tc2 = convertToSourceTC(mapping, 'TestMapping', {
+        pluralFields: ['name'],
+      });
+      const plural: any = tc2.getField('name');
       expect(plural.type).toBeInstanceOf(GraphQLList);
       expect(plural.type.ofType).toBe(GraphQLString);
     });
   });
 
-  describe('propertyToGraphQLType()', () => {
+  describe('propertyToSourceGraphQLType()', () => {
     it('should throw error on wrong property config', () => {
       expect(() => {
         // $FlowFixMe
-        propertyToGraphQLType();
+        propertyToSourceGraphQLType();
       }).toThrowError('incorrect Elastic property config');
       expect(() => {
-        propertyToGraphQLType({});
+        propertyToSourceGraphQLType({});
       }).toThrowError('incorrect Elastic property config');
     });
 
     it('should return GraphQLJSON as fallback for unknown Elastic type', () => {
-      expect(propertyToGraphQLType({ type: 'strange' })).toEqual(GraphQLJSON);
+      expect(propertyToSourceGraphQLType({ type: 'strange' })).toEqual(
+        GraphQLJSON
+      );
     });
 
     it('should return GraphQLInt for int types', () => {
-      expect(propertyToGraphQLType({ type: 'integer' })).toEqual(GraphQLInt);
-      expect(propertyToGraphQLType({ type: 'long' })).toEqual(GraphQLInt);
+      expect(propertyToSourceGraphQLType({ type: 'integer' })).toEqual(
+        GraphQLInt
+      );
+      expect(propertyToSourceGraphQLType({ type: 'long' })).toEqual(GraphQLInt);
     });
 
     it('should return GraphQLString for string types', () => {
-      expect(propertyToGraphQLType({ type: 'text' })).toEqual(GraphQLString);
-      expect(propertyToGraphQLType({ type: 'keyword' })).toEqual(GraphQLString);
+      expect(propertyToSourceGraphQLType({ type: 'text' })).toEqual(
+        GraphQLString
+      );
+      expect(propertyToSourceGraphQLType({ type: 'keyword' })).toEqual(
+        GraphQLString
+      );
     });
 
     it('should return GraphQLFloat for float types', () => {
-      expect(propertyToGraphQLType({ type: 'float' })).toEqual(GraphQLFloat);
-      expect(propertyToGraphQLType({ type: 'double' })).toEqual(GraphQLFloat);
+      expect(propertyToSourceGraphQLType({ type: 'float' })).toEqual(
+        GraphQLFloat
+      );
+      expect(propertyToSourceGraphQLType({ type: 'double' })).toEqual(
+        GraphQLFloat
+      );
     });
 
     it('should return GraphQLBoolean for float types', () => {
-      expect(propertyToGraphQLType({ type: 'boolean' })).toEqual(
+      expect(propertyToSourceGraphQLType({ type: 'boolean' })).toEqual(
         GraphQLBoolean
       );
     });
 
     it('should return GraphQLObjectType for object with subfields', () => {
-      const type = propertyToGraphQLType(
+      const type = propertyToSourceGraphQLType(
         {
           properties: {
             big: {
@@ -169,12 +185,13 @@ describe('PropertiesConverter', () => {
         () => true,
         'lastname'
       );
-      expect(fields.lastname).toEqual(GraphQLString);
+      expect(fields._all.lastname).toEqual(GraphQLString);
+      expect(fields.text.lastname).toEqual(GraphQLString);
     });
 
     it('should accept mapping', () => {
       const fields = inputPropertiesToGraphQLTypes(mapping, () => true);
-      expect(Object.keys(fields).length).toBeGreaterThan(2);
+      expect(Object.keys(fields._all).length).toBeGreaterThan(2);
     });
 
     it('should convert nested fields', () => {
@@ -194,9 +211,15 @@ describe('PropertiesConverter', () => {
         },
         () => true
       );
-      expect(Object.keys(fields).length).toEqual(2);
-      expect(Object.keys(fields)).toEqual(
+      expect(Object.keys(fields._all).length).toEqual(2);
+      expect(Object.keys(fields._all)).toEqual(
         expect.arrayContaining(['name', 'name__keyword'])
+      );
+      expect(Object.keys(fields.keyword)).toEqual(
+        expect.arrayContaining(['name__keyword'])
+      );
+      expect(Object.keys(fields.text)).toEqual(
+        expect.arrayContaining(['name'])
       );
     });
 
@@ -217,14 +240,18 @@ describe('PropertiesConverter', () => {
         },
         prop => prop.type !== 'text'
       );
-      expect(Object.keys(fields).length).toEqual(1);
-      expect(Object.keys(fields)).toEqual(
+      expect(Object.keys(fields._all).length).toEqual(1);
+      expect(Object.keys(fields._all)).toEqual(
+        expect.arrayContaining(['name__keyword'])
+      );
+      expect(Object.keys(fields.keyword).length).toEqual(1);
+      expect(Object.keys(fields.keyword)).toEqual(
         expect.arrayContaining(['name__keyword'])
       );
     });
 
     it('should not return index:false fields', () => {
-      const itc = convertToSearchableITC(mapping, 'SerachInput');
+      const itc = convertToSearchableITC(mapping, 'SearchInput');
       expect(itc.getFieldNames()).not.toEqual(
         expect.arrayContaining(['noIndex'])
       );
@@ -243,8 +270,12 @@ describe('PropertiesConverter', () => {
         },
         prop => prop.type !== 'text'
       );
-      expect(Object.keys(fields).length).toEqual(1);
-      expect(Object.keys(fields)).toEqual(
+      expect(Object.keys(fields._all).length).toEqual(1);
+      expect(Object.keys(fields._all)).toEqual(
+        expect.arrayContaining(['date'])
+      );
+      expect(Object.keys(fields.date).length).toEqual(1);
+      expect(Object.keys(fields.date)).toEqual(
         expect.arrayContaining(['date'])
       );
     });
@@ -305,14 +336,14 @@ describe('PropertiesConverter', () => {
     });
 
     it('should return InputTypeComposer', () => {
-      const itc = convertToSearchableITC(mapping, 'SerachInput');
+      const itc = convertToSearchableITC(mapping, 'SearchInput');
       expect(itc).toBeInstanceOf(InputTypeComposer);
-      expect(itc.getTypeName()).toBe('SerachInput');
+      expect(itc.getTypeName()).toBe('SearchInput');
       expect(itc.getFieldNames().length).toBeGreaterThan(1);
     });
 
     it('should return array of searchable fields', () => {
-      const itc = convertToSearchableITC(mapping, 'SerachInput');
+      const itc = convertToSearchableITC(mapping, 'SearchInput');
       expect(itc.getFieldNames()).toEqual(
         expect.arrayContaining([
           'name__keyword',
@@ -326,7 +357,6 @@ describe('PropertiesConverter', () => {
       );
     });
   });
-
 
   describe('convertToAnalyzedITC()', () => {
     it('should throw error on empty mapping', () => {
@@ -358,6 +388,19 @@ describe('PropertiesConverter', () => {
           'lastname',
         ])
       );
+    });
+  });
+
+  describe('getSubFields()', () => {
+    it('should return array of sub fields', () => {
+      expect(
+        getSubFields('range', ['ok', 'range', 'range.min', 'range.max'])
+      ).toEqual(['min', 'max']);
+    });
+
+    it('should return array for empty/undefined list', () => {
+      expect(getSubFields('range', null)).toEqual([]);
+      expect(getSubFields('range')).toEqual([]);
     });
   });
 });

@@ -102,6 +102,7 @@ export default class ElasticApiParser {
       const searchTyped = {
         type,
         description,
+        // $FlowFixMe
         resolve: prepareSearchArgs(resolve),
         // $FlowFixMe
         args: Object.assign({}, args, {
@@ -284,9 +285,9 @@ export default class ElasticApiParser {
         // eg '@param {anything} params.operationThreading - ?'
         return GraphQLJSON;
       default:
-        console.log(
+        console.log( // eslint-disable-line
           `New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`
-        ); // eslint-disable-line
+        );
         return GraphQLJSON;
     }
   }

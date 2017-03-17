@@ -359,6 +359,7 @@ describe('ElasticApiParser', () => {
   describe('reassembleNestedFields()', () => {
     it('should pass single fields', () => {
       expect(
+        // $FlowFixMe
         parser.reassembleNestedFields({
           field1: { type: GraphQLString },
           field2: { type: GraphQLString },
@@ -370,6 +371,7 @@ describe('ElasticApiParser', () => {
     });
 
     it('should combine nested field in GraphQLObjectType', () => {
+      // $FlowFixMe
       const reFields = parser.reassembleNestedFields({
         'cat.prototype.field1': { type: GraphQLString },
         'cat.prototype.field2': { type: GraphQLString },

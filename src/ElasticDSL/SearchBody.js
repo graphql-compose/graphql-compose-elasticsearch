@@ -11,9 +11,7 @@ export function getSearchBodyITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('SearchBody', opts);
   const description = desc(
     `
-    The search request can be executed with a search DSL, which includes
-    the [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html),
-    within its body.
+    [Request Body Search](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html),
   `
   );
 
@@ -26,6 +24,23 @@ export function getSearchBodyITC(opts: mixed = {}): InputTypeComposer {
         query: () => getQueryITC(opts),
         aggs: () => [getAggBlockITC(opts)],
         size: 'Int',
+        from: 'Int',
+        sort: 'JSON',
+        _source: 'JSON',
+        script_fields: 'JSON',
+        post_filter: () => getQueryITC(opts),
+        highlight: 'JSON',
+        search_after: 'JSON',
+
+        explain: 'Boolean',
+        version: 'Boolean',
+        indices_boost: 'JSON',
+        min_score: 'Float',
+
+        search_type: 'String',
+        rescore: 'JSON',
+        docvalue_fields: '[String]',
+        stored_fields: '[String]',
       },
     }));
 }

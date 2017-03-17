@@ -30,7 +30,9 @@ describe('typeStorage', () => {
     });
 
     it('should set new type as function and return type, if key not exists', () => {
-      expect(typeStorage.getOrSet('MyType', () => GraphQLType)).toEqual(GraphQLType);
+      expect(typeStorage.getOrSet('MyType', () => GraphQLType)).toEqual(
+        GraphQLType
+      );
       expect(typeStorage.get('MyType')).toEqual(GraphQLType);
     });
 
