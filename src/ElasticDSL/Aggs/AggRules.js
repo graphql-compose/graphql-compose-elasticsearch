@@ -38,6 +38,20 @@ import { getSamplerITC } from './Bucket/Sampler';
 import { getSignificantTermsITC } from './Bucket/SignificantTerms';
 import { getTermsITC } from './Bucket/Terms';
 
+import { getAvgBucketITC } from './Pipeline/AvgBucket';
+import { getBucketScriptITC } from './Pipeline/BucketScript';
+import { getBucketSelectorITC } from './Pipeline/BucketSelector';
+import { getCumulativeSumITC } from './Pipeline/CumulativeSum';
+import { getDerivativeITC } from './Pipeline/Derivative';
+import { getExtendedStatsBucketITC } from './Pipeline/ExtendedStatsBucket';
+import { getMaxBucketITC } from './Pipeline/MaxBucket';
+import { getMinBucketITC } from './Pipeline/MinBucket';
+import { getMovingAverageITC } from './Pipeline/MovingAverage';
+import { getPercentilesBucketITC } from './Pipeline/PercentilesBucket';
+import { getSerialDifferencingITC } from './Pipeline/SerialDifferencing';
+import { getStatsBucketITC } from './Pipeline/StatsBucket';
+import { getSumBucketITC } from './Pipeline/SumBucket';
+
 export function getAggRulesITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggRules', opts);
   const description = desc(
@@ -88,6 +102,20 @@ export function getAggRulesITC(opts: mixed = {}): InputTypeComposer {
         sampler: () => getSamplerITC(opts),
         significant_terms: () => getSignificantTermsITC(opts),
         terms: () => getTermsITC(opts),
+
+        avg_bucket: () => getAvgBucketITC(opts),
+        bucket_script: () => getBucketScriptITC(opts),
+        bucket_selector: () => getBucketSelectorITC(opts),
+        cumulative_sum: () => getCumulativeSumITC(opts),
+        derivative: () => getDerivativeITC(opts),
+        extended_stats_bucket: () => getExtendedStatsBucketITC(opts),
+        max_bucket: () => getMaxBucketITC(opts),
+        min_bucket: () => getMinBucketITC(opts),
+        moving_average: () => getMovingAverageITC(opts),
+        percentiles_bucket: () => getPercentilesBucketITC(opts),
+        serial_differencing: () => getSerialDifferencingITC(opts),
+        stats_bucket: () => getStatsBucketITC(opts),
+        sum_bucket: () => getSumBucketITC(opts),
 
         aggs: {
           type: () => [getAggBlockITC(opts)],
