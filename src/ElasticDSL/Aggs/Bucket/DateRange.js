@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getDateFormatFC, getDateTimeZoneFC } from '../../Commons/Date';
+import { getDateFields } from '../../Commons/FieldNames';
 
 export function getDateRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsDateRange', opts);
@@ -24,7 +25,7 @@ export function getDateRangeITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getDateFields(opts),
         format: getDateFormatFC(opts),
         ranges: () => [getDateRangeITC(opts)],
         time_zone: getDateTimeZoneFC(opts),

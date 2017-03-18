@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getIpRangeTypeITC } from '../../Commons/Ip';
+import { getIpFields } from '../../Commons/FieldNames';
 
 export function getIpRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsIpRange', opts);
@@ -21,7 +22,7 @@ export function getIpRangeITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getIpFields(opts),
         ranges: () => [getIpRangeTypeITC(opts)],
       },
     }));

@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getNumericFields } from '../../Commons/FieldNames';
 
 export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsHistogram', opts);
@@ -20,7 +21,7 @@ export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getNumericFields(opts),
         interval: 'Float',
         missing: 'Float',
         min_doc_count: 'Int',

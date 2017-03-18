@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getGeoPointFields } from '../../Commons/FieldNames';
 
 export function getGeoBoundsITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsGeoBounds', opts);
@@ -19,7 +20,7 @@ export function getGeoBoundsITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String!',
+        field: getGeoPointFields(opts),
         wrap_longitude: 'Boolean',
       },
     }));

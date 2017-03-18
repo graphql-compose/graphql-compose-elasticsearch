@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getGeoPointFields } from '../../Commons/FieldNames';
 
 export function getGeohashGridITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsGeohashGrid', opts);
@@ -21,7 +22,7 @@ export function getGeohashGridITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getGeoPointFields(opts),
         precision: 'Int',
         size: {
           type: 'Int',

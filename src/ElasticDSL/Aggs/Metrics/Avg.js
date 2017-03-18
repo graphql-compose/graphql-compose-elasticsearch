@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
+import { getNumericFields } from '../../Commons/FieldNames';
 
 export function getAvgITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsAvg', opts);
@@ -22,7 +23,7 @@ export function getAvgITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getNumericFields(opts),
         missing: 'Float',
         script: () => getCommonsScriptITC(opts),
       },

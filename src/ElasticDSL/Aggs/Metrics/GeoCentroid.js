@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getGeoPointFields } from '../../Commons/FieldNames';
 
 export function getGeoCentroidITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsGeoCentroid', opts);
@@ -19,7 +20,7 @@ export function getGeoCentroidITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String!',
+        field: getGeoPointFields(opts),
       },
     }));
 }

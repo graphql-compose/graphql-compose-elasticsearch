@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
+import { getAllFields } from '../../Commons/FieldNames';
 
 export function getValueCountITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsValueCount', opts);
@@ -20,7 +21,7 @@ export function getValueCountITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getAllFields(opts),
         script: () => getCommonsScriptITC(opts),
       },
     }));

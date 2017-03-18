@@ -4,6 +4,7 @@ import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getCommonsHdrITC } from '../../Commons/HDR';
+import { getNumericFields } from '../../Commons/FieldNames';
 
 export function getPercentileRanksITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsPercentileRanks', opts);
@@ -23,7 +24,7 @@ export function getPercentileRanksITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getNumericFields(opts),
         values: '[Float]',
         hdr: () => getCommonsHdrITC(opts),
         missing: 'Float',

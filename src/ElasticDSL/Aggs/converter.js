@@ -1,5 +1,3 @@
-import type { GraphQLFieldResolver } from 'graphql/type/definition';
-
 export type ElasticAggsT = {
   [outputFieldName: string]: ElasticAggsRulesT,
 };
@@ -20,16 +18,13 @@ export type GqlAggRules = {
 };
 
 export default function argsBlockConverter(
-  resolve: GraphQLFieldResolver<*, *>
-): GraphQLFieldResolver<*, *> {
-  return (source, args, context, info) => {
-    if (args.body && Array.isArray(args.body.aggs)) {
-      const aggs: GqlAggBlock[] = args.body.aggs;
-      args.body.aggs = convertAggsBlocks(aggs); // eslint-disable-line
-    }
-
-    return resolve(source, args, context, info);
-  };
+  args: { [argName: string]: any }
+): { [argName: string]: any } {
+  if (args && args.body && Array.isArray(args.body.aggs)) {
+    const aggs: GqlAggBlock[] = args.body.aggs;
+    args.body.aggs = convertAggsBlocks(aggs); // eslint-disable-line
+  }
+  return args;
 }
 
 export function convertAggsBlocks(blockList: GqlAggBlock[]): ElasticAggsT {

@@ -21,7 +21,7 @@ export function getGlobalITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        without_fields: 'JSON',
+        _without_fields_: 'JSON',
       },
     }));
 }

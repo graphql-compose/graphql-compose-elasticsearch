@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getAllFields } from '../../Commons/FieldNames';
 
 export function getSignificantTermsITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsSignificantTerms', opts);
@@ -19,7 +20,7 @@ export function getSignificantTermsITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getAllFields(opts),
         min_doc_count: 'Int',
         background_filter: 'JSON',
         execution_hint: 'String',

@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
+import { getAllFields } from '../../Commons/FieldNames';
 
 export function getCardinalityITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsCardinality', opts);
@@ -21,7 +22,7 @@ export function getCardinalityITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getAllFields(opts),
         precision_threshold: {
           type: 'Int',
           defaultValue: 3000,

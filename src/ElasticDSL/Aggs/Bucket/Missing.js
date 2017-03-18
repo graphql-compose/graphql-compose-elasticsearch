@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getAllFields } from '../../Commons/FieldNames';
 
 export function getMissingITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsMissing', opts);
@@ -20,7 +21,7 @@ export function getMissingITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getAllFields(opts),
       },
     }));
 }

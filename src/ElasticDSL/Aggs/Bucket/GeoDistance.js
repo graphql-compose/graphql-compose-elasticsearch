@@ -8,6 +8,7 @@ import {
   getDistanceCalculationModeFC,
 } from '../../Commons/Geo';
 import { getFloatRangeITC } from '../../Commons/Float';
+import { getGeoPointFields } from '../../Commons/FieldNames';
 
 export function getGeoDistanceITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsGeoDistance', opts);
@@ -27,7 +28,7 @@ export function getGeoDistanceITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getGeoPointFields(opts),
         origin: getGeoPointFC(opts),
         ranges: [getFloatRangeITC(opts)],
         unit: getDistanceUnitFC(opts),

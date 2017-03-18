@@ -4,6 +4,7 @@ import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getFloatRangeKeyedITC } from '../../Commons/Float';
 import { getCommonsScriptITC } from '../../Commons/Script';
+import { getNumericFields } from '../../Commons/FieldNames';
 
 export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsRange', opts);
@@ -23,7 +24,7 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getNumericFields(opts),
         ranges: () => [getFloatRangeKeyedITC(opts)],
         keyed: 'Boolean',
         script: () => getCommonsScriptITC(opts),

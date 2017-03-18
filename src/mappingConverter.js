@@ -41,7 +41,7 @@ export type InputFieldsMap = {
   [field: string]: GraphQLInputObjectType,
 };
 
-export type InputFieldsMapByElasticType = {
+export type FieldsMapByElasticType = {
   [elasticType: string]: InputFieldsMap,
   _all: InputFieldsMap,
 };
@@ -171,8 +171,8 @@ export function inputPropertiesToGraphQLTypes(
   prop: ElasticPropertyT | ElasticMappingT,
   filterFn?: (prop: any) => boolean,
   fieldName?: string,
-  result?: InputFieldsMapByElasticType = { _all: {} }
-): InputFieldsMapByElasticType {
+  result?: FieldsMapByElasticType = { _all: {} }
+): FieldsMapByElasticType {
   if (!prop || (typeof prop.type !== 'string' && !prop.properties)) {
     throw new Error('You provide incorrect Elastic property config.');
   }

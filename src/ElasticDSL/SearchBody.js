@@ -1,13 +1,19 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import type { GraphQLFieldResolver } from 'graphql/type/definition';
+import type { FieldsMapByElasticType } from '../mappingConverter';
 import { getQueryITC } from './Query/Query';
 import { getAggBlockITC } from './Aggs/AggBlock';
 import prepareArgAggs from './Aggs/converter';
 import { getTypeName, getOrSetType, desc } from '../utils';
 
-export function getSearchBodyITC(opts: mixed = {}): InputTypeComposer {
+export type SearchOptsT = {
+  prefix?: string,
+  postfix?: string,
+  fieldMap?: FieldsMapByElasticType,
+};
+
+export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
   const name = getTypeName('SearchBody', opts);
   const description = desc(
     `
@@ -46,7 +52,7 @@ export function getSearchBodyITC(opts: mixed = {}): InputTypeComposer {
 }
 
 export function prepareSearchArgs(
-  resolve: GraphQLFieldResolver<*, *>
-): GraphQLFieldResolver<*, *> {
-  return prepareArgAggs(resolve);
+  args: { [argName: string]: any }
+): { [argName: string]: any } {
+  return prepareArgAggs(args);
 }

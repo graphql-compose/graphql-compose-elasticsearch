@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
+import { getAllFields } from '../../Commons/FieldNames';
 
 export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsDiversifiedSampler', opts);
@@ -25,7 +26,7 @@ export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
           type: 'String',
           defaultValue: 100,
         },
-        field: 'String',
+        field: getAllFields(opts),
         max_docs_per_value: 'Int',
         script: () => getCommonsScriptITC(opts),
         execution_hint: 'String',

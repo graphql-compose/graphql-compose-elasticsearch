@@ -8,6 +8,7 @@ import {
   getDateFormatFC,
   getDateTimeZoneFC,
 } from '../../Commons/Date';
+import { getDateFields } from '../../Commons/FieldNames';
 
 export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsDateHistogram', opts);
@@ -25,12 +26,12 @@ export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: getDateFields(opts),
         interval: getDateIntervalFC(opts),
         time_zone: getDateTimeZoneFC(opts),
         offset: getDateIntervalFC(opts),
         format: getDateFormatFC(opts),
-        missing: 'Float',
+        missing: 'String',
         script: () => getCommonsScriptITC(opts),
       },
     }));

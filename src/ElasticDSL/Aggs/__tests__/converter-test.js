@@ -31,22 +31,22 @@ describe('AGGS args converter', () => {
   });
 
   it('argsBlockConverter()', () => {
-    expect.assertions(4);
-    const mockResolve = (source, args, context, info) => {
-      expect(args.body.aggs).toEqual({
-        field1: {},
-        field2: {},
-      });
-      expect(source).toEqual('source');
-      expect(context).toEqual('context');
-      expect(info).toEqual('info');
-    };
-
-    const args = {
+    expect(
+      argsBlockConverter({
+        body: {
+          aggs: [
+            { key: 'field1', value: { term: 'a' } },
+            { key: 'field2', value: { term: 'b' } },
+          ],
+        },
+      })
+    ).toEqual({
       body: {
-        aggs: [{ key: 'field1', value: {} }, { key: 'field2', value: {} }],
+        aggs: {
+          field1: { term: 'a' },
+          field2: { term: 'b' },
+        },
       },
-    };
-    argsBlockConverter(mockResolve)('source', args, 'context', 'info');
+    });
   });
 });
