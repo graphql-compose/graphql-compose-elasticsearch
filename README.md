@@ -10,10 +10,12 @@ graphql-compose-elasticsearch
 Some parts are not ready yet. More features will be landed in near future.
 - [x] ElasticApiParser
 - [x] Mapping converter to GraphQL types
-- [ ] Exporting of generated GraphQL types
+- [x] Extended definition for `search.body` according to Query DSL
+- [x] Exporting of generated GraphQL field configs for Elastic methods
+- [ ] Improve `search.body` Query DSL by field names from provided Mapping
 - [ ] Helper methods/resolvers for `graphql-compose`
 - [ ] Docs
-- [ ] Declarations for output (can not find proper source/format for Elastic responses. Please open PR with link if you have such)
+- [ ] Declarations for output (can not find proper source/format for Elastic responses. Please open issue with a link if you have such)
 
 ## Live demos
 [Introspection of Elasticsearch API via Graphiql](https://graphql-compose.herokuapp.com/elasticsearch/)

@@ -16,7 +16,10 @@ const generatedSchema = new GraphQLSchema({
         description: 'Elastic v5.0',
         type: new GraphQLObjectType({
           name: 'Elastic50',
-          fields: new ElasticApiParser({ version: '5_0', prefix: 'Elastic50' }).run(),
+          fields: new ElasticApiParser({
+            version: '5_0',
+            prefix: 'Elastic50',
+          }).generateFieldMap(),
         }),
         args: {
           host: {
@@ -25,7 +28,8 @@ const generatedSchema = new GraphQLSchema({
           },
         },
         resolve: (src, args, context) => {
-          context.elasticClient = new elasticsearch.Client({ // eslint-disable-line no-param-reassign
+          // eslint-disable-next-line no-param-reassign
+          context.elasticClient = new elasticsearch.Client({
             host: args.host,
             apiVersion: '5.0',
             log: 'trace',
@@ -38,7 +42,10 @@ const generatedSchema = new GraphQLSchema({
         description: 'Elastic v2.4',
         type: new GraphQLObjectType({
           name: 'Elastic24',
-          fields: new ElasticApiParser({ version: '2_4', prefix: 'Elastic24' }).run(),
+          fields: new ElasticApiParser({
+            version: '2_4',
+            prefix: 'Elastic24',
+          }).generateFieldMap(),
         }),
         args: {
           host: {
@@ -47,7 +54,8 @@ const generatedSchema = new GraphQLSchema({
           },
         },
         resolve: (src, args, context) => {
-          context.elasticClient = new elasticsearch.Client({ // eslint-disable-line no-param-reassign
+          // eslint-disable-next-line no-param-reassign
+          context.elasticClient = new elasticsearch.Client({
             host: args.host,
             apiVersion: '2.4',
           });
@@ -59,7 +67,10 @@ const generatedSchema = new GraphQLSchema({
         description: 'Elastic v1.7',
         type: new GraphQLObjectType({
           name: 'Elastic17',
-          fields: new ElasticApiParser({ version: '5_0', prefix: 'Elastic17' }).run(),
+          fields: new ElasticApiParser({
+            version: '5_0',
+            prefix: 'Elastic17',
+          }).generateFieldMap(),
         }),
         args: {
           host: {
@@ -68,7 +79,8 @@ const generatedSchema = new GraphQLSchema({
           },
         },
         resolve: (src, args, context) => {
-          context.elasticClient = new elasticsearch.Client({ // eslint-disable-line no-param-reassign
+          // eslint-disable-next-line no-param-reassign
+          context.elasticClient = new elasticsearch.Client({
             host: args.host,
             apiVersion: '1.7',
           });
@@ -80,17 +92,21 @@ const generatedSchema = new GraphQLSchema({
 });
 
 const server = express();
-server.use('/', graphqlHTTP({
-  schema: generatedSchema,
-  graphiql: true,
-  context: {
-    // elasticClient: new elasticsearch.Client({
-    //   host: 'http://localhost:9200',
-    //   apiVersion: '5.0',
-    //   log: 'trace',
-    // }),
-  },
-}));
+server.use(
+  '/',
+  graphqlHTTP({
+    schema: generatedSchema,
+    graphiql: true,
+    context: {
+      // // OR YOU MAY DEFINE elasticClient GLOBALLY
+      // elasticClient: new elasticsearch.Client({
+      //   host: 'http://localhost:9200',
+      //   apiVersion: '5.0',
+      //   log: 'trace',
+      // }),
+    },
+  })
+);
 
 server.listen(expressPort, () => {
   console.log(`The server is running at http://localhost:${expressPort}/`);

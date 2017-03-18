@@ -16,7 +16,6 @@ import { GraphQLJSON, TypeComposer } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
-const apiPartialSource = new ElasticApiParser().loadApiFile(apiPartialPath);
 
 const code = `
 api.cat.prototype.allocation = ca({
@@ -70,87 +69,129 @@ describe('ElasticApiParser', () => {
     parser = new ElasticApiParser();
   });
 
-  describe('loadApiFile()', () => {
-    it('should load file with data', () => {
-      expect(apiPartialSource).toContain('api.search = ca({');
-    });
+  describe('static methods', () => {
+    describe('loadApiFile()', () => {
+      it('should load file with data', () => {
+        expect(ElasticApiParser.loadApiFile(apiPartialPath)).toContain(
+          'api.search = ca({'
+        );
+      });
 
-    it('should replace invalid markup', () => {
-      expect(apiPartialSource).not.toContain(
-        '@param {<<api-param-type-string,`String`>>} params.analyzer - The analyzer to use for the query string'
-      );
-      expect(apiPartialSource).toContain(
-        '@param {String} params.analyzer - The analyzer to use for the query string'
-      );
-    });
-  });
-
-  describe('cleanupDescription()', () => {
-    it('should remove `- ` from start and trim', () => {
-      expect(parser.cleanupDescription('- Some param  ')).toEqual('Some param');
-    });
-  });
-
-  describe('cleanupParamName()', () => {
-    it('should remove `params.` from start', () => {
-      expect(parser.cleanupParamName('params.q')).toEqual('q');
-    });
-  });
-
-  describe('parseParamsDescription()', () => {
-    it('should return descriptions for fields', () => {
-      const source = parser.cleanUpSource(
-        `
-      /**
-       * Perform a [updateByQuery](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/docs-update-by-query.html) request
-       *
-       * @param {Object} params - An object with parameters used to carry out this action
-       * @param {<<api-param-type-string,\`String\`>>} params.analyzer - The analyzer to use for the query string
-       * @param {<<api-param-type-boolean,\`Boolean\`>>} params.analyzeWildcard - Specify whether wildcard and prefix queries should be analyzed (default: false)
-       * @param {<<api-param-type-number,\`Number\`>>} params.from - Starting offset (default: 0)
-       */
-      api.updateByQuery = ca({});
-      `
-      );
-      const doxAST = dox.parseComments(source, { raw: true });
-      expect(parser.parseParamsDescription(doxAST[0])).toMatchObject({
-        analyzeWildcard: 'Specify whether wildcard and prefix queries should be analyzed (default: false)',
-        analyzer: 'The analyzer to use for the query string',
-        from: 'Starting offset (default: 0)',
+      it('should replace invalid markup', () => {
+        expect(ElasticApiParser.loadApiFile(apiPartialPath)).not.toContain(
+          '@param {<<api-param-type-string,`String`>>} params.analyzer - The analyzer to use for the query string'
+        );
+        expect(ElasticApiParser.loadApiFile(apiPartialPath)).toContain(
+          '@param {String} params.analyzer - The analyzer to use for the query string'
+        );
       });
     });
-  });
 
-  describe('codeToSettings()', () => {
-    it('should return settings as object from ca({ settings })', () => {
-      expect(parser.codeToSettings(code)).toMatchObject({
-        params: {
-          bytes: { options: ['b', 'k', 'kb'], type: 'enum' },
-          format: { type: 'string' },
-          h: { type: 'list' },
-          help: { default: false, type: 'boolean' },
-          local: { type: 'boolean' },
-          masterTimeout: { name: 'master_timeout', type: 'time' },
-          v: { default: false, type: 'boolean' },
-        },
-        urls: [
-          {
-            fmt: '/_cat/allocation/<%=nodeId%>',
-            req: { nodeId: { type: 'list' } },
+    describe('cleanupDescription()', () => {
+      it('should remove `- ` from start and trim', () => {
+        expect(ElasticApiParser.cleanupDescription('- Some param  ')).toEqual(
+          'Some param'
+        );
+      });
+    });
+
+    describe('cleanupParamName()', () => {
+      it('should remove `params.` from start', () => {
+        expect(ElasticApiParser.cleanupParamName('params.q')).toEqual('q');
+      });
+    });
+
+    describe('parseParamsDescription()', () => {
+      it('should return descriptions for fields', () => {
+        const source = ElasticApiParser.cleanUpSource(
+          `
+        /**
+         * Perform a [updateByQuery](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/docs-update-by-query.html) request
+         *
+         * @param {Object} params - An object with parameters used to carry out this action
+         * @param {<<api-param-type-string,\`String\`>>} params.analyzer - The analyzer to use for the query string
+         * @param {<<api-param-type-boolean,\`Boolean\`>>} params.analyzeWildcard - Specify whether wildcard and prefix queries should be analyzed (default: false)
+         * @param {<<api-param-type-number,\`Number\`>>} params.from - Starting offset (default: 0)
+         */
+        api.updateByQuery = ca({});
+        `
+        );
+        const doxAST = dox.parseComments(source, { raw: true });
+        expect(
+          ElasticApiParser.parseParamsDescription(doxAST[0])
+        ).toMatchObject({
+          analyzeWildcard: 'Specify whether wildcard and prefix queries should be analyzed (default: false)',
+          analyzer: 'The analyzer to use for the query string',
+          from: 'Starting offset (default: 0)',
+        });
+      });
+    });
+
+    describe('codeToSettings()', () => {
+      it('should return settings as object from ca({ settings })', () => {
+        expect(ElasticApiParser.codeToSettings(code)).toMatchObject({
+          params: {
+            bytes: { options: ['b', 'k', 'kb'], type: 'enum' },
+            format: { type: 'string' },
+            h: { type: 'list' },
+            help: { default: false, type: 'boolean' },
+            local: { type: 'boolean' },
+            masterTimeout: { name: 'master_timeout', type: 'time' },
+            v: { default: false, type: 'boolean' },
           },
-          { fmt: '/_cat/allocation' },
-          {
-            fmt: '/<%=index%>/<%=type%>/_update_by_query',
-            req: {
-              index: { type: 'list' },
-              type: { type: 'list' },
+          urls: [
+            {
+              fmt: '/_cat/allocation/<%=nodeId%>',
+              req: { nodeId: { type: 'list' } },
             },
-          },
-          {
-            fmt: '/<%=index%>/_update_by_query',
-            req: { index: { type: 'list' } },
-          },
-        ],
+            { fmt: '/_cat/allocation' },
+            {
+              fmt: '/<%=index%>/<%=type%>/_update_by_query',
+              req: {
+                index: { type: 'list' },
+                type: { type: 'list' },
+              },
+            },
+            {
+              fmt: '/<%=index%>/_update_by_query',
+              req: { index: { type: 'list' } },
+            },
+          ],
+        });
+      });
+    });
+
+    describe('getMethodName()', () => {
+      it('should return string', () => {
+        expect(ElasticApiParser.getMethodName('api.updateByQuery')).toEqual(
+          'updateByQuery'
+        );
+      });
+
+      it('should return array of string', () => {
+        expect(
+          ElasticApiParser.getMethodName('api.cat.prototype.allocation')
+        ).toEqual(['cat', 'allocation']);
+      });
+    });
+
+    describe('parseSource()', () => {
+      it('should throw error if empty source', () => {
+        expect(() => {
+          ElasticApiParser.parseSource('');
+        }).toThrowError('Empty source');
+        expect(() => {
+          // $FlowFixMe
+          ElasticApiParser.parseSource(123);
+        }).toThrowError('should be non-empty string');
+      });
+
+      it('should return ElasticParsedSourceT', () => {
+        expect(
+          ElasticApiParser.parseSource(
+            ElasticApiParser.loadApiFile(apiPartialPath)
+          )
+        ).toMatchSnapshot();
       });
     });
   });
@@ -191,7 +232,7 @@ describe('ElasticApiParser', () => {
       expect(type).toBeInstanceOf(GraphQLEnumType);
     });
 
-    it('should as folback type return GraphQLJSON', () => {
+    it('should as fallback type return GraphQLJSON', () => {
       expect(parser.paramTypeToGraphQL({ type: 'crazy' }, 'f1')).toEqual(
         GraphQLJSON
       );
@@ -273,7 +314,7 @@ describe('ElasticApiParser', () => {
   });
 
   describe('settingsToArgMap()', () => {
-    it ('should create body arg if POST or PUT method', () => {
+    it('should create body arg if POST or PUT method', () => {
       const args = parser.settingsToArgMap({
         params: {},
         method: 'POST',
@@ -282,7 +323,7 @@ describe('ElasticApiParser', () => {
       expect(args.body.type).toEqual(GraphQLJSON);
     });
 
-    it ('should create required body arg if POST or PUT method', () => {
+    it('should create required body arg if POST or PUT method', () => {
       const args = parser.settingsToArgMap({
         params: {},
         method: 'POST',
@@ -341,21 +382,6 @@ describe('ElasticApiParser', () => {
     });
   });
 
-  describe('getMethodName()', () => {
-    it('should return string', () => {
-      expect(parser.getMethodName('api.updateByQuery')).toEqual(
-        'updateByQuery'
-      );
-    });
-
-    it('should return array of string', () => {
-      expect(parser.getMethodName('api.cat.prototype.allocation')).toEqual([
-        'cat',
-        'allocation',
-      ]);
-    });
-  });
-
   describe('reassembleNestedFields()', () => {
     it('should pass single fields', () => {
       expect(
@@ -373,9 +399,9 @@ describe('ElasticApiParser', () => {
     it('should combine nested field in GraphQLObjectType', () => {
       // $FlowFixMe
       const reFields = parser.reassembleNestedFields({
-        'cat.prototype.field1': { type: GraphQLString },
-        'cat.prototype.field2': { type: GraphQLString },
-        'index.prototype.exists': { type: GraphQLBoolean },
+        'cat.field1': { type: GraphQLString },
+        'cat.field2': { type: GraphQLString },
+        'index.exists': { type: GraphQLBoolean },
       });
       expect(Object.keys(reFields).length).toEqual(2);
       expect(reFields.cat).toBeDefined();
@@ -395,25 +421,37 @@ describe('ElasticApiParser', () => {
     });
   });
 
-  describe('parseSource()', () => {
-    it('should throw error if empty source', () => {
-      expect(() => {
-        parser.parseSource('');
-      }).toThrowError('Empty source');
+  describe('generateFieldConfig()', () => {
+    it('should throw error if provided empty method name', () => {
       expect(() => {
         // $FlowFixMe
-        parser.parseSource(123);
-      }).toThrowError('should be non-empty string');
+        parser.generateFieldConfig();
+      }).toThrowError('provide Elastic search method');
     });
 
-    it('should return GraphQLInputFieldMap', () => {
-      expect(parser.parseSource(apiPartialSource)).toMatchSnapshot();
+    it('should throw error if requested method does not exist', () => {
+      expect(() => {
+        parser.generateFieldConfig('missing.method');
+      }).toThrowError('does not exists');
+    });
+
+    it('should generate fieldConfig', () => {
+      const partialApiParser = new ElasticApiParser({
+        elasticApiFilePath: apiPartialPath,
+      });
+      expect(partialApiParser.generateFieldConfig('search')).toMatchSnapshot();
+      expect(
+        partialApiParser.generateFieldConfig('cat.allocation')
+      ).toMatchSnapshot();
     });
   });
 
-  // describe('run()', () => {
-  //   it('should return GraphQLInputFieldMap for provided Elastic version', () => {
-  //     console.dir(parser.run('5_0'));
-  //   });
-  // });
+  describe('generateFieldMap()', () => {
+    it('should generate fieldMap', () => {
+      const partialApiParser = new ElasticApiParser({
+        elasticApiFilePath: apiPartialPath,
+      });
+      expect(partialApiParser.generateFieldMap()).toMatchSnapshot();
+    });
+  });
 });

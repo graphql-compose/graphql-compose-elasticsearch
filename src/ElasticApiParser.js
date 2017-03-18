@@ -1,5 +1,5 @@
 /* @flow */
-/* eslint-disable no-param-reassign, class-methods-use-this  */
+/* eslint-disable no-param-reassign */
 
 import dox from 'dox';
 import fs from 'fs';
@@ -13,35 +13,38 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
-import { getSearchBodyITC, prepareSearchArgs } from './ElasticDSL/SearchBody';
 
 import type {
   GraphQLArgumentConfig,
+  GraphQLFieldConfig,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldMap,
   GraphQLInputType,
 } from 'graphql/type/definition'; // eslint-disable-line
 
+export type ElasticApiVersion =
+  | '5_0'
+  | '5_x'
+  | '2_4'
+  | '2_3'
+  | '2_2'
+  | '2_1'
+  | '2_0'
+  | '1_7'
+  | '1_6'
+  | '1_5'
+  | '1_4'
+  | '1_3'
+  | '1_2'
+  | '1_1'
+  | '1_0'
+  | '0_90';
+
 export type ElasticApiParserOptsT = {
-  version?:
-    | '5_0'
-    | '5_x'
-    | '2_4'
-    | '2_3'
-    | '2_2'
-    | '2_1'
-    | '2_0'
-    | '1_7'
-    | '1_6'
-    | '1_5'
-    | '1_4'
-    | '1_3'
-    | '1_2'
-    | '1_1'
-    | '1_0'
-    | '0_90',
+  elasticClient?: any, // Elastic client
+  version?: ElasticApiVersion,
   prefix?: string,
-  elasticApiFilesPath?: string,
+  elasticApiFilePath?: string,
 };
 
 export type ElasticParamConfigT = {
@@ -68,58 +71,125 @@ export type ElasticCaSettingsT = {
   method?: string,
 };
 
+export type ElasticParsedArgsDescriptionsT = {
+  [argName: string]: ?string,
+};
+
+export type ElasticParsedSourceT = {
+  [dottedMethodName: string]: {
+    elasticMethod: string | string[],
+    description: string,
+    argsSettings: ElasticCaSettingsT,
+    argsDescriptions: ElasticParsedArgsDescriptionsT,
+  },
+};
+
 export default class ElasticApiParser {
   cachedEnums: {
     [fieldName: string]: { [valsStringified: string]: GraphQLEnumType },
   };
   version: string;
   prefix: string;
-  elasticApiFilesPath: string;
+  elasticClient: any;
+  parsedSource: ElasticParsedSourceT;
 
   constructor(opts: ElasticApiParserOptsT = {}) {
     // derived from installed package `elasticsearch`
     // from ../../node_modules/elasticsearch/src/lib/apis/VERSION.js
     this.version = opts.version || '5_0';
-    this.prefix = opts.prefix || 'Elastic';
-    this.elasticApiFilesPath = opts.elasticApiFilesPath ||
-      './node_modules/elasticsearch/src/lib/apis/';
-    this.cachedEnums = {};
-  }
-
-  run(): GraphQLFieldMap<*, *> {
-    this.cachedEnums = {};
     const apiFilePath = path.resolve(
-      this.elasticApiFilesPath,
-      `${this.version}.js`
+      opts.elasticApiFilePath ||
+        `./node_modules/elasticsearch/src/lib/apis/${this.version}.js`
     );
-    const source = this.loadApiFile(apiFilePath);
-    return this.addTypedSearch(this.parseSource(source));
+    const source = ElasticApiParser.loadApiFile(apiFilePath);
+    this.parsedSource = ElasticApiParser.parseSource(source);
+
+    this.elasticClient = opts.elasticClient;
+    this.prefix = opts.prefix || 'Elastic';
+    this.cachedEnums = {};
   }
 
-  addTypedSearch(fields: GraphQLFieldMap<*, *>): GraphQLFieldMap<*, *> {
-    if (fields.search) {
-      const { type, description, args, resolve } = fields.search;
-      const searchTyped = {
-        type,
-        description,
-        // $FlowFixMe
-        resolve: prepareSearchArgs(resolve),
-        // $FlowFixMe
-        args: Object.assign({}, args, {
-          body: {
-            type: getSearchBodyITC({
-              prefix: this.prefix,
-            }).getType(),
-          },
-        }),
-      };
-      return { searchTyped, ...fields };
+  static loadApiFile(absolutePath: string): string {
+    const code = fs.readFileSync(absolutePath, 'utf8');
+    return ElasticApiParser.cleanUpSource(code);
+  }
+
+  static cleanUpSource(code: string): string {
+    // remove invalid markup
+    // {<<api-param-type-boolean,`Boolean`>>} converted to {Boolean}
+    const codeCleaned = code.replace(/{<<.+`(.*)`.+}/gi, '{$1}');
+
+    return codeCleaned;
+  }
+
+  static parseParamsDescription(
+    doxItemAST: any
+  ): { [fieldName: string]: string } {
+    const descriptions = {};
+    if (Array.isArray(doxItemAST.tags)) {
+      doxItemAST.tags.forEach(tag => {
+        if (!tag || tag.type !== 'param') return;
+        if (tag.name === 'params') return;
+
+        const name = ElasticApiParser.cleanupParamName(tag.name);
+        if (!name) return;
+
+        descriptions[name] = ElasticApiParser.cleanupDescription(
+          tag.description
+        );
+      });
     }
-    return fields;
+    return descriptions;
   }
 
-  parseSource(source: string): GraphQLFieldMap<*, *> {
-    let result = {};
+  static cleanupDescription(str: ?string): ?string {
+    if (typeof str === 'string') {
+      if (str.startsWith('- ')) {
+        str = str.substr(2);
+      }
+      str = str.trim();
+
+      return str;
+    }
+    return undefined;
+  }
+
+  static cleanupParamName(str: ?string): ?string {
+    if (typeof str === 'string') {
+      if (str.startsWith('params.')) {
+        str = str.substr(7);
+      }
+      str = str.trim();
+
+      return str;
+    }
+    return undefined;
+  }
+
+  static codeToSettings(code: string): ?ElasticCaSettingsT {
+    // find code in ca({});
+    const reg = /ca\((\{(.|\n)+\})\);/g;
+    const matches = reg.exec(code);
+    if (matches && matches[1]) {
+      return eval('(' + matches[1] + ')'); // eslint-disable-line no-eval
+    }
+    return undefined;
+  }
+
+  static getMethodName(str: string): string | string[] {
+    const parts = str.split('.');
+    if (parts[0] === 'api') {
+      parts.shift();
+    }
+    if (parts.length === 1) {
+      return parts[0];
+    } else {
+      return parts.filter(o => o !== 'prototype');
+    }
+  }
+
+  static parseSource(source: string): ElasticParsedSourceT {
+    const result = {};
 
     if (!source || typeof source !== 'string') {
       throw Error('Empty source. It should be non-empty string.');
@@ -138,114 +208,80 @@ export default class ElasticApiParser {
       // method description
       let description;
       if (item.description && item.description.full) {
-        description = this.cleanupDescription(item.description.full);
+        description = ElasticApiParser.cleanupDescription(
+          item.description.full
+        );
       }
 
-      // prepare arguments and its descriptions
-      const descriptionMap = this.parseParamsDescription(item);
-      const argMap = this.settingsToArgMap(this.codeToSettings(item.code));
-      Object.keys(argMap).forEach(k => {
-        if (descriptionMap[k]) {
-          argMap[k].description = descriptionMap[k];
-        }
-      });
+      const elasticMethod = ElasticApiParser.getMethodName(item.ctx.string);
+      const dottedMethodName = Array.isArray(elasticMethod)
+        ? elasticMethod.join('.')
+        : elasticMethod;
 
-      const elasticMethod = this.getMethodName(item.ctx.string);
-
-      result[item.ctx.string] = {
-        type: GraphQLJSON,
+      result[dottedMethodName] = {
+        elasticMethod,
         description,
-        args: argMap,
-        resolve: (src, args, context) => {
-          if (!context.elasticClient) {
-            throw new Error(
-              'You should provide `elasticClient` to GraphQL context'
-            );
-          }
-
-          if (Array.isArray(elasticMethod)) {
-            return context.elasticClient[elasticMethod[0]][elasticMethod[1]](
-              args
-            );
-          }
-
-          return context.elasticClient[elasticMethod](args);
-        },
+        argsSettings: ElasticApiParser.codeToSettings(item.code),
+        argsDescriptions: ElasticApiParser.parseParamsDescription(item),
       };
     });
-
-    // reassamle nested methods, eg api.cat.prototype.allocation
-    result = this.reassembleNestedFields(result);
 
     return result;
   }
 
-  loadApiFile(absolutePath: string): string {
-    const code = fs.readFileSync(absolutePath, 'utf8');
-    return this.cleanUpSource(code);
+  generateFieldMap(): GraphQLFieldMap<*, *> {
+    const result = {};
+    Object.keys(this.parsedSource).forEach(methodName => {
+      result[methodName] = this.generateFieldConfig(methodName);
+    });
+    return this.reassembleNestedFields(result);
   }
 
-  cleanUpSource(code: string): string {
-    // remove invalid markup
-    // {<<api-param-type-boolean,`Boolean`>>} converted to {Boolean}
-    const codeCleaned = code.replace(/{<<.+`(.*)`.+}/gi, '{$1}');
-
-    return codeCleaned;
-  }
-
-  parseParamsDescription(doxItemAST: any): { [fieldName: string]: string } {
-    const descriptions = {};
-    if (Array.isArray(doxItemAST.tags)) {
-      doxItemAST.tags.forEach(tag => {
-        if (!tag || tag.type !== 'param') return;
-        if (tag.name === 'params') return;
-
-        const name = this.cleanupParamName(tag.name);
-        if (!name) return;
-
-        descriptions[name] = this.cleanupDescription(tag.description);
-      });
+  generateFieldConfig(methodName: string): GraphQLFieldConfig<*, *> {
+    if (!methodName) {
+      throw new Error(`You should provide Elastic search method.`);
     }
-    return descriptions;
-  }
 
-  cleanupDescription(str: ?string): ?string {
-    if (typeof str === 'string') {
-      if (str.startsWith('- ')) {
-        str = str.substr(2);
-      }
-      str = str.trim();
-
-      return str;
+    if (!this.parsedSource[methodName]) {
+      throw new Error(`Elastic search method '${methodName}' does not exists.`);
     }
-    return undefined;
-  }
 
-  cleanupParamName(str: ?string): ?string {
-    if (typeof str === 'string') {
-      if (str.startsWith('params.')) {
-        str = str.substr(7);
-      }
-      str = str.trim();
+    const {
+      description,
+      argsSettings,
+      argsDescriptions,
+      elasticMethod,
+    } = this.parsedSource[methodName];
 
-      return str;
-    }
-    return undefined;
-  }
+    const argMap = this.settingsToArgMap(argsSettings, argsDescriptions);
 
-  codeToSettings(code: string): ?ElasticCaSettingsT {
-    // find code in ca({});
-    const reg = /ca\((\{(.|\n)+\})\);/g;
-    const matches = reg.exec(code);
-    if (matches && matches[1]) {
-      return eval('(' + matches[1] + ')'); // eslint-disable-line no-eval
-    }
-    return undefined;
+    return {
+      type: GraphQLJSON,
+      description,
+      args: argMap,
+      resolve: (src, args, context) => {
+        const client = context.elasticClient || this.elasticClient;
+
+        if (!client) {
+          throw new Error(
+            'You should provide `elasticClient` when created types via ' +
+              '`opts.elasticClient` or in runtime via GraphQL context'
+          );
+        }
+
+        if (Array.isArray(elasticMethod)) {
+          return client[elasticMethod[0]][elasticMethod[1]](args);
+        }
+
+        return client[elasticMethod](args);
+      },
+    };
   }
 
   paramToGraphQLArgConfig(
     paramCfg: ElasticParamConfigT,
-    fieldName: string
+    fieldName: string,
+    description?: ?string
   ): GraphQLArgumentConfig {
     const result: GraphQLArgumentConfig = {
       type: this.paramTypeToGraphQL(paramCfg, fieldName),
@@ -254,6 +290,10 @@ export default class ElasticApiParser {
       result.defaultValue = paramCfg.default;
     } else if (fieldName === 'format') {
       result.defaultValue = 'json';
+    }
+
+    if (description) {
+      result.description = description;
     }
 
     return result;
@@ -285,9 +325,10 @@ export default class ElasticApiParser {
         // eg '@param {anything} params.operationThreading - ?'
         return GraphQLJSON;
       default:
-        console.log( // eslint-disable-line
-          `New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`
-        );
+        // console.log(
+        //   // eslint-disable-line
+        //   `New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`
+        // );
         return GraphQLJSON;
     }
   }
@@ -329,7 +370,8 @@ export default class ElasticApiParser {
   }
 
   settingsToArgMap(
-    settings: ?ElasticCaSettingsT
+    settings: ?ElasticCaSettingsT,
+    descriptions: ElasticParsedArgsDescriptionsT = {}
   ): GraphQLFieldConfigArgumentMap {
     const result = {};
     const { params, urls, url, method, needBody } = settings || {};
@@ -342,7 +384,11 @@ export default class ElasticApiParser {
 
     if (params) {
       Object.keys(params).forEach(k => {
-        const fieldConfig = this.paramToGraphQLArgConfig(params[k], k);
+        const fieldConfig = this.paramToGraphQLArgConfig(
+          params[k],
+          k,
+          descriptions[k]
+        );
         if (fieldConfig) {
           result[k] = fieldConfig;
         }
@@ -355,7 +401,11 @@ export default class ElasticApiParser {
       urlList.forEach(item => {
         if (item.req) {
           Object.keys(item.req).forEach(k => {
-            const fieldConfig = this.paramToGraphQLArgConfig(item.req[k], k);
+            const fieldConfig = this.paramToGraphQLArgConfig(
+              item.req[k],
+              k,
+              descriptions[k]
+            );
             if (fieldConfig) {
               result[k] = fieldConfig;
             }
@@ -367,27 +417,17 @@ export default class ElasticApiParser {
     return result;
   }
 
-  getMethodName(str: string): string | string[] {
-    const parts = str.split('.');
-    if (parts[0] === 'api') {
-      parts.shift();
-    }
-    if (parts.length === 1) {
-      return parts[0];
-    } else {
-      return parts.filter(o => o !== 'prototype');
-    }
-  }
-
   reassembleNestedFields(fields: GraphQLFieldMap<*, *>): GraphQLFieldMap<*, *> {
     const result = {};
     Object.keys(fields).forEach(k => {
-      const name = this.getMethodName(k);
-      if (Array.isArray(name)) {
-        if (!result[name[0]]) {
-          result[name[0]] = {
+      const names = k.split('.');
+      if (names.length === 1) {
+        result[names[0]] = fields[k];
+      } else {
+        if (!result[names[0]]) {
+          result[names[0]] = {
             type: new GraphQLObjectType({
-              name: `${this.prefix}Methods_${upperFirst(name[0])}`,
+              name: `${this.prefix}Methods_${upperFirst(names[0])}`,
               // $FlowFixMe
               fields: () => {},
             }),
@@ -396,9 +436,10 @@ export default class ElasticApiParser {
             },
           };
         }
-        TypeComposer.create(result[name[0]].type).setField(name[1], fields[k]);
-      } else {
-        result[name] = fields[k];
+        TypeComposer.create(result[names[0]].type).setField(
+          names[1],
+          fields[k]
+        );
       }
     });
 
