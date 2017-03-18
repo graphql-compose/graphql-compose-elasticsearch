@@ -237,7 +237,10 @@ export default class ElasticApiParser {
     return this.reassembleNestedFields(result);
   }
 
-  generateFieldConfig(methodName: string): GraphQLFieldConfig<*, *> {
+  generateFieldConfig(
+    methodName: string,
+    methodArgs: { [paramName: string]: mixed }
+  ): GraphQLFieldConfig<*, *> {
     if (!methodName) {
       throw new Error(`You should provide Elastic search method.`);
     }
@@ -260,7 +263,7 @@ export default class ElasticApiParser {
       description,
       args: argMap,
       resolve: (src, args, context) => {
-        const client = context.elasticClient || this.elasticClient;
+        const client = (context && context.elasticClient) || this.elasticClient;
 
         if (!client) {
           throw new Error(
@@ -270,10 +273,13 @@ export default class ElasticApiParser {
         }
 
         if (Array.isArray(elasticMethod)) {
-          return client[elasticMethod[0]][elasticMethod[1]](args);
+          return client[elasticMethod[0]][elasticMethod[1]]({
+            ...methodArgs,
+            ...args,
+          });
         }
 
-        return client[elasticMethod](args);
+        return client[elasticMethod]({ ...methodArgs, ...args });
       },
     };
   }

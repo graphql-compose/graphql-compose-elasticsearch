@@ -2,45 +2,71 @@
 /* eslint-disable no-param-reassign */
 
 import { Resolver, TypeComposer } from 'graphql-compose';
+import type { ResolveParams } from 'graphql-compose/lib/definition';
+import type { FieldsMapByElasticType } from '../mappingConverter';
+import ElasticApiParser from '../ElasticApiParser';
+import type { ElasticApiVersion } from '../ElasticApiParser';
+import { getSearchBodyITC, prepareSearchArgs } from '../elasticDSL/SearchBody';
+
+export type ElasticSearchResolverOpts = {
+  [name: string]: mixed,
+  prefix?: string,
+  elasticApiVersion?: ElasticApiVersion,
+};
 
 export default function createSearchResolver(
-  propsMap: MongooseModelT,
+  fieldMap: FieldsMapByElasticType,
   tc: TypeComposer,
-  opts?: createResolverOpts
-): Resolver {
-  if (!propsMap || !propsMap._all) {
+  elasticClient: mixed,
+  opts?: ElasticSearchResolverOpts = {}
+): Resolver<*, *> {
+  if (!fieldMap || !fieldMap._all) {
     throw new Error(
-      'First arg for Resolver search() should be propsMap.'
+      'First arg for Resolver search() should be fieldMap of FieldsMapByElasticType type.'
     );
   }
 
   if (!(tc instanceof TypeComposer)) {
-    throw new Error('Second arg for Resolver findMany() should be instance of TypeComposer.');
+    throw new Error(
+      'Second arg for Resolver search() should be instance of TypeComposer.'
+    );
   }
 
+  const parser = new ElasticApiParser({
+    elasticClient,
+    version: opts.elasticApiVersion || '5_0',
+    prefix: opts.prefix || 'Es',
+  });
+  const searchFC = parser.generateFieldConfig('search', {
+    index: 'cv',
+    type: 'cv',
+  });
+
+  const args = Object.assign({}, searchFC.args, {
+    body: {
+      type: getSearchBodyITC({
+        prefix: opts.prefix,
+        fieldMap,
+      }).getType(),
+    },
+  });
+
+  // $FlowFixMe
   return new Resolver({
-    // $FlowFixMe
-    type: [tc],
+    type: 'JSON', // [tc],
     name: 'search',
     kind: 'query',
-    args: {
-      ...filterHelperArgs(tc, model, {
-        filterTypeName: `FilterFindMany${tc.getTypeName()}Input`,
-        model,
-        ...(opts && opts.filter),
-      }),
-      ...skipHelperArgs(),
-      ...limitHelperArgs({
-        ...(opts && opts.limit),
-      }),
-      ...sortHelperArgs(model, {
-        sortTypeName: `SortFindMany${tc.getTypeName()}Input`,
-        ...(opts && opts.sort),
-      }),
-    },
-    resolve: (resolveParams: ExtendedResolveParams) => {
-      resolveParams.query = model.find();
-      return resolveParams.query.exec();
+    args,
+    resolve: (rp: ResolveParams<*, *>) => {
+      // $FlowFixMe
+      const res = searchFC.resolve(
+        rp.source,
+        prepareSearchArgs(rp.args),
+        rp.context,
+        rp.info
+      );
+      // console.log(res);
+      return res;
     },
   });
 }
