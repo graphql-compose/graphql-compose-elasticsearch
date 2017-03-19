@@ -1,5 +1,5 @@
 import { Resolver } from 'graphql-compose';
-import createSearchResolver from '../search';
+import createSearchResolver, * as Search from '../search';
 import elasticClient from '../../__mocks__/elasticClient';
 import { CvTC, CvFieldMap } from '../../__mocks__/cv';
 
@@ -21,6 +21,15 @@ describe('search resolver', () => {
       return SearchResolver.resolve({}, {}, {}).then(res => {
         console.log(res);
       });
+    });
+  });
+
+  describe('helper methods', () => {
+    it('toDottedList()', () => {
+      expect(
+        Search.toDottedList({ a: { b: true, c: { e: true } }, d: true })
+      ).toEqual(['a.b', 'a.c.e', 'd']);
+      expect(Search.toDottedList({})).toEqual(true);
     });
   });
 });

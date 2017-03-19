@@ -8,7 +8,10 @@ import elasticsearch from 'elasticsearch';
 import ElasticApiParser from '../../src/ElasticApiParser'; // or import { ElasticApiParser } from 'graphql-compose-elasticsearch';
 import createSearchResolver from '../../src/resolvers/search';
 import fieldMap from '../../src/__mocks__/cvMapping';
-import { inputPropertiesToGraphQLTypes } from '../../src/mappingConverter';
+import {
+  inputPropertiesToGraphQLTypes,
+  convertToSourceTC,
+} from '../../src/mappingConverter';
 
 const expressPort = process.env.port || process.env.PORT || 9201;
 
@@ -19,7 +22,7 @@ const generatedSchema = new GraphQLSchema({
       // $FlowFixMe
       cv: createSearchResolver(
         inputPropertiesToGraphQLTypes(fieldMap),
-        undefined,
+        convertToSourceTC(fieldMap, 'Cv', { prefix: '' }),
         new elasticsearch.Client({
           host: 'http://localhost:9200',
           apiVersion: '5.0',
