@@ -2,15 +2,17 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC } from '../Query';
-import { getTypeName, getOrSetType, desc } from "../../../utils";
+import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getHasChildITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryHasChild', opts);
-  const description = desc(`
+  const description = desc(
+    `
     The has_child filter accepts a query and the child type to run against,
     and results in parent documents that have child docs matching the query.
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-child-query.html)
-  `);
+  `
+  );
 
   return getOrSetType(name, () =>
     // $FlowFixMe
@@ -27,6 +29,5 @@ export function getHasChildITC(opts: mixed = {}): InputTypeComposer {
         min_children: 'Int',
         max_children: 'Int',
       },
-    })
-  );
+    }));
 }

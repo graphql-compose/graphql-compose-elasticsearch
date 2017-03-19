@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getAllAsFieldConfigMap } from '../../Commons/FieldNames';
 
 export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryRange', opts);
@@ -12,12 +13,29 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  if (false) {
+  const subName = getTypeName('QueryRangeSettings', opts);
+  const fields = getAllAsFieldConfigMap(
+    opts,
+    getOrSetType(subName, () =>
+      // $FlowFixMe
+      InputTypeComposer.create({
+        name: subName,
+        fields: {
+          gt: 'JSON',
+          gte: 'JSON',
+          lt: 'JSON',
+          lte: 'JSON',
+          boost: 'Float',
+        },
+      }))
+  );
+
+  if (typeof fields === 'object') {
     return getOrSetType(name, () =>
       InputTypeComposer.create({
         name,
         description,
-        fields: {},
+        fields,
       }));
   }
 

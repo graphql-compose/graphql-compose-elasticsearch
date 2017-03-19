@@ -1,7 +1,7 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getQueryITC } from '../Query';
+import { getQueryITC, prepareQueryInResolve } from '../Query';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getBoolITC(opts: mixed = {}): InputTypeComposer {
@@ -77,4 +77,25 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
         boost: 'Float',
       },
     }));
+}
+
+export function prepareBoolInResolve(
+  bool: any,
+  fieldMap: mixed
+): { [argName: string]: any } {
+  /* eslint-disable no-param-reassign */
+  if (bool.must) {
+    bool.must = prepareQueryInResolve(bool.must, fieldMap);
+  }
+  if (bool.filter) {
+    bool.filter = prepareQueryInResolve(bool.filter, fieldMap);
+  }
+  if (bool.should) {
+    bool.should = prepareQueryInResolve(bool.should, fieldMap);
+  }
+  if (bool.must_not) {
+    bool.must_not = prepareQueryInResolve(bool.must_not, fieldMap);
+  }
+
+  return bool;
 }

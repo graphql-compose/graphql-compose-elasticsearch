@@ -2,9 +2,8 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import type { FieldsMapByElasticType } from '../mappingConverter';
-import { getQueryITC } from './Query/Query';
-import { getAggBlockITC } from './Aggs/AggBlock';
-import prepareArgAggs from './Aggs/converter';
+import { getQueryITC, prepareQueryInResolve } from './Query/Query';
+import { getAggsITC, prepareAggsInResolve } from './Aggs/Aggs';
 import { getTypeName, getOrSetType, desc } from '../utils';
 
 export type SearchOptsT = {
@@ -17,7 +16,8 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
   const name = getTypeName('SearchBody', opts);
   const description = desc(
     `
-    [Request Body Search](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html),
+    Request Body Search
+    [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html)
   `
   );
 
@@ -28,7 +28,7 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
       description,
       fields: {
         query: () => getQueryITC(opts),
-        aggs: () => [getAggBlockITC(opts)],
+        aggs: () => getAggsITC(opts),
         size: 'Int',
         from: 'Int',
         sort: 'JSON',
@@ -51,8 +51,16 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
     }));
 }
 
-export function prepareSearchArgs(
-  args: { [argName: string]: any }
+export function prepareBodyInResolve(
+  body: any,
+  fieldMap: mixed
 ): { [argName: string]: any } {
-  return prepareArgAggs(args);
+  /* eslint-disable no-param-reassign */
+  if (body.query) {
+    body.query = prepareQueryInResolve(body.query, fieldMap);
+  }
+  if (body.aggs) {
+    body.aggs = prepareAggsInResolve(body.aggs, fieldMap);
+  }
+  return body;
 }

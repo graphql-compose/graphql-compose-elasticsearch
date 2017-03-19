@@ -3,11 +3,17 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getMatchAllITC } from './MatchAll';
 
-import { getBoolITC } from './Compound/Bool';
-import { getConstantScoreITC } from './Compound/ConstantScore';
-import { getDisMaxITC } from './Compound/DisMax';
-import { getBoostingITC } from './Compound/Boosting';
-import { getFunctionScoreITC } from './Compound/FunctionScore';
+import { getBoolITC, prepareBoolInResolve } from './Compound/Bool';
+import {
+  getConstantScoreITC,
+  prepareConstantScoreInResolve,
+} from './Compound/ConstantScore';
+import { getDisMaxITC, prepareDisMaxResolve } from './Compound/DisMax';
+import { getBoostingITC, prepareBoostingInResolve } from './Compound/Boosting';
+import {
+  getFunctionScoreITC,
+  prepareFunctionScoreInResolve,
+} from './Compound/FunctionScore';
 
 import { getExistsITC } from './TermLevel/Exists';
 import { getFuzzyITC } from './TermLevel/Fuzzy';
@@ -107,4 +113,109 @@ export function getQueryITC(opts: mixed = {}): InputTypeComposer {
         parent_id: () => getParentIdITC(opts),
       },
     }));
+}
+
+/* eslint-disable no-param-reassign */
+export function prepareQueryInResolve(
+  query: { [argName: string]: any },
+  fieldMap: mixed
+): { [argName: string]: any } {
+  //
+  // Compound quries
+  //
+  if (query.bool) {
+    query.bool = prepareBoolInResolve(query.bool, fieldMap);
+  }
+  if (query.constant_score) {
+    query.constant_score = prepareConstantScoreInResolve(
+      query.constant_score,
+      fieldMap
+    );
+  }
+  if (query.dis_max) {
+    query.dis_max = prepareDisMaxResolve(query.dis_max, fieldMap);
+  }
+  if (query.boosting) {
+    query.boosting = prepareBoostingInResolve(query.boosting, fieldMap);
+  }
+  if (query.function_score) {
+    query.function_score = prepareFunctionScoreInResolve(
+      query.function_score,
+      fieldMap
+    );
+  }
+
+  //
+  // FullText queries
+  //
+  if (query.match) {
+    query.match = renameUndescoredToDots(query.match, fieldMap);
+  }
+  if (query.match_phrase) {
+    query.match_phrase = renameUndescoredToDots(query.match_phrase, fieldMap);
+  }
+  if (query.match_phrase_prefix) {
+    query.match_phrase_prefix = renameUndescoredToDots(
+      query.match_phrase_prefix,
+      fieldMap
+    );
+  }
+  if (query.common) {
+    query.common = renameUndescoredToDots(query.common, fieldMap);
+  }
+
+  //
+  // Geo queries
+  //
+  if (query.geo_bounding_box) {
+    query.geo_bounding_box = renameUndescoredToDots(
+      query.geo_bounding_box,
+      fieldMap
+    );
+  }
+  if (query.geo_distance) {
+    query.geo_distance = renameUndescoredToDots(query.geo_distance, fieldMap);
+  }
+  if (query.geo_polygon) {
+    query.geo_polygon = renameUndescoredToDots(query.geo_polygon, fieldMap);
+  }
+  if (query.geo_shape) {
+    query.geo_shape = renameUndescoredToDots(query.geo_shape, fieldMap);
+  }
+
+  //
+  // TermLevel queries
+  //
+  if (query.fuzzy) {
+    query.fuzzy = renameUndescoredToDots(query.fuzzy, fieldMap);
+  }
+  if (query.prefix) {
+    query.prefix = renameUndescoredToDots(query.prefix, fieldMap);
+  }
+  if (query.range) {
+    query.range = renameUndescoredToDots(query.range, fieldMap);
+  }
+  if (query.regexp) {
+    query.regexp = renameUndescoredToDots(query.regexp, fieldMap);
+  }
+  if (query.term) {
+    query.term = renameUndescoredToDots(query.term, fieldMap);
+  }
+  if (query.terms) {
+    query.terms = renameUndescoredToDots(query.terms, fieldMap);
+  }
+  if (query.wildcard) {
+    query.wildcard = renameUndescoredToDots(query.wildcard, fieldMap);
+  }
+
+  return query;
+}
+
+/* eslint-disable no-unused-vars */
+export function renameUndescoredToDots(obj: any, fieldMap: mixed) {
+  const result = {};
+  Object.keys(obj).forEach(o => {
+    result[o.replace('__', '.')] = obj[o];
+  });
+  return result;
 }

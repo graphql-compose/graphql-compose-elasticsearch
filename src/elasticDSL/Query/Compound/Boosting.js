@@ -1,7 +1,7 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getQueryITC } from '../Query';
+import { getQueryITC, prepareQueryInResolve } from '../Query';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getBoostingITC(opts: mixed = {}): InputTypeComposer {
@@ -24,4 +24,19 @@ export function getBoostingITC(opts: mixed = {}): InputTypeComposer {
         negative_boost: 'Float',
       },
     }));
+}
+
+export function prepareBoostingInResolve(
+  boosting: any,
+  fieldMap: mixed
+): { [argName: string]: any } {
+  /* eslint-disable no-param-reassign */
+  if (boosting.positive) {
+    boosting.positive = prepareQueryInResolve(boosting.positive, fieldMap);
+  }
+  if (boosting.negative) {
+    boosting.negative = prepareQueryInResolve(boosting.negative, fieldMap);
+  }
+
+  return boosting;
 }

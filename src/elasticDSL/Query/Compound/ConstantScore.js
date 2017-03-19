@@ -1,7 +1,7 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getQueryITC } from '../Query';
+import { getQueryITC, prepareQueryInResolve } from '../Query';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
@@ -24,4 +24,19 @@ export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
         boost: 'Float!',
       },
     }));
+}
+
+/* eslint-disable no-param-reassign, camelcase */
+export function prepareConstantScoreInResolve(
+  constant_score: any,
+  fieldMap: mixed
+): { [argName: string]: any } {
+  if (constant_score.filter) {
+    constant_score.filter = prepareQueryInResolve(
+      constant_score.filter,
+      fieldMap
+    );
+  }
+
+  return constant_score;
 }

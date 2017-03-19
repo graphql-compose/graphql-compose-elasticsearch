@@ -5,10 +5,12 @@ import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryMultiMatch', opts);
-  const description = desc(`
+  const description = desc(
+    `
     The multi_match query builds on the match query to allow multi-field queries.
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html)
-  `);
+  `
+  );
 
   return getOrSetType(name, () =>
     // $FlowFixMe
@@ -19,10 +21,12 @@ export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
         query: 'String!',
         fields: {
           type: '[String]!',
-          description: desc(`
+          description: desc(
+            `
             Array of fields [ "title", "*_name", "subject^3" ].
             You may use wildcards and boosting field.
-          `),
+          `
+          ),
         },
         type: `enum ${getTypeName('QueryMultiMatchTypeEnum', opts)} {
           best_fields

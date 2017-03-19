@@ -239,7 +239,7 @@ export default class ElasticApiParser {
 
   generateFieldConfig(
     methodName: string,
-    methodArgs: { [paramName: string]: mixed }
+    methodArgs?: { [paramName: string]: mixed }
   ): GraphQLFieldConfig<*, *> {
     if (!methodName) {
       throw new Error(`You should provide Elastic search method.`);

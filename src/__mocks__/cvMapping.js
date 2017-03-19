@@ -321,6 +321,9 @@ export default {
             },
           },
         },
+        location: {
+          type: 'geo_point',
+        },
       },
     },
     middlename: {

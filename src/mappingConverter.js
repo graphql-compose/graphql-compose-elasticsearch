@@ -21,6 +21,8 @@ import {
   GraphQLInputObjectType,
 } from 'graphql';
 
+import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
+
 // import type { GraphQLObjectType } from 'graphql/type/definition';
 
 export type ElasticMappingT = {
@@ -69,11 +71,12 @@ export const typeMap = {
   binary: GraphQLBuffer,
   token_count: GraphQLInt,
   ip: GraphQLString,
-  geo_point: GraphQLJSON,
+  geo_point: ElasticGeoPointType, // GraphQLJSON
   geo_shape: GraphQLJSON,
   object: GraphQLJSON,
   nested: new GraphQLList(GraphQLJSON),
   completion: GraphQLString,
+  percolator: GraphQLJSON,
 };
 
 export function convertToSourceTC(

@@ -6,7 +6,10 @@ import type { ResolveParams } from 'graphql-compose/lib/definition';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
 import type { ElasticApiVersion } from '../ElasticApiParser';
-import { getSearchBodyITC, prepareSearchArgs } from '../elasticDSL/SearchBody';
+import {
+  getSearchBodyITC,
+  prepareBodyInResolve,
+} from '../elasticDSL/SearchBody';
 
 export type ElasticSearchResolverOpts = {
   [name: string]: mixed,
@@ -16,8 +19,8 @@ export type ElasticSearchResolverOpts = {
 
 export default function createSearchResolver(
   fieldMap: FieldsMapByElasticType,
-  tc: TypeComposer,
-  elasticClient: mixed,
+  tc?: TypeComposer,
+  elasticClient?: mixed,
   opts?: ElasticSearchResolverOpts = {}
 ): Resolver<*, *> {
   if (!fieldMap || !fieldMap._all) {
@@ -26,11 +29,11 @@ export default function createSearchResolver(
     );
   }
 
-  if (!(tc instanceof TypeComposer)) {
-    throw new Error(
-      'Second arg for Resolver search() should be instance of TypeComposer.'
-    );
-  }
+  // if (!(tc instanceof TypeComposer)) {
+  //   throw new Error(
+  //     'Second arg for Resolver search() should be instance of TypeComposer.'
+  //   );
+  // }
 
   const parser = new ElasticApiParser({
     elasticClient,
@@ -58,13 +61,11 @@ export default function createSearchResolver(
     kind: 'query',
     args,
     resolve: (rp: ResolveParams<*, *>) => {
+      if (rp.args && rp.args.body) {
+        rp.args.body = prepareBodyInResolve(rp.args.body, fieldMap);
+      }
       // $FlowFixMe
-      const res = searchFC.resolve(
-        rp.source,
-        prepareSearchArgs(rp.args),
-        rp.context,
-        rp.info
-      );
+      const res = searchFC.resolve(rp.source, rp.args, rp.context, rp.info);
       // console.log(res);
       return res;
     },

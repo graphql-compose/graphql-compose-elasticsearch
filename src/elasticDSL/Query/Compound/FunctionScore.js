@@ -1,7 +1,7 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getQueryITC } from '../Query';
+import { getQueryITC, prepareQueryInResolve } from '../Query';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
@@ -37,8 +37,8 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
           description: 'Can be: `multiply`, `replace`, `sum`, `avg`, `max`, `min`.',
         },
         random_score: RandomScoreType,
-        // $FlowFixMe
         functions: [
+          // $FlowFixMe
           InputTypeComposer.create({
             name: getTypeName('QueryFunctionScoreFunction', opts),
             fields: {
@@ -61,4 +61,28 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
         min_score: 'Float',
       },
     }));
+}
+
+/* eslint-disable no-param-reassign, camelcase */
+export function prepareFunctionScoreInResolve(
+  function_score: any,
+  fieldMap: mixed
+): { [argName: string]: any } {
+  if (function_score.query) {
+    function_score.query = prepareQueryInResolve(
+      function_score.query,
+      fieldMap
+    );
+  }
+
+  if (Array.isArray(function_score.functions)) {
+    function_score.functions = function_score.functions.map(func => {
+      if (func.filter) {
+        func.filter = prepareQueryInResolve(func.filter, fieldMap);
+      }
+      return func;
+    });
+  }
+
+  return function_score;
 }

@@ -1,3 +1,9 @@
+import { getAggBlockITC } from './AggBlock';
+
+export function getAggsITC(opts: mixed) {
+  return [getAggBlockITC(opts)];
+}
+
 export type ElasticAggsT = {
   [outputFieldName: string]: ElasticAggsRulesT,
 };
@@ -14,17 +20,17 @@ export type GqlAggBlock = {
 
 export type GqlAggRules = {
   [aggOperationName: string]: mixed,
-  aggs: GqlAggBlock,
+  aggs: GqlAggBlock[],
 };
 
-export default function argsBlockConverter(
-  args: { [argName: string]: any }
+export function prepareAggsInResolve(
+  aggs: GqlAggBlock[],
+  fieldMap: any // eslint-disable-line
 ): { [argName: string]: any } {
-  if (args && args.body && Array.isArray(args.body.aggs)) {
-    const aggs: GqlAggBlock[] = args.body.aggs;
-    args.body.aggs = convertAggsBlocks(aggs); // eslint-disable-line
+  if (Array.isArray(aggs)) {
+    return convertAggsBlocks(aggs);
   }
-  return args;
+  return aggs;
 }
 
 export function convertAggsBlocks(blockList: GqlAggBlock[]): ElasticAggsT {
@@ -43,6 +49,7 @@ export function convertAggsRules(rules: GqlAggRules): ElasticAggsRulesT {
     if (key === 'aggs' && rules.aggs) {
       result.aggs = convertAggsBlocks(rules.aggs);
     } else {
+      // $FlowFixMe
       result[key] = rules[key];
     }
   });

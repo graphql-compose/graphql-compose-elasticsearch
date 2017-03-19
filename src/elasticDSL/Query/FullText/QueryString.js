@@ -5,11 +5,13 @@ import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getQueryStringITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryQueryString', opts);
-  const description = desc(`
+  const description = desc(
+    `
     A query that uses a query parser in order to parse its content.
     Eg. "this AND that OR thus" or "(content:this OR name:this) AND (content:that OR name:that)"
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html)
-  `);
+  `
+  );
 
   return getOrSetType(name, () =>
     // $FlowFixMe

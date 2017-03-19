@@ -1,4 +1,4 @@
-import { TypeComposer, InputTypeComposer } from 'graphql-compose';
+import { TypeComposer } from 'graphql-compose';
 import {
   convertToSourceTC,
   inputPropertiesToGraphQLTypes,

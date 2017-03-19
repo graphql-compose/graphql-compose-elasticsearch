@@ -1,16 +1,19 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from "../../../utils";
+import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getPercolatorFields } from '../../Commons/FieldNames';
 
 export function getPercolateITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryPercolate', opts);
-  const description = desc(`
+  const description = desc(
+    `
     The percolate query can be used to match queries stored in an index.
     The percolate query itself contains the document that will be used
     as query to match with the stored queries.
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-percolate-query.html)
-  `);
+  `
+  );
 
   return getOrSetType(name, () =>
     // $FlowFixMe
@@ -18,10 +21,9 @@ export function getPercolateITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String!',
+        field: getPercolatorFields(opts),
         document_type: 'String!',
         document: 'JSON!',
       },
-    })
-  );
+    }));
 }

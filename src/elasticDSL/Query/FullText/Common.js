@@ -2,6 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getAnalyzedAsFieldConfigMap } from '../../Commons/FieldNames';
 
 export function getCommonITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryCommon', opts);
@@ -14,12 +15,29 @@ export function getCommonITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  if (false) {
+  const subName = getTypeName('QueryCommonSettings', opts);
+  const fields = getAnalyzedAsFieldConfigMap(
+    opts,
+    getOrSetType(subName, () =>
+      // $FlowFixMe
+      InputTypeComposer.create({
+        name: subName,
+        fields: {
+          query: 'String',
+          cutoff_frequency: 'Float',
+          minimum_should_match: 'JSON',
+          low_freq_operator: 'String',
+          high_freq_operator: 'String',
+        },
+      }))
+  );
+
+  if (typeof fields === 'object') {
     return getOrSetType(name, () =>
       InputTypeComposer.create({
         name,
         description,
-        fields: {},
+        fields,
       }));
   }
 
