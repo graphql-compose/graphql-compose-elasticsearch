@@ -5,10 +5,12 @@ import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryRange', opts);
-  const description = desc(`
+  const description = desc(
+    `
     Matches documents with fields that have terms within a certain range.
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html)
-  `);
+  `
+  );
 
   if (false) {
     return getOrSetType(name, () =>

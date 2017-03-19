@@ -46,10 +46,12 @@ import { getTypeName, getOrSetType, desc } from '../../utils';
 
 export function getQueryITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('Query', opts);
-  const description = desc(`
+  const description = desc(
+    `
     Elasticsearch provides a full Query DSL based on JSON to define queries.
     [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
-  `);
+  `
+  );
 
   return getOrSetType(name, () =>
     // $FlowFixMe
@@ -104,6 +106,5 @@ export function getQueryITC(opts: mixed = {}): InputTypeComposer {
         nested: () => getNestedITC(opts),
         parent_id: () => getParentIdITC(opts),
       },
-    })
-  );
+    }));
 }

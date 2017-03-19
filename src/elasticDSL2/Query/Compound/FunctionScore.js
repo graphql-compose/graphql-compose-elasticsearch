@@ -2,17 +2,19 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC } from '../Query';
-import { getTypeName, getOrSetType, desc } from "../../../utils";
+import { getTypeName, getOrSetType, desc } from '../../../utils';
 
 export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryFunctionScore', opts);
-  const description = desc(`
+  const description = desc(
+    `
     The function_score allows you to modify the score of documents that
     are retrieved by a query. This can be useful if, for example,
     a score function is computationally expensive and it is sufficient
     to compute the score on a filtered set of documents.
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html)
-  `);
+  `
+  );
 
   // $FlowFixMe
   const RandomScoreType = InputTypeComposer.create({
@@ -36,19 +38,21 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
         },
         random_score: RandomScoreType,
         // $FlowFixMe
-        functions: [InputTypeComposer.create({
-          name: getTypeName('QueryFunctionScoreFunction', opts),
-          fields: {
-            filter: () => getQueryITC(opts),
-            random_score: RandomScoreType,
-            weight: 'Float',
-            script_score: 'JSON',
-            field_value_factor: 'JSON',
-            gauss: 'JSON',
-            linear: 'JSON',
-            exp: 'JSON',
-          },
-        })],
+        functions: [
+          InputTypeComposer.create({
+            name: getTypeName('QueryFunctionScoreFunction', opts),
+            fields: {
+              filter: () => getQueryITC(opts),
+              random_score: RandomScoreType,
+              weight: 'Float',
+              script_score: 'JSON',
+              field_value_factor: 'JSON',
+              gauss: 'JSON',
+              linear: 'JSON',
+              exp: 'JSON',
+            },
+          }),
+        ],
         max_boost: 'Float',
         score_mode: {
           type: 'String',
@@ -56,6 +60,5 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
         },
         min_score: 'Float',
       },
-    })
-  );
+    }));
 }
