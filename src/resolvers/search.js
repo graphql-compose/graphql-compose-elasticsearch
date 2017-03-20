@@ -30,11 +30,11 @@ export default function createSearchResolver(
     );
   }
 
-  // if (!(tc instanceof TypeComposer)) {
-  //   throw new Error(
-  //     'Second arg for Resolver search() should be instance of TypeComposer.'
-  //   );
-  // }
+  if (!(sourceTC instanceof TypeComposer)) {
+    throw new Error(
+      'Second arg for Resolver search() should be instance of TypeComposer.'
+    );
+  }
 
   const prefix = opts.prefix || 'Es';
 
@@ -48,36 +48,62 @@ export default function createSearchResolver(
     type: 'cv',
   });
 
-  const args = Object.assign({}, searchFC.args, {
+  const searchITC = getSearchBodyITC({
+    prefix,
+    fieldMap,
+  });
+
+  searchITC.removeField(['size', 'from', '_source', 'explain', 'version']);
+
+  const argsConfigMap = Object.assign({}, searchFC.args, {
     body: {
-      type: getSearchBodyITC({
-        prefix,
-        fieldMap,
-      }).getType(),
+      type: searchITC.getType(),
     },
   });
 
-  delete args.index; // index can not be changed, it hardcoded in searchFC
-  delete args.type; // type can not be changed, it hardcoded in searchFC
-  delete args.explain; // added automatically if requested _shard, _node, _explanation
-  delete args.version; // added automatically if requested _version
-  delete args._source; // added automatically due projection
-  delete args._sourceExclude; // added automatically due projection
-  delete args._sourceInclude; // added automatically due projection
+  delete argsConfigMap.index; // index can not be changed, it hardcoded in searchFC
+  delete argsConfigMap.type; // type can not be changed, it hardcoded in searchFC
+  delete argsConfigMap.explain; // added automatically if requested _shard, _node, _explanation
+  delete argsConfigMap.version; // added automatically if requested _version
+  delete argsConfigMap._source; // added automatically due projection
+  delete argsConfigMap._sourceExclude; // added automatically due projection
+  delete argsConfigMap._sourceInclude; // added automatically due projection
+
+  delete argsConfigMap.size;
+  delete argsConfigMap.from;
+  argsConfigMap.limit = 'Int';
+  argsConfigMap.skip = 'Int';
+
+  const type = getSearchOutputTC({ prefix, fieldMap, sourceTC });
+  // $FlowFixMe
+  type.addFields({
+    count: 'Int',
+    max_score: 'Float',
+  });
 
   // $FlowFixMe
   return new Resolver({
-    // $FlowFixMe
-    type: sourceTC ? getSearchOutputTC({ prefix, fieldMap, sourceTC }) : 'JSON',
+    type,
     name: 'search',
     kind: 'query',
-    args,
-    resolve: (rp: ResolveParams<*, *>) => {
-      if (rp.args && rp.args.body) {
-        rp.args.body = prepareBodyInResolve(rp.args.body, fieldMap);
+    args: argsConfigMap,
+    resolve: async (rp: ResolveParams<*, *>) => {
+      const { args = {}, projection = {} } = rp;
+
+      if (args.body) {
+        args.body = prepareBodyInResolve(args.body, fieldMap);
       }
 
-      const { projection = {} } = rp;
+      if ({}.hasOwnProperty.call(args, 'limit')) {
+        args.size = args.limit;
+        delete args.limit;
+      }
+
+      if ({}.hasOwnProperty.call(args, 'skip')) {
+        args.from = args.skip;
+        delete args.skip;
+      }
+
       const { hits = {} } = projection;
       // $FlowFixMe
       const { hits: hitsHits } = hits;
@@ -86,25 +112,28 @@ export default function createSearchResolver(
         // Turn on explain if in projection requested this fields:
         if (hitsHits._shard || hitsHits._node || hitsHits._explanation) {
           // $FlowFixMe
-          rp.args.body.explain = true;
+          args.body.explain = true;
         }
 
         if (hitsHits._version) {
           // $FlowFixMe
-          rp.args.body.version = true;
+          args.body.version = true;
         }
 
         if (!hitsHits._source) {
           // $FlowFixMe
-          rp.args.body._source = false;
+          args.body._source = false;
         } else {
           // $FlowFixMe
-          rp.args.body._source = toDottedList(hitsHits._source);
+          args.body._source = toDottedList(hitsHits._source);
         }
       }
 
       // $FlowFixMe
-      const res = searchFC.resolve(rp.source, rp.args, rp.context, rp.info);
+      const res = await searchFC.resolve(rp.source, args, rp.context, rp.info);
+
+      res.count = res.hits.total;
+      res.max_score = res.hits.max_score;
 
       return res;
     },

@@ -7,6 +7,8 @@ import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
 import elasticsearch from 'elasticsearch';
 import ElasticApiParser from '../../src/ElasticApiParser'; // or import { ElasticApiParser } from 'graphql-compose-elasticsearch';
 import createSearchResolver from '../../src/resolvers/search';
+import createSearchConnectionResolver
+  from '../../src/resolvers/searchConnection';
 import fieldMap from '../../src/__mocks__/cvMapping';
 import {
   inputPropertiesToGraphQLTypes,
@@ -15,23 +17,27 @@ import {
 
 const expressPort = process.env.port || process.env.PORT || 9201;
 
+const cvSearch = createSearchResolver(
+  inputPropertiesToGraphQLTypes(fieldMap),
+  convertToSourceTC(fieldMap, 'Cv', { prefix: '' }),
+  new elasticsearch.Client({
+    host: 'http://localhost:9200',
+    apiVersion: '5.0',
+    log: 'trace',
+  }),
+  {
+    prefix: 'Cv',
+  }
+);
+const cvSearchConnection = createSearchConnectionResolver(cvSearch);
+
 const generatedSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: {
       // $FlowFixMe
-      cv: createSearchResolver(
-        inputPropertiesToGraphQLTypes(fieldMap),
-        convertToSourceTC(fieldMap, 'Cv', { prefix: '' }),
-        new elasticsearch.Client({
-          host: 'http://localhost:9200',
-          apiVersion: '5.0',
-          log: 'trace',
-        }),
-        {
-          prefix: 'Cv',
-        }
-      ).getFieldConfig(),
+      cv: cvSearch.getFieldConfig(),
+      cvConnection: cvSearchConnection.getFieldConfig(),
       // see node_modules/elasticsearch/src/lib/apis/ for available versions
       elastic50: {
         description: 'Elastic v5.0',
