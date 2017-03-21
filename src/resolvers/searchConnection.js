@@ -19,7 +19,16 @@ export default function createSearchConnectionResolver(
       before: 'String',
     })
     .removeArg(['limit', 'skip'])
-    .reorderArgs(['q', 'query', 'aggs', 'first', 'after', 'last', 'before']);
+    .reorderArgs([
+      'q',
+      'query',
+      'sort',
+      'aggs',
+      'first',
+      'after',
+      'last',
+      'before',
+    ]);
 
   const searchType = searchResolver.getTypeComposer();
   const typeName = searchType.getTypeName();
@@ -43,7 +52,7 @@ export default function createSearchConnectionResolver(
   );
 
   resolver.resolve = async rp => {
-    const { args = {} } = rp;
+    const { args = {}, projection = {} } = rp;
 
     const first = parseInt(args.first, 10) || 0;
     if (first < 0) {
@@ -75,9 +84,15 @@ export default function createSearchConnectionResolver(
     args.limit = limit + 1; // +1 document, to check next page presence
     args.skip = skip;
 
+    if (projection.edges) {
+      projection.hits = projection.edges.node;
+      delete projection.edges;
+    }
+
     const res = await searchResolver.resolve(rp);
 
-    let list = res.hits.hits;
+    let list = res.hits || [];
+
     const hasExtraRecords = list.length > limit;
     if (hasExtraRecords) list = list.slice(0, limit);
     const edges = list.map(node => ({ node, cursor: dataToCursor(node.sort) }));

@@ -89,16 +89,18 @@ export default function createSearchResolver(
   const bodyITC = InputTypeComposer.create(argsConfigMap.body.type);
   argsConfigMap.query = bodyITC.getField('query');
   argsConfigMap.aggs = bodyITC.getField('aggs');
+  argsConfigMap.sort = bodyITC.getField('sort');
   argsConfigMap.highlight = bodyITC.getField('highlight');
 
   const topLevelArgs = [
+    'q',
+    'query',
+    'sort',
     'limit',
     'skip',
-    'q',
-    'opts',
-    'query',
     'aggs',
     'highlight',
+    'opts',
   ];
   argsConfigMap.opts = InputTypeComposer.create({
     name: `${sourceTC.getTypeName()}Opts`,
@@ -111,6 +113,7 @@ export default function createSearchResolver(
   });
 
   const type = getSearchOutputTC({ prefix, fieldMap, sourceTC });
+  const hitsType = type.get('hits.hits');
   type
     .addFields({
       // $FlowFixMe
@@ -118,7 +121,7 @@ export default function createSearchResolver(
       // $FlowFixMe
       max_score: 'Float',
       // $FlowFixMe
-      hits: [type.get('hits.hits')],
+      hits: hitsType ? [hitsType] : 'JSON',
     })
     .reorderFields([
       'hits',
@@ -185,6 +188,11 @@ export default function createSearchResolver(
         delete args.aggs;
       }
 
+      if (args.sort) {
+        args.body.sort = args.sort;
+        delete args.sort;
+      }
+
       if (args.opts) {
         args = {
           ...args.opts,
@@ -212,7 +220,7 @@ export default function createSearchResolver(
 
       return res;
     },
-  }).reorderArgs(['q', 'query', 'aggs', 'limit', 'skip']);
+  }).reorderArgs(['q', 'query', 'sort', 'limit', 'skip', 'aggs']);
 }
 
 export function toDottedList(

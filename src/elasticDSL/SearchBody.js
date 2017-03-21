@@ -4,6 +4,7 @@ import { InputTypeComposer } from 'graphql-compose';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import { getQueryITC, prepareQueryInResolve } from './Query/Query';
 import { getAggsITC, prepareAggsInResolve } from './Aggs/Aggs';
+import { getSortITC } from './Sort';
 import { getTypeName, getOrSetType, desc } from '../utils';
 
 export type SearchOptsT = {
@@ -31,7 +32,7 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
         aggs: () => getAggsITC(opts),
         size: 'Int',
         from: 'Int',
-        sort: 'JSON',
+        sort: () => [getSortITC(opts)],
         _source: 'JSON',
         script_fields: 'JSON',
         post_filter: () => getQueryITC(opts),

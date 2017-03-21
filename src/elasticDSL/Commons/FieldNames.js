@@ -89,6 +89,21 @@ export function getAllAsFieldConfigMap(opts: mixed, fc: mixed) {
   return getFieldConfigMap(opts, ['_all'], fc);
 }
 
+export function getFieldNamesByElasticType(
+  fieldMap: any,
+  types: ElasticDataType[]
+): string[] {
+  const fieldNames = [];
+  types.forEach(type => {
+    if (typeof fieldMap[type] === 'object') {
+      Object.keys(fieldMap[type]).forEach(fieldName => {
+        fieldNames.push(fieldName);
+      });
+    }
+  });
+  return fieldNames;
+}
+
 export function getFieldNamesType(
   opts: mixed,
   types: ElasticDataType[],
@@ -134,19 +149,15 @@ function getEnumValues(
   addAll: boolean = false
 ): GraphQLEnumValueConfigMap {
   const values = {};
-  types.forEach(type => {
-    if (addAll) {
-      values._all = {
-        value: '_all',
-      };
-    }
-    if (typeof fieldMap[type] === 'object') {
-      Object.keys(fieldMap[type]).forEach(fieldName => {
-        values[fieldName] = {
-          value: fieldName.replace('__', '.'),
-        };
-      });
-    }
+  if (addAll) {
+    values._all = {
+      value: '_all',
+    };
+  }
+  getFieldNamesByElasticType(fieldMap, types).forEach(fieldName => {
+    values[fieldName] = {
+      value: fieldName.replace('__', '.'),
+    };
   });
   return values;
 }
@@ -175,12 +186,8 @@ export function getFieldConfigMap(
     // $FlowFixMe
     fcMap._all = fc;
   }
-  types.forEach(type => {
-    if (typeof opts.fieldMap[type] === 'object') {
-      Object.keys(opts.fieldMap[type]).forEach(fieldName => {
-        fcMap[fieldName] = fc;
-      });
-    }
+  getFieldNamesByElasticType(opts.fieldMap, types).forEach(fieldName => {
+    fcMap[fieldName] = fc;
   });
 
   if (Object.keys(fcMap).length === 0) {

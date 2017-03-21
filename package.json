@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
-    "babel-eslint": "^7.1.1",
+    "babel-eslint": "^7.2.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.22.0",
     "babel-preset-env": "^1.2.2",
@@ -48,7 +48,7 @@
     "express-graphql": "^0.6.3",
     "flow-bin": "^0.42.0",
     "graphql": "^0.9.1",
-    "graphql-compose": "^1.17.3",
+    "graphql-compose": "^1.18.0",
     "jest": "^19.0.2",
     "jest-babel": "^1.0.1",
     "npm-run-all": "^4.0.1",
