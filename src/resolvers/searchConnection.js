@@ -1,6 +1,6 @@
 /* @Flow */
 
-import { Resolver, TypeComposer, isObject } from 'graphql-compose';
+import { Resolver, TypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType } from '../utils';
 
 export default function createSearchConnectionResolver(
@@ -11,32 +11,36 @@ export default function createSearchConnectionResolver(
     name: `${searchResolver.name}Connection`,
   });
 
-  resolver.addArgs({
-    first: 'Int',
-    after: 'String',
-    last: 'Int',
-    before: 'String',
-  });
-  resolver.removeArg('limit');
-  resolver.removeArg('skip');
+  resolver
+    .addArgs({
+      first: 'Int',
+      after: 'String',
+      last: 'Int',
+      before: 'String',
+    })
+    .removeArg(['limit', 'skip'])
+    .reorderArgs(['q', 'query', 'aggs', 'first', 'after', 'last', 'before']);
 
   const searchType = searchResolver.getTypeComposer();
   const typeName = searchType.getTypeName();
-  const type = searchType.clone(`${typeName}Connection`);
-  type.addFields({
-    pageInfo: getPageInfoTC(opts),
-    edges: [
-      TypeComposer.create({
-        name: `${typeName}Edge`,
-        fields: {
-          node: searchType.get('hits.hits'),
-          cursor: 'String!',
-        },
-      }),
-    ],
-  });
-  type.removeField('hits');
-  resolver.setType(type);
+  resolver.setType(
+    searchType
+      .clone(`${typeName}Connection`)
+      .addFields({
+        pageInfo: getPageInfoTC(opts),
+        edges: [
+          TypeComposer.create({
+            name: `${typeName}Edge`,
+            fields: {
+              node: searchType.get('hits'),
+              cursor: 'String!',
+            },
+          }),
+        ],
+      })
+      .removeField('hits')
+      .reorderFields(['count', 'pageInfo', 'edges', 'aggregations'])
+  );
 
   resolver.resolve = async rp => {
     const { args = {} } = rp;
@@ -49,21 +53,43 @@ export default function createSearchConnectionResolver(
     if (last < 0) {
       throw new Error('Argument `last` should be non-negative number.');
     }
+    const { before, after } = args;
+    delete args.before;
+    delete args.after;
+    if (before !== undefined) {
+      throw new Error('Elastic does not support before cursor.');
+    }
+    if (after) {
+      if (!args.body) args.body = {};
+      const tmp = cursorToData(after);
+      if (Array.isArray(tmp)) {
+        args.body.search_after = tmp;
+      }
+    }
 
-    let limit = last || first || 20;
-    let skip = last > 0 ? first - last : 0;
+    const limit = last || first || 20;
+    const skip = last > 0 ? first - last : 0;
 
-    delete rp.args.last;
-    delete rp.args.first;
-    rp.args.limit = limit;
-    rp.args.skip = skip;
+    delete args.last;
+    delete args.first;
+    args.limit = limit + 1; // +1 document, to check next page presence
+    args.skip = skip;
 
     const res = await searchResolver.resolve(rp);
-    const list = res.hits.hits;
+
+    let list = res.hits.hits;
+    const hasExtraRecords = list.length > limit;
+    if (hasExtraRecords) list = list.slice(0, limit);
+    const edges = list.map(node => ({ node, cursor: dataToCursor(node.sort) }));
     const result = {
       ...res,
-      pageInfo: {},  // TODO <------------------
-      edges: list.map(node => ({ node, cursor: dataToCursor(node.sort) })),
+      pageInfo: {
+        hasNextPage: limit > 0 && hasExtraRecords,
+        hasPreviousPage: false, // Elastic does not support before cursor
+        startCursor: edges.length > 0 ? edges[0].cursor : null,
+        endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : null,
+      },
+      edges,
     };
 
     return result;
@@ -116,5 +142,6 @@ export function cursorToData(cursor: string): mixed {
 }
 
 export function dataToCursor(data: mixed): string {
+  if (!data) return '';
   return base64(JSON.stringify(data));
 }

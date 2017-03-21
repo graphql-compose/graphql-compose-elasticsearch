@@ -84,6 +84,10 @@ server.use(
       //   log: 'trace',
       // }),
     },
+    formatError: error => ({
+      message: error.message,
+      stack: error.stack.split('\n'),
+    }),
   })
 );
 

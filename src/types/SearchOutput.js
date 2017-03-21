@@ -35,6 +35,7 @@ export function getSearchOutputTC(opts: SearchOptsT = {}): TypeComposer {
               hits: [getSearchHitItemTC(opts)],
             },
           })),
+        aggregations: 'JSON',
       },
     }));
 }
