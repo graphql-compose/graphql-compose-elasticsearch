@@ -42,6 +42,7 @@ function instanceElasticClient(
       name: prefix,
       fields: apiParser.generateFieldMap(),
     }),
+    resolve: () => ({}),
   };
 }
 
