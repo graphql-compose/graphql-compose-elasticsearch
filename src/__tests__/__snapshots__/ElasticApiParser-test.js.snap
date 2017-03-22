@@ -206,6 +206,10 @@ Object {
     "resolve": [Function],
     "type": "Elastic_Cat",
   },
+  "indices": Object {
+    "resolve": [Function],
+    "type": "Elastic_Indices",
+  },
   "search": Object {
     "args": Object {
       "_source": Object {
@@ -588,6 +592,38 @@ Object {
     "elasticMethod": Array [
       "cat",
       "allocation",
+    ],
+  },
+  "indices.delete": Object {
+    "argsDescriptions": Object {
+      "index": "A comma-separated list of indices to delete; use \`_all\` or \`*\` string to delete all indices",
+      "masterTimeout": "Specify timeout for connection to master",
+      "timeout": "Explicit operation timeout",
+    },
+    "argsSettings": Object {
+      "method": "DELETE",
+      "params": Object {
+        "masterTimeout": Object {
+          "name": "master_timeout",
+          "type": "time",
+        },
+        "timeout": Object {
+          "type": "time",
+        },
+      },
+      "url": Object {
+        "fmt": "/<%=index%>",
+        "req": Object {
+          "index": Object {
+            "type": "list",
+          },
+        },
+      },
+    },
+    "description": "Perform a [indices.delete](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/indices-delete-index.html) request",
+    "elasticMethod": Array [
+      "indices",
+      "delete",
     ],
   },
   "search": Object {

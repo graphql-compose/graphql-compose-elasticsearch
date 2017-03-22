@@ -17,44 +17,6 @@ import ElasticApiParser from '../ElasticApiParser';
 
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
 
-const code = `
-api.cat.prototype.allocation = ca({
-  params: {
-    format: { type: 'string' },
-    bytes: { type: 'enum', options: ['b', 'k', 'kb'] },
-    local: { type: 'boolean' },
-    masterTimeout: { type: 'time', name: 'master_timeout' },
-    h: { type: 'list' },
-    help: { type: 'boolean', 'default': false },
-    v: { type: 'boolean', 'default': false }
-  },
-  urls: [
-    {
-      fmt: '/_cat/allocation/<%=nodeId%>',
-      req: { nodeId: { type: 'list' }}
-    }, {
-      fmt: '/_cat/allocation'
-    }, {
-      fmt: '/<%=index%>/<%=type%>/_update_by_query',
-      req: {
-        index: {
-          type: 'list'
-        },
-        type: {
-          type: 'list'
-        }
-      }
-    }, {
-      fmt: '/<%=index%>/_update_by_query',
-      req: {
-        index: {
-          type: 'list'
-        }
-      }
-    }
-  ]
-});`;
-
 describe('ElasticApiParser', () => {
   let parser;
 
@@ -136,6 +98,24 @@ describe('ElasticApiParser', () => {
       });
     });
 
+    describe('cleanUpSource()', () => {
+      it('should {<<api-param-type-boolean,`Boolean`>>} convert to {Boolean}', () => {
+        expect(
+          ElasticApiParser.cleanUpSource(
+            `@param {<<api-param-type-boolean,\`Boolean\`>>} params.analyzeWildcard`
+          )
+        ).toEqual(`@param {Boolean} params.analyzeWildcard`);
+      });
+
+      it("should api['delete'] convert to api.delete", () => {
+        expect(
+          ElasticApiParser.cleanUpSource(
+            `api.indices.prototype['delete'] = ca({`
+          )
+        ).toEqual(`api.indices.prototype.delete = ca({`);
+      });
+    });
+
     describe('parseParamsDescription()', () => {
       it('should return descriptions for fields', () => {
         const source = ElasticApiParser.cleanUpSource(
@@ -164,7 +144,47 @@ describe('ElasticApiParser', () => {
 
     describe('codeToSettings()', () => {
       it('should return settings as object from ca({ settings })', () => {
-        expect(ElasticApiParser.codeToSettings(code)).toMatchObject({
+        expect(
+          ElasticApiParser.codeToSettings(
+            `
+        api.cat.prototype.allocation = ca({
+          params: {
+            format: { type: 'string' },
+            bytes: { type: 'enum', options: ['b', 'k', 'kb'] },
+            local: { type: 'boolean' },
+            masterTimeout: { type: 'time', name: 'master_timeout' },
+            h: { type: 'list' },
+            help: { type: 'boolean', 'default': false },
+            v: { type: 'boolean', 'default': false }
+          },
+          urls: [
+            {
+              fmt: '/_cat/allocation/<%=nodeId%>',
+              req: { nodeId: { type: 'list' }}
+            }, {
+              fmt: '/_cat/allocation'
+            }, {
+              fmt: '/<%=index%>/<%=type%>/_update_by_query',
+              req: {
+                index: {
+                  type: 'list'
+                },
+                type: {
+                  type: 'list'
+                }
+              }
+            }, {
+              fmt: '/<%=index%>/_update_by_query',
+              req: {
+                index: {
+                  type: 'list'
+                }
+              }
+            }
+          ]
+        });`
+          )
+        ).toMatchObject({
           params: {
             bytes: { options: ['b', 'k', 'kb'], type: 'enum' },
             format: { type: 'string' },
@@ -201,20 +221,12 @@ describe('ElasticApiParser', () => {
         expect(ElasticApiParser.getMethodName('api.updateByQuery')).toEqual(
           'updateByQuery'
         );
-
-        expect(ElasticApiParser.getMethodName(`api['delete']`)).toEqual(
-          'delete'
-        );
       });
 
       it('should return array of string', () => {
         expect(
           ElasticApiParser.getMethodName('api.cat.prototype.allocation')
         ).toEqual(['cat', 'allocation']);
-
-        expect(
-          ElasticApiParser.getMethodName(`api.indices.prototype['delete']`)
-        ).toEqual(['indices', 'delete']);
       });
     });
 

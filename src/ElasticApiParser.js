@@ -143,7 +143,11 @@ export default class ElasticApiParser {
   static cleanUpSource(code: string): string {
     // remove invalid markup
     // {<<api-param-type-boolean,`Boolean`>>} converted to {Boolean}
-    const codeCleaned = code.replace(/{<<.+`(.*)`.+}/gi, '{$1}');
+    let codeCleaned = code.replace(/{<<.+`(.*)`.+}/gi, '{$1}');
+
+    // replace api.indices.prototype['delete'] = ca({
+    // on api.indices.prototype.delete = ca({
+    codeCleaned = codeCleaned.replace(/(api.*)\['(.+)'\](.*ca)/gi, '$1.$2$3');
 
     return codeCleaned;
   }
@@ -203,7 +207,7 @@ export default class ElasticApiParser {
   }
 
   static getMethodName(str: string): string | string[] {
-    const parts = str.replace(/\['(.+)'\]/, '.$1').split('.');
+    const parts = str.split('.');
     if (parts[0] === 'api') {
       parts.shift();
     }
