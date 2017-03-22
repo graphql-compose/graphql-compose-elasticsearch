@@ -1,7 +1,7 @@
-export { default as ElasticApiParser } from './ElasticApiParser';
+export { composeWithElastic } from './composeWithElastic';
 export {
   convertToSourceTC,
-  convertToAnalyzedITC,
-  convertToSearchableITC,
-  convertToAggregatableITC,
-} from './PropertiesConverter';
+  inputPropertiesToGraphQLTypes,
+} from './mappingConverter';
+export { default as ElasticApiParser } from './ElasticApiParser';
+export { elasticApiFieldConfig } from './elasticApiFieldConfig';

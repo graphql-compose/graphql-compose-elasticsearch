@@ -8,7 +8,7 @@ export default function createSearchConnectionResolver(
   opts: mixed = {}
 ): Resolver<*, *> {
   const resolver = searchResolver.clone({
-    name: `${searchResolver.name}Connection`,
+    name: `searchConnection`,
   });
 
   resolver

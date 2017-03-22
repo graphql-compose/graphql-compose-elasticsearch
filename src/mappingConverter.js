@@ -3,7 +3,6 @@
 
 import {
   TypeComposer,
-  InputTypeComposer,
   GraphQLDate,
   GraphQLJSON,
   GraphQLBuffer,
@@ -22,8 +21,6 @@ import {
 } from 'graphql';
 
 import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
-
-// import type { GraphQLObjectType } from 'graphql/type/definition';
 
 export type ElasticMappingT = {
   properties: ElasticMappingPropertiesT,
@@ -46,12 +43,6 @@ export type InputFieldsMap = {
 export type FieldsMapByElasticType = {
   [elasticType: string]: InputFieldsMap,
   _all: InputFieldsMap,
-};
-
-export type ConvertOptsT = {
-  prefix?: ?string,
-  postfix?: ?string,
-  pluralFields?: string[],
 };
 
 export const typeMap = {
@@ -77,6 +68,12 @@ export const typeMap = {
   nested: new GraphQLList(GraphQLJSON),
   completion: GraphQLString,
   percolator: GraphQLJSON,
+};
+
+export type ConvertOptsT = {
+  prefix?: ?string,
+  postfix?: ?string,
+  pluralFields?: string[],
 };
 
 export function convertToSourceTC(
@@ -172,7 +169,6 @@ export function propertyToSourceGraphQLType(
 
 export function inputPropertiesToGraphQLTypes(
   prop: ElasticPropertyT | ElasticMappingT,
-  filterFn?: (prop: any) => boolean,
   fieldName?: string,
   result?: FieldsMapByElasticType = { _all: {} }
 ): FieldsMapByElasticType {
@@ -186,7 +182,6 @@ export function inputPropertiesToGraphQLTypes(
       inputPropertiesToGraphQLTypes(
         // $FlowFixMe
         prop.properties[subFieldName],
-        filterFn,
         [fieldName, subFieldName].filter(o => !!o).join('__'),
         result
       );
@@ -201,20 +196,18 @@ export function inputPropertiesToGraphQLTypes(
       inputPropertiesToGraphQLTypes(
         // $FlowFixMe
         prop.fields[subFieldName],
-        filterFn,
         [fieldName, subFieldName].filter(o => !!o).join('__'),
         result
       );
     });
   }
 
+  // skip no index fields
   if ({}.hasOwnProperty.call(prop, 'index') && !prop.index) {
     return result;
   }
 
-  if (
-    (!filterFn || filterFn(prop)) && typeof prop.type === 'string' && fieldName
-  ) {
+  if (typeof prop.type === 'string' && fieldName) {
     if (!result[prop.type]) {
       const newMap: InputFieldsMap = {};
       result[prop.type] = newMap;
@@ -226,111 +219,6 @@ export function inputPropertiesToGraphQLTypes(
   }
 
   return result;
-}
-
-export function convertToAggregatableITC(
-  mapping: ElasticMappingT | ElasticPropertyT,
-  typeName: string,
-  opts?: ConvertOptsT = {}
-): InputTypeComposer {
-  if (!mapping || !mapping.properties) {
-    throw new Error(
-      'You provide incorrect mapping. It should be an object `{ properties: {} }`'
-    );
-  }
-  if (!typeName || typeof typeName !== 'string') {
-    throw new Error(
-      'You provide empty name for type. Second argument `typeName` should be non-empty string.'
-    );
-  }
-
-  const itc = new InputTypeComposer(
-    new GraphQLInputObjectType({
-      name: `${opts.prefix || ''}${typeName}${opts.postfix || ''}`,
-      description: 'Input type which contains non-string properties which ' +
-        'can be used in aggregation and filters.',
-      fields: {},
-    })
-  );
-
-  const fieldsByType = inputPropertiesToGraphQLTypes(mapping, prop => {
-    if (prop.type === 'text' || prop.type === 'string') {
-      return false;
-    }
-    return true;
-  });
-
-  itc.addFields(fieldsByType._all);
-
-  return itc;
-}
-
-export function convertToSearchableITC(
-  mapping: ElasticMappingT | ElasticPropertyT,
-  typeName: string,
-  opts?: ConvertOptsT = {}
-): InputTypeComposer {
-  if (!mapping || !mapping.properties) {
-    throw new Error(
-      'You provide incorrect mapping. It should be an object `{ properties: {} }`'
-    );
-  }
-  if (!typeName || typeof typeName !== 'string') {
-    throw new Error(
-      'You provide empty name for type. Second argument `typeName` should be non-empty string.'
-    );
-  }
-
-  const itc = new InputTypeComposer(
-    new GraphQLInputObjectType({
-      name: `${opts.prefix || ''}${typeName}${opts.postfix || ''}`,
-      description: 'Input type which contains non-string properties which ' +
-        'can be used in aggregation and filters.',
-      fields: {},
-    })
-  );
-
-  const fieldsByType = inputPropertiesToGraphQLTypes(mapping, () => true);
-  itc.addFields(fieldsByType._all);
-
-  return itc;
-}
-
-export function convertToAnalyzedITC(
-  mapping: ElasticMappingT | ElasticPropertyT,
-  typeName: string,
-  opts?: ConvertOptsT = {}
-): InputTypeComposer {
-  if (!mapping || !mapping.properties) {
-    throw new Error(
-      'You provide incorrect mapping. It should be an object `{ properties: {} }`'
-    );
-  }
-  if (!typeName || typeof typeName !== 'string') {
-    throw new Error(
-      'You provide empty name for type. Second argument `typeName` should be non-empty string.'
-    );
-  }
-
-  const itc = new InputTypeComposer(
-    new GraphQLInputObjectType({
-      name: `${opts.prefix || ''}${typeName}${opts.postfix || ''}`,
-      description: 'Input type which contains non-string properties which ' +
-        'can be used in aggregation and filters.',
-      fields: {},
-    })
-  );
-
-  const fieldsByType = inputPropertiesToGraphQLTypes(mapping, prop => {
-    if (prop.type === 'text' || prop.type === 'string') {
-      return true;
-    }
-    return false;
-  });
-
-  itc.addFields(fieldsByType._all);
-
-  return itc;
 }
 
 export function getSubFields(

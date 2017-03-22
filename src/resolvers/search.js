@@ -13,7 +13,6 @@ import type {
 } from 'graphql-compose/lib/definition';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
-import type { ElasticApiVersion } from '../ElasticApiParser';
 import {
   getSearchBodyITC,
   prepareBodyInResolve,
@@ -23,14 +22,15 @@ import { getSearchOutputTC } from '../types/SearchOutput';
 export type ElasticSearchResolverOpts = {
   [name: string]: mixed,
   prefix?: string,
-  elasticApiVersion?: ElasticApiVersion,
+  elasticIndex: string,
+  elasticType: string,
+  elasticClient: Object,
 };
 
 export default function createSearchResolver(
   fieldMap: FieldsMapByElasticType,
   sourceTC: TypeComposer,
-  elasticClient?: mixed,
-  opts?: ElasticSearchResolverOpts = {}
+  opts: ElasticSearchResolverOpts
 ): Resolver<*, *> {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
@@ -47,21 +47,21 @@ export default function createSearchResolver(
   const prefix = opts.prefix || 'Es';
 
   const parser = new ElasticApiParser({
-    elasticClient,
-    version: opts.elasticApiVersion || '5_0',
+    elasticClient: opts.elasticClient,
     prefix,
   });
 
-  const searchITC = getSearchBodyITC({
-    prefix,
-    fieldMap,
-  });
-
-  searchITC.removeField(['size', 'from', '_source', 'explain', 'version']);
+  const searchITC = getSearchBodyITC({ prefix, fieldMap }).removeField([
+    'size',
+    'from',
+    '_source',
+    'explain',
+    'version',
+  ]);
 
   const searchFC = parser.generateFieldConfig('search', {
-    index: 'cv',
-    type: 'cv',
+    index: opts.elasticIndex,
+    type: opts.elasticType,
   });
 
   const argsConfigMap = Object.assign({}, searchFC.args, {

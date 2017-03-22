@@ -4,25 +4,49 @@ import {
   inputPropertiesToGraphQLTypes,
 } from './mappingConverter';
 import type { ElasticMappingT } from './mappingConverter';
+import createSearchResolver from './resolvers/search';
+import createSearchConnectionResolver from './resolvers/searchConnection';
 
 export type composeWithElasticOptsT = {
-  typeName: string,
+  graphqlTypeName: string,
+  elasticIndex: string,
+  elasticType: string,
+  elasticMapping: ElasticMappingT,
+  elasticClient: Object,
   pluralFields?: string[],
 };
 
 export function composeWithElastic(
-  mapping: ElasticMappingT,
   opts: composeWithElasticOptsT = {}
 ): TypeComposer {
   if (!opts) {
     throw new Error('Opts is required argument for composeWithElastic()');
   }
 
-  if (typeof opts.typeName !== 'string' || !opts.typeName) {
+  if (!opts.elasticMapping || !opts.elasticMapping.properties) {
     throw new Error(
-      'Opts.typeName is required option for TypeName in composeWithElastic()'
+      'You provide incorrect elasticMapping property. It should be an object `{ properties: {} }`'
     );
   }
+
+  if (!opts.elasticIndex || typeof opts.elasticIndex !== 'string') {
+    throw new Error(
+      'Third arg for Resolver search() should contain `elasticIndex` string property from your Elastic server.'
+    );
+  }
+
+  if (!opts.elasticType || typeof opts.elasticType !== 'string') {
+    throw new Error(
+      'Third arg for Resolver search() should contain `elasticType` string property from your Elastic server.'
+    );
+  }
+
+  if (typeof opts.graphqlTypeName !== 'string' || !opts.graphqlTypeName) {
+    throw new Error(
+      'Opts.graphqlTypeName is required property for generated GraphQL Type name in composeWithElastic()'
+    );
+  }
+  opts.prefix = opts.graphqlTypeName; // eslint-disable-line
 
   if (opts.pluralFields && !Array.isArray(opts.pluralFields)) {
     throw new Error(
@@ -31,9 +55,18 @@ export function composeWithElastic(
     );
   }
 
-  const tc = convertToSourceTC(mapping, opts.typeName, opts);
+  const fieldMap = inputPropertiesToGraphQLTypes(opts.elasticMapping);
+  const sourceTC = convertToSourceTC(
+    opts.elasticMapping,
+    opts.graphqlTypeName,
+    opts
+  );
 
-  const propsMap = inputPropertiesToGraphQLTypes(mapping);
+  const searchR = createSearchResolver(fieldMap, sourceTC, opts);
+  const searchConnectionR = createSearchConnectionResolver(searchR, opts);
 
-  return tc;
+  sourceTC.addResolver(searchR);
+  sourceTC.addResolver(searchConnectionR);
+
+  return sourceTC;
 }

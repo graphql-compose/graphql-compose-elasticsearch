@@ -1,6 +1,6 @@
 /* @flow */
 
-import { TypeComposer, InputTypeComposer, GraphQLJSON } from 'graphql-compose';
+import { TypeComposer, GraphQLJSON } from 'graphql-compose';
 
 import {
   GraphQLString,
@@ -14,10 +14,7 @@ import {
 import {
   convertToSourceTC,
   propertyToSourceGraphQLType,
-  convertToAggregatableITC,
   inputPropertiesToGraphQLTypes,
-  convertToSearchableITC,
-  convertToAnalyzedITC,
   getSubFields,
 } from '../mappingConverter';
 
@@ -173,7 +170,7 @@ describe('PropertiesConverter', () => {
   describe('inputPropertiesToGraphQLTypes()', () => {
     it('should throw error on incorrect prop', () => {
       expect(() => {
-        inputPropertiesToGraphQLTypes({}, () => true);
+        inputPropertiesToGraphQLTypes({});
       }).toThrowError('incorrect Elastic property config');
     });
 
@@ -182,7 +179,6 @@ describe('PropertiesConverter', () => {
         {
           type: 'text',
         },
-        () => true,
         'lastname'
       );
       expect(fields._all.lastname).toEqual(GraphQLString);
@@ -190,27 +186,24 @@ describe('PropertiesConverter', () => {
     });
 
     it('should accept mapping', () => {
-      const fields = inputPropertiesToGraphQLTypes(mapping, () => true);
+      const fields = inputPropertiesToGraphQLTypes(mapping);
       expect(Object.keys(fields._all).length).toBeGreaterThan(2);
     });
 
     it('should convert nested fields', () => {
-      const fields = inputPropertiesToGraphQLTypes(
-        {
-          properties: {
-            name: {
-              type: 'text',
-              fields: {
-                keyword: {
-                  type: 'keyword',
-                  ignore_above: 256,
-                },
+      const fields = inputPropertiesToGraphQLTypes({
+        properties: {
+          name: {
+            type: 'text',
+            fields: {
+              keyword: {
+                type: 'keyword',
+                ignore_above: 256,
               },
             },
           },
         },
-        () => true
-      );
+      });
       expect(Object.keys(fields._all).length).toEqual(2);
       expect(Object.keys(fields._all)).toEqual(
         expect.arrayContaining(['name', 'name__keyword'])
@@ -223,53 +216,18 @@ describe('PropertiesConverter', () => {
       );
     });
 
-    it('should use filterFn', () => {
-      const fields = inputPropertiesToGraphQLTypes(
-        {
-          properties: {
-            name: {
-              type: 'text',
-              fields: {
-                keyword: {
-                  type: 'keyword',
-                  ignore_above: 256,
-                },
-              },
-            },
-          },
-        },
-        prop => prop.type !== 'text'
-      );
-      expect(Object.keys(fields._all).length).toEqual(1);
-      expect(Object.keys(fields._all)).toEqual(
-        expect.arrayContaining(['name__keyword'])
-      );
-      expect(Object.keys(fields.keyword).length).toEqual(1);
-      expect(Object.keys(fields.keyword)).toEqual(
-        expect.arrayContaining(['name__keyword'])
-      );
-    });
-
     it('should not return index:false fields', () => {
-      const itc = convertToSearchableITC(mapping, 'SearchInput');
-      expect(itc.getFieldNames()).not.toEqual(
-        expect.arrayContaining(['noIndex'])
-      );
-
-      const fields = inputPropertiesToGraphQLTypes(
-        {
-          properties: {
-            name: {
-              type: 'text',
-              index: false,
-            },
-            date: {
-              type: 'date',
-            },
+      const fields = inputPropertiesToGraphQLTypes({
+        properties: {
+          name: {
+            type: 'text',
+            index: false,
+          },
+          date: {
+            type: 'date',
           },
         },
-        prop => prop.type !== 'text'
-      );
+      });
       expect(Object.keys(fields._all).length).toEqual(1);
       expect(Object.keys(fields._all)).toEqual(
         expect.arrayContaining(['date'])
@@ -277,116 +235,6 @@ describe('PropertiesConverter', () => {
       expect(Object.keys(fields.date).length).toEqual(1);
       expect(Object.keys(fields.date)).toEqual(
         expect.arrayContaining(['date'])
-      );
-    });
-  });
-
-  describe('convertToAggregatableITC()', () => {
-    it('should throw error on empty mapping', () => {
-      // $FlowFixMe
-      expect(() => convertToAggregatableITC()).toThrowError(
-        'incorrect mapping'
-      );
-    });
-
-    it('should throw error on empty typeName', () => {
-      expect(() => {
-        // $FlowFixMe
-        convertToAggregatableITC(mapping);
-      }).toThrowError('empty name');
-    });
-
-    it('should return InputTypeComposer', () => {
-      const itc = convertToAggregatableITC(mapping, 'AggsInput');
-      expect(itc).toBeInstanceOf(InputTypeComposer);
-      expect(itc.getTypeName()).toBe('AggsInput');
-      expect(itc.getFieldNames().length).toBeGreaterThan(1);
-    });
-
-    it('should return array of aggregatable fields', () => {
-      const itc = convertToAggregatableITC(mapping, 'AggsInput');
-      expect(itc.getFieldNames()).toEqual(
-        expect.arrayContaining([
-          'name__keyword',
-          'birthday',
-          'avatarUrl__thumb__keyword',
-        ])
-      );
-    });
-
-    it('should not return text fields', () => {
-      const itc = convertToAggregatableITC(mapping, 'AggsInput');
-      expect(itc.getFieldNames()).not.toEqual(
-        expect.arrayContaining(['lastname'])
-      );
-    });
-  });
-
-  describe('convertToSearchableITC()', () => {
-    it('should throw error on empty mapping', () => {
-      // $FlowFixMe
-      expect(() => convertToSearchableITC()).toThrowError('incorrect mapping');
-    });
-
-    it('should throw error on empty typeName', () => {
-      expect(() => {
-        // $FlowFixMe
-        convertToSearchableITC(mapping);
-      }).toThrowError('empty name');
-    });
-
-    it('should return InputTypeComposer', () => {
-      const itc = convertToSearchableITC(mapping, 'SearchInput');
-      expect(itc).toBeInstanceOf(InputTypeComposer);
-      expect(itc.getTypeName()).toBe('SearchInput');
-      expect(itc.getFieldNames().length).toBeGreaterThan(1);
-    });
-
-    it('should return array of searchable fields', () => {
-      const itc = convertToSearchableITC(mapping, 'SearchInput');
-      expect(itc.getFieldNames()).toEqual(
-        expect.arrayContaining([
-          'name__keyword',
-          'name',
-          'avatarUrl__big',
-          'avatarUrl__thumb__keyword',
-          'avatarUrl__thumb',
-          'lastname',
-          'birthday',
-        ])
-      );
-    });
-  });
-
-  describe('convertToAnalyzedITC()', () => {
-    it('should throw error on empty mapping', () => {
-      // $FlowFixMe
-      expect(() => convertToAnalyzedITC()).toThrowError('incorrect mapping');
-    });
-
-    it('should throw error on empty typeName', () => {
-      expect(() => {
-        // $FlowFixMe
-        convertToAnalyzedITC(mapping);
-      }).toThrowError('empty name');
-    });
-
-    it('should return InputTypeComposer', () => {
-      const itc = convertToAnalyzedITC(mapping, 'AnalyzedInput');
-      expect(itc).toBeInstanceOf(InputTypeComposer);
-      expect(itc.getTypeName()).toBe('AnalyzedInput');
-      expect(itc.getFieldNames().length).toBeGreaterThan(1);
-    });
-
-    it('should return array of searchable fields', () => {
-      const itc = convertToAnalyzedITC(mapping, 'AnalyzedInput');
-      expect(itc.getFieldNames()).toEqual(
-        expect.arrayContaining([
-          'name',
-          'avatarUrl__big',
-          'avatarUrl__thumb',
-          'lastname',
-        ])
       );
     });
   });
