@@ -10,11 +10,11 @@ import { composeWithElastic, elasticApiFieldConfig } from '../../src'; // from '
 const expressPort = process.env.port || process.env.PORT || 9201;
 
 // mapping obtained from ElasticSearch server
-// GET http://user:pass@localhost:9200/cv/_mapping
+// GET http://user:pass@localhost:9200/user/_mapping
 const indexMapping = {
-  cv: {
+  user: {
     mappings: {
-      cv: {
+      user: {
         properties: {
           name: {
             type: 'text',
@@ -93,11 +93,11 @@ const indexMapping = {
   },
 };
 
-const CvEsTC = composeWithElastic({
-  graphqlTypeName: 'CvES',
+const UserEsTC = composeWithElastic({
+  graphqlTypeName: 'UserES',
   elasticIndex: 'cv',
   elasticType: 'cv',
-  elasticMapping: indexMapping.cv.mappings.cv,
+  elasticMapping: indexMapping.user.mappings.user,
   elasticClient: new elasticsearch.Client({
     host: 'http://localhost:9200',
     apiVersion: '5.0',
@@ -112,8 +112,8 @@ const generatedSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: {
-      cv: CvEsTC.get('$search').getFieldConfig(),
-      cvConnection: CvEsTC.get('$searchConnection').getFieldConfig(),
+      user: UserEsTC.get('$search').getFieldConfig(),
+      userConnection: UserEsTC.get('$searchConnection').getFieldConfig(),
       elastic50: elasticApiFieldConfig({
         host: 'http://user:pass@localhost:9200',
         apiVersion: '5.0',
