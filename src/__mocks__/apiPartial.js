@@ -491,3 +491,32 @@ api.cat.prototype.allocation = ca({
     }
   ]
 });
+
+/**
+ * Perform a [indices.delete](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/indices-delete-index.html) request
+ *
+ * @param {Object} params - An object with parameters used to carry out this action
+ * @param {<<api-param-type-duration-string,`DurationString`>>} params.timeout - Explicit operation timeout
+ * @param {<<api-param-type-duration-string,`DurationString`>>} params.masterTimeout - Specify timeout for connection to master
+ * @param {<<api-param-type-string,`String`>>, <<api-param-type-string-array,`String[]`>>, <<api-param-type-boolean,`Boolean`>>} params.index - A comma-separated list of indices to delete; use `_all` or `*` string to delete all indices
+ */
+api.indices.prototype['delete'] = ca({
+  params: {
+    timeout: {
+      type: 'time'
+    },
+    masterTimeout: {
+      type: 'time',
+      name: 'master_timeout'
+    }
+  },
+  url: {
+    fmt: '/<%=index%>',
+    req: {
+      index: {
+        type: 'list'
+      }
+    }
+  },
+  method: 'DELETE'
+});

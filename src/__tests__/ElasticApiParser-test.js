@@ -201,12 +201,20 @@ describe('ElasticApiParser', () => {
         expect(ElasticApiParser.getMethodName('api.updateByQuery')).toEqual(
           'updateByQuery'
         );
+
+        expect(ElasticApiParser.getMethodName(`api['delete']`)).toEqual(
+          'delete'
+        );
       });
 
       it('should return array of string', () => {
         expect(
           ElasticApiParser.getMethodName('api.cat.prototype.allocation')
         ).toEqual(['cat', 'allocation']);
+
+        expect(
+          ElasticApiParser.getMethodName(`api.indices.prototype['delete']`)
+        ).toEqual(['indices', 'delete']);
       });
     });
 

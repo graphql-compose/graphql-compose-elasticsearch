@@ -203,7 +203,7 @@ export default class ElasticApiParser {
   }
 
   static getMethodName(str: string): string | string[] {
-    const parts = str.split('.');
+    const parts = str.replace(/\['(.+)'\]/, '.$1').split('.');
     if (parts[0] === 'api') {
       parts.shift();
     }
