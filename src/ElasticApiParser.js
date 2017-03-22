@@ -82,8 +82,9 @@ export default class ElasticApiParser {
     // in file /node_modules/elasticsearch/src/lib/apis/index.js
     this.apiVersion = opts.apiVersion ||
       (opts.elasticClient &&
-        opts.elasticClient.config &&
-        opts.elasticClient.config.apiVersion) ||
+        opts.elasticClient.transport &&
+        opts.elasticClient.transport._config &&
+        opts.elasticClient.transport._config.apiVersion) ||
       '_default';
     const apiFilePath = path.resolve(
       opts.elasticApiFilePath ||

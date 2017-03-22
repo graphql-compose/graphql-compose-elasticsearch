@@ -18,14 +18,16 @@ export function elasticApiFieldConfig(
   }
 
   if (isElasticClient(esClientOrOpts)) {
-    return staticElasticClient(esClientOrOpts);
+    return instanceElasticClient(esClientOrOpts);
   } else {
     return contextElasticClient(esClientOrOpts);
   }
 }
 
-function staticElasticClient(elasticClient: Object): GraphQLFieldConfig<*, *> {
-  const apiVersion = elasticClient.config.apiVersion ||
+function instanceElasticClient(
+  elasticClient: Object
+): GraphQLFieldConfig<*, *> {
+  const apiVersion = elasticClient.transport._config.apiVersion ||
     DEFAULT_ELASTIC_API_VERSION;
   const prefix = `ElasticAPI${apiVersion.replace('.', '')}`;
 
@@ -87,7 +89,12 @@ function isElasticClient(obj) {
     return true;
   }
 
-  if (obj && obj.config && obj.config.__reused) {
+  if (
+    obj &&
+    obj.transport &&
+    obj.transport._config &&
+    obj.transport._config.__reused
+  ) {
     return true;
   }
 
