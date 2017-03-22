@@ -13,39 +13,16 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
+import { reorderKeys } from './utils';
 
 import type {
   GraphQLArgumentConfig,
   GraphQLFieldConfig,
+  GraphQLFieldConfigMap,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldMap,
   GraphQLInputType,
 } from 'graphql/type/definition'; // eslint-disable-line
-
-export type ElasticApiVersion =
-  | '5_0'
-  | '5_x'
-  | '2_4'
-  | '2_3'
-  | '2_2'
-  | '2_1'
-  | '2_0'
-  | '1_7'
-  | '1_6'
-  | '1_5'
-  | '1_4'
-  | '1_3'
-  | '1_2'
-  | '1_1'
-  | '1_0'
-  | '0_90';
-
-export type ElasticApiParserOptsT = {
-  elasticClient?: any, // Elastic client
-  version?: ElasticApiVersion,
-  prefix?: string,
-  elasticApiFilePath?: string,
-};
 
 export type ElasticParamConfigT = {
   type: string,
@@ -84,22 +61,33 @@ export type ElasticParsedSourceT = {
   },
 };
 
+export type ElasticApiParserOptsT = {
+  elasticClient?: any, // Elastic client
+  apiVersion?: string,
+  prefix?: string,
+  elasticApiFilePath?: string,
+};
+
 export default class ElasticApiParser {
   cachedEnums: {
     [fieldName: string]: { [valsStringified: string]: GraphQLEnumType },
   };
-  version: string;
+  apiVersion: string;
   prefix: string;
   elasticClient: any;
   parsedSource: ElasticParsedSourceT;
 
   constructor(opts: ElasticApiParserOptsT = {}) {
-    // derived from installed package `elasticsearch`
-    // from ../../node_modules/elasticsearch/src/lib/apis/VERSION.js
-    this.version = opts.version || '5_0';
+    // avaliable varsions can be found in installed package `elasticsearch`
+    // in file /node_modules/elasticsearch/src/lib/apis/index.js
+    this.apiVersion = opts.apiVersion ||
+      (opts.elasticClient &&
+        opts.elasticClient.config &&
+        opts.elasticClient.config.apiVersion) ||
+      '_default';
     const apiFilePath = path.resolve(
       opts.elasticApiFilePath ||
-        `./node_modules/elasticsearch/src/lib/apis/${this.version}.js`
+        ElasticApiParser.findApiVersionFile(this.apiVersion)
     );
     const source = ElasticApiParser.loadApiFile(apiFilePath);
     this.parsedSource = ElasticApiParser.parseSource(source);
@@ -109,9 +97,46 @@ export default class ElasticApiParser {
     this.cachedEnums = {};
   }
 
+  static loadFile(absolutePath: string): string {
+    return fs.readFileSync(absolutePath, 'utf8');
+  }
+
   static loadApiFile(absolutePath: string): string {
-    const code = fs.readFileSync(absolutePath, 'utf8');
+    let code;
+    try {
+      code = ElasticApiParser.loadFile(absolutePath);
+    } catch (e) {
+      throw new Error(
+        `Cannot load Elastic API source file from ${absolutePath}`
+      );
+    }
     return ElasticApiParser.cleanUpSource(code);
+  }
+
+  static loadApiListFile(absolutePath: string): string {
+    let code;
+    try {
+      code = ElasticApiParser.loadFile(absolutePath);
+    } catch (e) {
+      throw new Error(
+        `Cannot load Elastic API file with avaliable versions from ${absolutePath}`
+      );
+    }
+    return code;
+  }
+
+  static findApiVersionFile(version: string): string {
+    const apiFolder = './node_modules/elasticsearch/src/lib/apis/';
+    const apiListFile = path.resolve(apiFolder, 'index.js');
+    const apiListCode = ElasticApiParser.loadApiListFile(apiListFile);
+    const re = new RegExp(`\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`, 'gi');
+    const match = re.exec(apiListCode);
+    if (match && match[1]) {
+      return path.resolve(apiFolder, `${match[1]}.js`);
+    }
+    throw new Error(
+      `Can not found Elastic version '${version}' in ${apiListFile}`
+    );
   }
 
   static cleanUpSource(code: string): string {
@@ -229,12 +254,23 @@ export default class ElasticApiParser {
     return result;
   }
 
-  generateFieldMap(): GraphQLFieldMap<*, *> {
+  generateFieldMap(): GraphQLFieldConfigMap<*, *> {
     const result = {};
     Object.keys(this.parsedSource).forEach(methodName => {
       result[methodName] = this.generateFieldConfig(methodName);
     });
-    return this.reassembleNestedFields(result);
+
+    const fieldMap = this.reassembleNestedFields(result);
+    return reorderKeys(fieldMap, [
+      'cat',
+      'cluster',
+      'indices',
+      'ingest',
+      'nodes',
+      'snapshot',
+      'tasks',
+      'search',
+    ]);
   }
 
   generateFieldConfig(
@@ -433,7 +469,7 @@ export default class ElasticApiParser {
         if (!result[names[0]]) {
           result[names[0]] = {
             type: new GraphQLObjectType({
-              name: `${this.prefix}Methods_${upperFirst(names[0])}`,
+              name: `${this.prefix}_${upperFirst(names[0])}`,
               // $FlowFixMe
               fields: () => {},
             }),

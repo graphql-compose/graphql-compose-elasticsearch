@@ -55,18 +55,13 @@ api.cat.prototype.allocation = ca({
   ]
 });`;
 
-// const elastic53 = fs.readFileSync(path.resolve(__dirname, '../../node_modules/elasticsearch/src/lib/apis/5_x.js'), 'utf8');
-// const t = fs.readFileSync(
-//   path.resolve(__dirname, '__mocks__/apiPartial.js'),
-//   'utf8'
-// );
-// console.log(t);
-
 describe('ElasticApiParser', () => {
   let parser;
 
   beforeEach(() => {
-    parser = new ElasticApiParser();
+    parser = new ElasticApiParser({
+      elasticApiFilePath: apiPartialPath,
+    });
   });
 
   describe('static methods', () => {
@@ -84,6 +79,46 @@ describe('ElasticApiParser', () => {
         expect(ElasticApiParser.loadApiFile(apiPartialPath)).toContain(
           '@param {String} params.analyzer - The analyzer to use for the query string'
         );
+      });
+    });
+
+    describe('findApiVersionFile()', () => {
+      it('should find proper version', () => {
+        const loadApiListFile = ElasticApiParser.loadApiListFile;
+        // $FlowFixMe
+        ElasticApiParser.loadApiListFile = () =>
+          `
+        module.exports = {
+          '_default': require('./5_0'),
+          '5.0': require('./5_0'),
+          '2.4': require('./2_4'),
+          '2.1': require('./2_1'),
+          '1.7': require('./1_7'),
+          '0.90': require('./0_90'),
+          '5.x': require('./5_x'),
+          'master': require('./master')
+        };
+        `;
+
+        expect(ElasticApiParser.findApiVersionFile('5.0')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/5_0.js'
+        );
+        expect(ElasticApiParser.findApiVersionFile('2.4')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/2_4.js'
+        );
+        expect(ElasticApiParser.findApiVersionFile('1.7')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/1_7.js'
+        );
+        expect(ElasticApiParser.findApiVersionFile('_default')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/5_0.js'
+        );
+
+        // $FlowFixMe
+        ElasticApiParser.loadApiListFile = loadApiListFile;
       });
     });
 

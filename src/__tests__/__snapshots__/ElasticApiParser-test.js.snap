@@ -204,7 +204,7 @@ exports[`ElasticApiParser generateFieldMap() should generate fieldMap 1`] = `
 Object {
   "cat": Object {
     "resolve": [Function],
-    "type": "ElasticMethods_Cat",
+    "type": "Elastic_Cat",
   },
   "search": Object {
     "args": Object {
