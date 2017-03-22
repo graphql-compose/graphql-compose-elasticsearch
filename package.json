@@ -3,7 +3,6 @@
   "version": "0.0.0-semantically-released",
   "description": "Elastic search via GraphQL",
   "files": [
-    "es",
     "lib"
   ],
   "main": "lib/index.js",
@@ -78,6 +77,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "watch": "npm run test:watch",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "docker": "npm run docker:v5",
+    "docker:v2": "node ./scripts/docker/start 2 & wait",
+    "docker:v5": "node ./scripts/docker/start 5 & wait"
   }
 }
