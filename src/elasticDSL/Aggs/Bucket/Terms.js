@@ -3,6 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
+import { getTermFields } from '../../Commons/FieldNames';
 
 export function getTermsITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('AggsTerms', opts);
@@ -20,7 +21,7 @@ export function getTermsITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        field: 'String',
+        field: () => getTermFields(opts),
         size: {
           type: 'Int',
           defaultValue: 10,

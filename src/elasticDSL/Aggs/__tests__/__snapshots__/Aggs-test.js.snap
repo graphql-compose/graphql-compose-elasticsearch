@@ -171,7 +171,7 @@ input Elastic_AggsDateRange_50 {
 
   # Date Format/Patter. Eg \\"MM-yyy\\" returns \\"08-2012\\". [JodaDate](http://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html) 
   format: String
-  ranges: [Elastic_AggsDateRange_50]
+  ranges: [Elastic_DateRange_50]
 
   # Time zones may either be specified as an ISO 8601 UTC offset (e.g. +01:00 or
   # -08:00) or as one of the time zone ids from the [TZ
@@ -546,6 +546,21 @@ input Elastic_CommonsScript_50 {
   file: String
 }
 
+# Date range where \`from\` value includes and \`to\` value excludes.
+input Elastic_DateRange_50 {
+  # The expression starts with an anchor date, which can either be now, or a date
+  # string ending with ||. Eg \`2015-01-01||+1M/d\` means 2015-01-01 plus one month,
+  # rounded down to the nearest day. Or \`now+1h+1m\`. The supported time units: y,
+  # M, w, d, h, m, s 
+  from: String
+
+  # The expression starts with an anchor date, which can either be now, or a date
+  # string ending with ||. Eg \`2015-01-01||+1M/d\` means 2015-01-01 plus one month,
+  # rounded down to the nearest day. Or \`now+1h+1m\`. The supported time units: y,
+  # M, w, d, h, m, s 
+  to: String
+}
+
 # Float range where \`from\` value includes and \`to\` value excludes.
 input Elastic_FloatRange_50 {
   from: Float
@@ -652,18 +667,18 @@ input Elastic_Query_50 {
 # boolean clauses, each clause with a typed occurrence. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) 
 input Elastic_QueryBool_50 {
   # The clause (query) must appear in matching documents and will contribute to the score. 
-  must: Elastic_Query_50
+  must: [Elastic_Query_50]
 
   # The clause (query) must appear in matching documents. However unlike must the
   # score of the query will be ignored. Filter clauses are executed in filter
   # context, meaning that scoring is ignored and clauses are considered for caching. 
-  filter: Elastic_Query_50
+  filter: [Elastic_Query_50]
 
   # The clause (query) should appear in the matching document. In a boolean query
   # with no must or filter clauses, one or more should clauses must match a
   # document. The minimum number of should clauses to match can be set using the
   # minimum_should_match parameter. 
-  should: Elastic_Query_50
+  should: [Elastic_Query_50]
 
   # The minimum number of should clauses to match. 
   minimum_should_match: String
@@ -672,7 +687,7 @@ input Elastic_QueryBool_50 {
   # executed in filter context meaning that scoring is ignored and clauses are
   # considered for caching. Because scoring is ignored, a score of 0 for all
   # documents is returned. 
-  must_not: Elastic_Query_50
+  must_not: [Elastic_Query_50]
   boost: Float
 }
 

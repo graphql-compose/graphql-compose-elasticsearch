@@ -44,7 +44,7 @@ export function getSortITC(opts: any = {}): InputTypeComposer | string {
       },
     };
     sortableFields.forEach(fieldName => {
-      const dottedName = fieldName.replace('__', '.');
+      const dottedName = fieldName.replace(/__/g, '.');
       values[`${fieldName}__asc`] = {
         value: { [dottedName]: 'asc' },
       };

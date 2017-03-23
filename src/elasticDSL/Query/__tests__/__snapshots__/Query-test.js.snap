@@ -97,18 +97,18 @@ input Elastic_Query_50 {
 # boolean clauses, each clause with a typed occurrence. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) 
 input Elastic_QueryBool_50 {
   # The clause (query) must appear in matching documents and will contribute to the score. 
-  must: Elastic_Query_50
+  must: [Elastic_Query_50]
 
   # The clause (query) must appear in matching documents. However unlike must the
   # score of the query will be ignored. Filter clauses are executed in filter
   # context, meaning that scoring is ignored and clauses are considered for caching. 
-  filter: Elastic_Query_50
+  filter: [Elastic_Query_50]
 
   # The clause (query) should appear in the matching document. In a boolean query
   # with no must or filter clauses, one or more should clauses must match a
   # document. The minimum number of should clauses to match can be set using the
   # minimum_should_match parameter. 
-  should: Elastic_Query_50
+  should: [Elastic_Query_50]
 
   # The minimum number of should clauses to match. 
   minimum_should_match: String
@@ -117,7 +117,7 @@ input Elastic_QueryBool_50 {
   # executed in filter context meaning that scoring is ignored and clauses are
   # considered for caching. Because scoring is ignored, a score of 0 for all
   # documents is returned. 
-  must_not: Elastic_Query_50
+  must_not: [Elastic_Query_50]
   boost: Float
 }
 

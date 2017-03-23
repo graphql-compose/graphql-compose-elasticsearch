@@ -23,7 +23,7 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
       description,
       fields: {
         must: {
-          type: () => getQueryITC(opts),
+          type: () => [getQueryITC(opts)],
           description: desc(
             `
             The clause (query) must appear in matching documents
@@ -32,7 +32,7 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
           ),
         },
         filter: {
-          type: () => getQueryITC(opts),
+          type: () => [getQueryITC(opts)],
           description: desc(
             `
             The clause (query) must appear in matching documents.
@@ -43,7 +43,7 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
           ),
         },
         should: {
-          type: () => getQueryITC(opts),
+          type: () => [getQueryITC(opts)],
           description: desc(
             `
             The clause (query) should appear in the matching document.
@@ -63,7 +63,7 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
           ),
         },
         must_not: {
-          type: () => getQueryITC(opts),
+          type: () => [getQueryITC(opts)],
           description: desc(
             `
             The clause (query) must not appear in the matching documents.
@@ -79,22 +79,29 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
     }));
 }
 
+function prepareQueryMayBeArray(vals, fieldMap) {
+  if (Array.isArray(vals)) {
+    return vals.map(val => prepareQueryInResolve(val, fieldMap));
+  }
+  return prepareQueryInResolve(vals, fieldMap);
+}
+
 export function prepareBoolInResolve(
   bool: any,
   fieldMap: mixed
 ): { [argName: string]: any } {
   /* eslint-disable no-param-reassign */
   if (bool.must) {
-    bool.must = prepareQueryInResolve(bool.must, fieldMap);
+    bool.must = prepareQueryMayBeArray(bool.must, fieldMap);
   }
   if (bool.filter) {
-    bool.filter = prepareQueryInResolve(bool.filter, fieldMap);
+    bool.filter = prepareQueryMayBeArray(bool.filter, fieldMap);
   }
   if (bool.should) {
-    bool.should = prepareQueryInResolve(bool.should, fieldMap);
+    bool.should = prepareQueryMayBeArray(bool.should, fieldMap);
   }
   if (bool.must_not) {
-    bool.must_not = prepareQueryInResolve(bool.must_not, fieldMap);
+    bool.must_not = prepareQueryMayBeArray(bool.must_not, fieldMap);
   }
 
   return bool;

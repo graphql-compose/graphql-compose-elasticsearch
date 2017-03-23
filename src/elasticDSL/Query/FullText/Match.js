@@ -2,7 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
-import { getAllAsFieldConfigMap } from '../../Commons/FieldNames';
+import { getAnalyzedAsFieldConfigMap } from '../../Commons/FieldNames';
 
 export function getMatchITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('QueryMatch', opts);
@@ -14,7 +14,7 @@ export function getMatchITC(opts: mixed = {}): InputTypeComposer {
   );
 
   const subName = getTypeName('QueryMatchSettings', opts);
-  const fields = getAllAsFieldConfigMap(
+  const fields = getAnalyzedAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
       // $FlowFixMe

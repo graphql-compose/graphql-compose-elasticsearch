@@ -14,7 +14,7 @@ export function getTermsITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  const fields = getAllAsFieldConfigMap(opts, 'JSON');
+  const fields = getAllAsFieldConfigMap(opts, '[JSON]');
 
   if (typeof fields === 'object') {
     return getOrSetType(name, () =>

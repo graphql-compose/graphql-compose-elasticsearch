@@ -81,6 +81,28 @@ export function getPercolatorFields(opts: mixed) {
   return getFieldNamesType(opts, ['percolator'], 'Percolator');
 }
 
+export function getTermFields(opts: mixed) {
+  return getFieldNamesType(
+    opts,
+    [
+      'keyword',
+      'date',
+      'boolean',
+      'ip',
+      'byte',
+      'short',
+      'integer',
+      'long',
+      'double',
+      'float',
+      'half_float',
+      'scaled_float',
+      'token_count',
+    ],
+    'Term'
+  );
+}
+
 export function getAllFields(opts: mixed) {
   return getFieldNamesType(opts, ['_all'], 'All');
 }
@@ -156,7 +178,7 @@ function getEnumValues(
   }
   getFieldNamesByElasticType(fieldMap, types).forEach(fieldName => {
     values[fieldName] = {
-      value: fieldName.replace('__', '.'),
+      value: fieldName.replace(/__/g, '.'),
     };
   });
   return values;

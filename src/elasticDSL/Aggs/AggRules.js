@@ -21,7 +21,7 @@ import { getValueCountITC } from './Metrics/ValueCount';
 
 import { getChildrenITC } from './Bucket/Children';
 import { getDateHistogramITC } from './Bucket/DateHistogram';
-import { getDateRangeITC } from './Bucket/DateRange';
+import { getAggsDateRangeITC } from './Bucket/DateRange';
 import { getDiversifiedSamplerITC } from './Bucket/DiversifiedSampler';
 import { getFilterITC } from './Bucket/Filter';
 import { getFiltersITC } from './Bucket/Filters';
@@ -86,7 +86,7 @@ export function getAggRulesITC(opts: mixed = {}): InputTypeComposer {
 
         children: () => getChildrenITC(opts),
         date_histogram: () => getDateHistogramITC(opts),
-        date_range: () => getDateRangeITC(opts),
+        date_range: () => getAggsDateRangeITC(opts),
         diversified_sampler: () => getDiversifiedSamplerITC(opts),
         filter: () => getFilterITC(opts),
         filters: () => getFiltersITC(opts),
