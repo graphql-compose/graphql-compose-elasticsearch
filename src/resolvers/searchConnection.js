@@ -54,6 +54,14 @@ export default function createSearchConnectionResolver(
   resolver.resolve = async rp => {
     const { args = {}, projection = {} } = rp;
 
+    if (!args.sort || !Array.isArray(args.sort) || args.sort.length === 0) {
+      throw new Error(
+        'Argument `sort` is required for the Relay Connection. According to ' +
+          'the fields in `sort` will be constructed `cursor`s for every edge. ' +
+          'Values of fields which used in `sort` should be unique in compound.'
+      );
+    }
+
     const first = parseInt(args.first, 10) || 0;
     if (first < 0) {
       throw new Error('Argument `first` should be non-negative number.');
@@ -95,7 +103,21 @@ export default function createSearchConnectionResolver(
 
     const hasExtraRecords = list.length > limit;
     if (hasExtraRecords) list = list.slice(0, limit);
-    const edges = list.map(node => ({ node, cursor: dataToCursor(node.sort) }));
+    const cursorMap = new Map();
+    const edges = list.map(node => {
+      const cursor = dataToCursor(node.sort);
+      if (cursorMap.has(cursor)) {
+        throw new Error(
+          'Argument `sort` should be more complex. `cursor` are constructed ' +
+            'according to the sort fields. Detected that two records have ' +
+            `the same cursors '${cursor}' with data '${unbase64(cursor)}'. ` +
+            'You should add more `sort` fields, which provide unique data ' +
+            'for all cursors in the result set (eg. `id` field).'
+        );
+      }
+      cursorMap.set(cursor, node);
+      return { node, cursor };
+    });
     const result = {
       ...res,
       pageInfo: {
