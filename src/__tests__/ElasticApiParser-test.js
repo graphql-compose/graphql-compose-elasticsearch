@@ -311,8 +311,31 @@ describe('ElasticApiParser', () => {
       });
     });
 
+    it('should convert `true` to `true_value` (same for `false`)', () => {
+      // This is fix for https://github.com/graphql/graphql-js/pull/812
+      // Which throw error on `true`, `false` and `null`.
+      // But we allow to use this values, just renaming it.
+      const type = parser.getEnumType('f1', ['true', true, 'false', false]);
+      expect(type).toBeInstanceOf(GraphQLEnumType);
+      expect(type._values[0]).toMatchObject({
+        name: 'true_string',
+        value: 'true',
+      });
+      expect(type._values[1]).toMatchObject({
+        name: 'true_boolean',
+        value: true,
+      });
+      expect(type._values[2]).toMatchObject({
+        name: 'false_string',
+        value: 'false',
+      });
+      expect(type._values[3]).toMatchObject({
+        name: 'false_boolean',
+        value: false,
+      });
+    });
+
     it('should convert 1 to number_1', () => {
-      // $FlowFixMe
       const type = parser.getEnumType('f1', [1]);
       expect(type).toBeInstanceOf(GraphQLEnumType);
       expect(type._values[0]).toMatchObject({ name: 'number_1', value: 1 });

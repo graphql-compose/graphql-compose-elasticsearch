@@ -362,7 +362,6 @@ export default class ElasticApiParser {
       case 'list':
         return GraphQLJSON;
       case 'enum':
-        // $FlowFixMe
         if (Array.isArray(paramCfg.options)) {
           return this.getEnumType(fieldName, paramCfg.options);
         }
@@ -380,7 +379,7 @@ export default class ElasticApiParser {
     }
   }
 
-  getEnumType(fieldName: string, vals: string[]): GraphQLEnumType {
+  getEnumType(fieldName: string, vals: mixed[]): GraphQLEnumType {
     const key = fieldName;
     const subKey = JSON.stringify(vals);
 
@@ -393,9 +392,20 @@ export default class ElasticApiParser {
         (result, val) => {
           if (val === '') {
             result.empty_string = { value: '' };
+          } else if (val === 'true') {
+            result.true_string = { value: 'true' };
+          } else if (val === true) {
+            result.true_boolean = { value: true };
+          } else if (val === 'false') {
+            result.false_string = { value: 'false' };
+          } else if (val === false) {
+            result.false_boolean = { value: false };
+          } else if (val === 'null') {
+            result.null_string = { value: 'null' };
           } else if (Number.isFinite(val)) {
+            // $FlowFixMe
             result[`number_${val}`] = { value: val };
-          } else {
+          } else if (typeof val === 'string') {
             result[val] = { value: val };
           }
           return result;
