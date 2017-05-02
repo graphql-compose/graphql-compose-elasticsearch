@@ -45,7 +45,7 @@ describe('ElasticApiParser', () => {
     });
 
     describe('findApiVersionFile()', () => {
-      it('should find proper version', () => {
+      it('should find proper version in elasticsearch 12.x', () => {
         const loadApiListFile = ElasticApiParser.loadApiListFile;
         // $FlowFixMe
         ElasticApiParser.loadApiListFile = () =>
@@ -77,6 +77,46 @@ describe('ElasticApiParser', () => {
         expect(ElasticApiParser.findApiVersionFile('_default')).toMatch(
           // $FlowFixMe
           'elasticsearch/src/lib/apis/5_0.js'
+        );
+
+        // $FlowFixMe
+        ElasticApiParser.loadApiListFile = loadApiListFile;
+      });
+
+      it('should find proper version in elasticsearch 13.x', () => {
+        const loadApiListFile = ElasticApiParser.loadApiListFile;
+        // $FlowFixMe
+        ElasticApiParser.loadApiListFile = () =>
+          `
+          module.exports = {
+            get '_default'() { return require('./5_3'); },
+            get '5.3'() { return require('./5_3'); },
+            get '5.2'() { return require('./5_2'); },
+            get '5.1'() { return require('./5_1'); },
+            get '5.0'() { return require('./5_0'); },
+            get '2.4'() { return require('./2_4'); },
+            get '1.7'() { return require('./1_7'); },
+            get '0.90'() { return require('./0_90'); },
+            get '5.x'() { return require('./5_x'); },
+            get 'master'() { return require('./master'); },
+          };
+        `;
+
+        expect(ElasticApiParser.findApiVersionFile('5.0')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/5_0.js'
+        );
+        expect(ElasticApiParser.findApiVersionFile('2.4')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/2_4.js'
+        );
+        expect(ElasticApiParser.findApiVersionFile('1.7')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/1_7.js'
+        );
+        expect(ElasticApiParser.findApiVersionFile('_default')).toMatch(
+          // $FlowFixMe
+          'elasticsearch/src/lib/apis/5_3.js'
         );
 
         // $FlowFixMe

@@ -130,11 +130,23 @@ export default class ElasticApiParser {
     const apiFolder = './node_modules/elasticsearch/src/lib/apis/';
     const apiListFile = path.resolve(apiFolder, 'index.js');
     const apiListCode = ElasticApiParser.loadApiListFile(apiListFile);
-    const re = new RegExp(`\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`, 'gi');
+
+    // parsing elasticsearch module 13.x and above
+    //   get '5.3'() { return require('./5_3'); },
+    const re = new RegExp(`\\'${version}\\'\\(\\).*require\\(\\'(.+)\\'\\)`, 'gi');
     const match = re.exec(apiListCode);
     if (match && match[1]) {
       return path.resolve(apiFolder, `${match[1]}.js`);
     }
+
+    // parsing elasticsearch module 12.x and below
+    //   '5.0': require('./5_0'),
+    const re12 = new RegExp(`\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`, 'gi');
+    const match12 = re12.exec(apiListCode);
+    if (match12 && match12[1]) {
+      return path.resolve(apiFolder, `${match12[1]}.js`);
+    }
+
     throw new Error(
       `Can not found Elastic version '${version}' in ${apiListFile}`
     );
