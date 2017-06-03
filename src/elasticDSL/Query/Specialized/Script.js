@@ -14,12 +14,12 @@ export function getScriptITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

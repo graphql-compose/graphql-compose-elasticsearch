@@ -19,7 +19,6 @@ export function getCommonITC(opts: mixed = {}): InputTypeComposer {
   const fields = getAnalyzedAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -29,7 +28,8 @@ export function getCommonITC(opts: mixed = {}): InputTypeComposer {
           low_freq_operator: 'String',
           high_freq_operator: 'String',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -38,7 +38,8 @@ export function getCommonITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

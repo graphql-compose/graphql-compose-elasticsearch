@@ -2,11 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
-import {
-  getGeoPointFC,
-  getDistanceUnitFC,
-  getDistanceCalculationModeFC,
-} from '../../Commons/Geo';
+import { getGeoPointFC, getDistanceUnitFC, getDistanceCalculationModeFC } from '../../Commons/Geo';
 import { getFloatRangeITC } from '../../Commons/Float';
 import { getGeoPointFields } from '../../Commons/FieldNames';
 
@@ -23,7 +19,6 @@ export function getGeoDistanceITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -34,5 +29,6 @@ export function getGeoDistanceITC(opts: mixed = {}): InputTypeComposer {
         unit: getDistanceUnitFC(opts),
         distance_type: getDistanceCalculationModeFC(opts),
       },
-    }));
+    })
+  );
 }

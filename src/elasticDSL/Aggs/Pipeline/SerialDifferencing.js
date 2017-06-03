@@ -14,7 +14,6 @@ export function getSerialDifferencingITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -24,5 +23,6 @@ export function getSerialDifferencingITC(opts: mixed = {}): InputTypeComposer {
         gap_policy: 'String',
         format: 'String',
       },
-    }));
+    })
+  );
 }

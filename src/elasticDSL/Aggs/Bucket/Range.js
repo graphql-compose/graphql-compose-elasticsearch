@@ -19,7 +19,6 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -29,5 +28,6 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
         keyed: 'Boolean',
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

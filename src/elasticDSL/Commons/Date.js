@@ -6,12 +6,9 @@ import { getTypeName, getOrSetType, desc } from '../../utils';
 
 export function getDateRangeITC(opts: mixed = {}): mixed {
   const name = getTypeName('DateRange', opts);
-  const description = desc(
-    `Date range where \`from\` value includes and \`to\` value excludes.`
-  );
+  const description = desc(`Date range where \`from\` value includes and \`to\` value excludes.`);
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -19,7 +16,8 @@ export function getDateRangeITC(opts: mixed = {}): mixed {
         from: getDateMathFC(),
         to: getDateMathFC(),
       },
-    }));
+    })
+  );
 }
 
 export function getDateFormatFC(opts: mixed = {}): mixed {

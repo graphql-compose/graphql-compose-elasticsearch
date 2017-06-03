@@ -15,7 +15,6 @@ export function getFiltersITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -24,5 +23,6 @@ export function getFiltersITC(opts: mixed = {}): InputTypeComposer {
         other_bucket: 'Boolean',
         other_bucket_key: 'String',
       },
-    }));
+    })
+  );
 }

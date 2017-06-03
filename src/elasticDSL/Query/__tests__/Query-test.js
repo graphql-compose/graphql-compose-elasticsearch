@@ -1,11 +1,6 @@
 /* @flow */
 
-import {
-  printSchema,
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLInt,
-} from 'graphql';
+import { printSchema, GraphQLSchema, GraphQLObjectType, GraphQLInt } from 'graphql';
 import { TypeMapper } from 'graphql-compose';
 import { getQueryITC } from '../Query';
 

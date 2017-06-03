@@ -19,14 +19,14 @@ export function getWildcardITC(opts: mixed = {}): InputTypeComposer {
   const fields = getKeywordAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
           value: 'String!',
           boost: 'Float',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -35,7 +35,8 @@ export function getWildcardITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

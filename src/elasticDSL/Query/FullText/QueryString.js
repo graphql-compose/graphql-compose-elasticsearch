@@ -14,7 +14,6 @@ export function getQueryStringITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -45,5 +44,6 @@ export function getQueryStringITC(opts: mixed = {}): InputTypeComposer {
         use_dis_max: 'Boolean',
         tie_breaker: 'Int',
       },
-    }));
+    })
+  );
 }

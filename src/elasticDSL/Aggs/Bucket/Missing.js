@@ -16,12 +16,12 @@ export function getMissingITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         field: getAllFields(opts),
       },
-    }));
+    })
+  );
 }

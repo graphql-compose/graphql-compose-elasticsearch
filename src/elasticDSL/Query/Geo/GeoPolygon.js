@@ -19,14 +19,14 @@ export function getGeoPolygonITC(opts: mixed = {}): InputTypeComposer {
   const fields = getGeoPointAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
           points: [getGeoPointFC(opts)],
           validation_method: 'String',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -35,7 +35,8 @@ export function getGeoPolygonITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

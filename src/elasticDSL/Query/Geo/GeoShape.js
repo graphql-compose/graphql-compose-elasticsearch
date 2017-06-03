@@ -18,7 +18,6 @@ export function getGeoShapeITC(opts: mixed = {}): InputTypeComposer {
   const fields = getGeoShapeAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -26,7 +25,8 @@ export function getGeoShapeITC(opts: mixed = {}): InputTypeComposer {
           relation: 'JSON',
           indexed_shape: 'JSON',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -35,7 +35,8 @@ export function getGeoShapeITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

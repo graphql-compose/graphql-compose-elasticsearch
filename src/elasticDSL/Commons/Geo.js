@@ -37,10 +37,7 @@ export const ElasticGeoPointType = new GraphQLScalarType({
       }
       case Kind.LIST:
         if (ast.values.length === 2) {
-          return [
-            parseFloat(ast.values[0].value || 0),
-            parseFloat(ast.values[1].value || 0),
-          ];
+          return [parseFloat(ast.values[0].value || 0), parseFloat(ast.values[1].value || 0)];
         }
         return null;
       default:

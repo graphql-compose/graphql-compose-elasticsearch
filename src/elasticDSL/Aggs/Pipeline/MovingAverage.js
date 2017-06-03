@@ -14,7 +14,6 @@ export function getMovingAverageITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -26,5 +25,6 @@ export function getMovingAverageITC(opts: mixed = {}): InputTypeComposer {
         model: 'String',
         settings: 'JSON',
       },
-    }));
+    })
+  );
 }

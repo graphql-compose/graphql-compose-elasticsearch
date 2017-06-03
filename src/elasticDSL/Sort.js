@@ -1,6 +1,6 @@
 /* @flow */
 
-import { InputTypeComposer } from 'graphql-compose';
+// import { InputTypeComposer } from 'graphql-compose';
 import { GraphQLEnumType } from 'graphql';
 import { getTypeName, getOrSetType } from '../utils';
 import { getFieldNamesByElasticType } from './Commons/FieldNames';
@@ -21,7 +21,7 @@ const sortableTypes = [
   'keyword',
 ];
 
-export function getSortITC(opts: any = {}): InputTypeComposer | string {
+export function getSortITC(opts: any = {}): GraphQLEnumType | string {
   const name = getTypeName('SortEnum', opts);
   const description = 'Sortable fields from mapping';
 
@@ -30,10 +30,7 @@ export function getSortITC(opts: any = {}): InputTypeComposer | string {
   }
 
   return getOrSetType(name, () => {
-    const sortableFields = getFieldNamesByElasticType(
-      opts.fieldMap,
-      sortableTypes
-    );
+    const sortableFields = getFieldNamesByElasticType(opts.fieldMap, sortableTypes);
     if (sortableFields.length === 0) {
       return 'JSON';
     }

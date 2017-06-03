@@ -13,12 +13,12 @@ export function getCommonsHdrITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         number_of_significant_value_digits: 'Int',
       },
-    }));
+    })
+  );
 }

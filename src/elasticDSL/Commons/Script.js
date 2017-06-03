@@ -13,7 +13,6 @@ export function getCommonsScriptITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -23,5 +22,6 @@ export function getCommonsScriptITC(opts: mixed = {}): InputTypeComposer {
         params: 'JSON',
         file: 'String',
       },
-    }));
+    })
+  );
 }

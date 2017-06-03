@@ -15,12 +15,12 @@ export function getReverseNestedITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         path: 'String',
       },
-    }));
+    })
+  );
 }

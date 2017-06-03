@@ -14,7 +14,6 @@ export function getBoostingITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -23,7 +22,8 @@ export function getBoostingITC(opts: mixed = {}): InputTypeComposer {
         negative: () => getQueryITC(opts),
         negative_boost: 'Float',
       },
-    }));
+    })
+  );
 }
 
 export function prepareBoostingInResolve(

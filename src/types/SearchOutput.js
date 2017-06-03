@@ -1,7 +1,7 @@
 /* @flow */
 
 import { TypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../utils';
+import { getTypeName, getOrSetType } from '../utils';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import getShardsTC from './Shards';
 import { getSearchHitItemTC } from './SearchHitItem';
@@ -34,8 +34,10 @@ export function getSearchOutputTC(opts: SearchOptsT = {}): TypeComposer {
               max_score: 'Float',
               hits: [getSearchHitItemTC(opts)],
             },
-          })),
+          })
+        ),
         aggregations: 'JSON',
       },
-    }));
+    })
+  );
 }

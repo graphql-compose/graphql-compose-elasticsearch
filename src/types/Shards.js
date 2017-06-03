@@ -13,5 +13,6 @@ export default function getShardsTC(opts: mixed = {}): TypeComposer {
         successful: 'Int',
         failed: 'Int',
       },
-    }));
+    })
+  );
 }

@@ -18,14 +18,14 @@ export function getMatchPhraseITC(opts: mixed = {}): InputTypeComposer {
   const fields = getAnalyzedAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
           query: 'String',
           analyzer: 'String',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -34,7 +34,8 @@ export function getMatchPhraseITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

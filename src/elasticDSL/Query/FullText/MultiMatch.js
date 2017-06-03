@@ -13,7 +13,6 @@ export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -42,5 +41,6 @@ export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
         minimum_should_match: 'String',
         analyzer: 'String',
       },
-    }));
+    })
+  );
 }

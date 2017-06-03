@@ -19,14 +19,14 @@ export function getGeoBoundingBoxITC(opts: mixed = {}): InputTypeComposer {
   const fields = getGeoPointAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
           top_left: getGeoPointFC(opts),
           bottom_right: getGeoPointFC(opts),
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -35,7 +35,8 @@ export function getGeoBoundingBoxITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

@@ -2,11 +2,7 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
-import {
-  getDateFormatFC,
-  getDateTimeZoneFC,
-  getDateRangeITC,
-} from '../../Commons/Date';
+import { getDateFormatFC, getDateTimeZoneFC, getDateRangeITC } from '../../Commons/Date';
 import { getDateFields } from '../../Commons/FieldNames';
 
 export function getAggsDateRangeITC(opts: mixed = {}): InputTypeComposer {
@@ -24,7 +20,6 @@ export function getAggsDateRangeITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -34,5 +29,6 @@ export function getAggsDateRangeITC(opts: mixed = {}): InputTypeComposer {
         ranges: () => [getDateRangeITC(opts)],
         time_zone: getDateTimeZoneFC(opts),
       },
-    }));
+    })
+  );
 }

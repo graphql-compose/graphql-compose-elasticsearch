@@ -17,7 +17,6 @@ export function getMatchITC(opts: mixed = {}): InputTypeComposer {
   const fields = getAnalyzedAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -26,7 +25,8 @@ export function getMatchITC(opts: mixed = {}): InputTypeComposer {
           zero_terms_query: 'String',
           cutoff_frequency: 'Float',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -35,7 +35,8 @@ export function getMatchITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

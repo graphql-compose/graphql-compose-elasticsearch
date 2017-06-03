@@ -17,12 +17,12 @@ export function getSamplerITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         shard_size: 'Int',
       },
-    }));
+    })
+  );
 }

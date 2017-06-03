@@ -3,11 +3,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
-import {
-  getDateIntervalFC,
-  getDateFormatFC,
-  getDateTimeZoneFC,
-} from '../../Commons/Date';
+import { getDateIntervalFC, getDateFormatFC, getDateTimeZoneFC } from '../../Commons/Date';
 import { getDateFields } from '../../Commons/FieldNames';
 
 export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
@@ -21,7 +17,6 @@ export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -34,5 +29,6 @@ export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
         missing: 'String',
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

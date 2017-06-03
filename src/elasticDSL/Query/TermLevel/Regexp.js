@@ -17,7 +17,6 @@ export function getRegexpITC(opts: mixed = {}): InputTypeComposer {
   const fields = getStringAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -26,7 +25,8 @@ export function getRegexpITC(opts: mixed = {}): InputTypeComposer {
           flags: 'String',
           max_determinized_states: 'Int',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -35,7 +35,8 @@ export function getRegexpITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

@@ -17,7 +17,6 @@ export function getMaxBucketITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -26,5 +25,6 @@ export function getMaxBucketITC(opts: mixed = {}): InputTypeComposer {
         gap_policy: 'String',
         format: 'String',
       },
-    }));
+    })
+  );
 }

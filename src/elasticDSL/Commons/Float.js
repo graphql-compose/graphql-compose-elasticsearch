@@ -6,12 +6,9 @@ import { getTypeName, getOrSetType, desc } from '../../utils';
 
 export function getFloatRangeITC(opts: mixed = {}): mixed {
   const name = getTypeName('FloatRange', opts);
-  const description = desc(
-    `Float range where \`from\` value includes and \`to\` value excludes.`
-  );
+  const description = desc(`Float range where \`from\` value includes and \`to\` value excludes.`);
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -19,7 +16,8 @@ export function getFloatRangeITC(opts: mixed = {}): mixed {
         from: 'Float',
         to: 'Float',
       },
-    }));
+    })
+  );
 }
 
 export function getFloatRangeKeyedITC(opts: mixed = {}): mixed {
@@ -32,7 +30,6 @@ export function getFloatRangeKeyedITC(opts: mixed = {}): mixed {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -41,5 +38,6 @@ export function getFloatRangeKeyedITC(opts: mixed = {}): mixed {
         to: 'Float',
         key: 'String',
       },
-    }));
+    })
+  );
 }

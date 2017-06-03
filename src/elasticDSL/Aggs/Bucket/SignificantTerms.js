@@ -15,7 +15,6 @@ export function getSignificantTermsITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -25,5 +24,6 @@ export function getSignificantTermsITC(opts: mixed = {}): InputTypeComposer {
         background_filter: 'JSON',
         execution_hint: 'String',
       },
-    }));
+    })
+  );
 }

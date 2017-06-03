@@ -191,7 +191,6 @@ export function inputPropertiesToGraphQLTypes(
 
   // object type with subfields
   if (prop.fields && isObject(prop.fields)) {
-    // $FlowFixMe
     Object.keys(prop.fields).forEach(subFieldName => {
       inputPropertiesToGraphQLTypes(
         // $FlowFixMe

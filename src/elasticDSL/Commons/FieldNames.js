@@ -111,10 +111,7 @@ export function getAllAsFieldConfigMap(opts: mixed, fc: mixed) {
   return getFieldConfigMap(opts, ['_all'], fc);
 }
 
-export function getFieldNamesByElasticType(
-  fieldMap: any,
-  types: ElasticDataType[]
-): string[] {
+export function getFieldNamesByElasticType(fieldMap: any, types: ElasticDataType[]): string[] {
   const fieldNames = [];
   types.forEach(type => {
     if (typeof fieldMap[type] === 'object') {

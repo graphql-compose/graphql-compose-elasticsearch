@@ -23,7 +23,6 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -49,7 +48,8 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
         docvalue_fields: '[String]',
         stored_fields: '[String]',
       },
-    }));
+    })
+  );
 }
 
 export function prepareBodyInResolve(

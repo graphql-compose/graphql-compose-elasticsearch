@@ -19,16 +19,7 @@ export default function createSearchConnectionResolver(
       before: 'String',
     })
     .removeArg(['limit', 'skip'])
-    .reorderArgs([
-      'q',
-      'query',
-      'sort',
-      'aggs',
-      'first',
-      'after',
-      'last',
-      'before',
-    ]);
+    .reorderArgs(['q', 'query', 'sort', 'aggs', 'first', 'after', 'last', 'before']);
 
   const searchType = searchResolver.getTypeComposer();
   const typeName = searchType.getTypeName();
@@ -156,7 +147,8 @@ function getPageInfoTC(opts: mixed = {}): TypeComposer {
         endCursor: String
       }
     `
-    ));
+    )
+  );
 }
 
 export function base64(i: string): string {

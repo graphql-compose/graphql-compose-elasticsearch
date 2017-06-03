@@ -15,7 +15,6 @@ export function getHasChildITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -29,5 +28,6 @@ export function getHasChildITC(opts: mixed = {}): InputTypeComposer {
         min_children: 'Int',
         max_children: 'Int',
       },
-    }));
+    })
+  );
 }

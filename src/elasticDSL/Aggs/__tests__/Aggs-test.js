@@ -1,18 +1,8 @@
 /* @flow */
 
-import {
-  printSchema,
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLInt,
-} from 'graphql';
+import { printSchema, GraphQLSchema, GraphQLObjectType, GraphQLInt } from 'graphql';
 import { TypeMapper } from 'graphql-compose';
-import {
-  getAggsITC,
-  prepareAggsInResolve,
-  convertAggsBlocks,
-  convertAggsRules,
-} from '../Aggs';
+import { getAggsITC, prepareAggsInResolve, convertAggsBlocks, convertAggsRules } from '../Aggs';
 
 describe('AGGS args converter', () => {
   it('Aggs DSL', () => {
@@ -46,10 +36,7 @@ describe('AGGS args converter', () => {
 
   it('convertAggsBlocks()', () => {
     expect(
-      convertAggsBlocks([
-        { key: 'field1', value: {} },
-        { key: 'field2', value: {} },
-      ])
+      convertAggsBlocks([{ key: 'field1', value: {} }, { key: 'field2', value: {} }])
     ).toEqual({
       field1: {},
       field2: {},
@@ -58,9 +45,7 @@ describe('AGGS args converter', () => {
 
   it('should convert recursively aggs', () => {
     expect(
-      convertAggsBlocks([
-        { key: 'field1', value: { aggs: [{ key: 'field2', value: {} }] } },
-      ])
+      convertAggsBlocks([{ key: 'field1', value: { aggs: [{ key: 'field2', value: {} }] } }])
     ).toEqual({ field1: { aggs: { field2: {} } } });
   });
 

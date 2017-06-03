@@ -17,7 +17,6 @@ export function getCardinalityITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -36,5 +35,6 @@ export function getCardinalityITC(opts: mixed = {}): InputTypeComposer {
         missing: 'String',
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

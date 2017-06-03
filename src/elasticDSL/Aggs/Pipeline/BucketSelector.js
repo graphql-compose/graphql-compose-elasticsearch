@@ -18,7 +18,6 @@ export function getBucketSelectorITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -27,5 +26,6 @@ export function getBucketSelectorITC(opts: mixed = {}): InputTypeComposer {
         script: 'String!',
         gap_policy: 'String',
       },
-    }));
+    })
+  );
 }

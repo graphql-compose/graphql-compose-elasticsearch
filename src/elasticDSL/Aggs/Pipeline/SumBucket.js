@@ -15,7 +15,6 @@ export function getSumBucketITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -24,5 +23,6 @@ export function getSumBucketITC(opts: mixed = {}): InputTypeComposer {
         gap_policy: 'String',
         format: 'String',
       },
-    }));
+    })
+  );
 }

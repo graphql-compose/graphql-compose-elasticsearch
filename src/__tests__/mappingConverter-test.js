@@ -76,9 +76,7 @@ describe('PropertiesConverter', () => {
       const tc = convertToSourceTC(mapping, 'TestMapping');
       expect(tc).toBeInstanceOf(TypeComposer);
       expect(tc.getTypeName()).toBe('TestMapping');
-      expect(tc.getFieldNames()).toEqual(
-        expect.arrayContaining(['name', 'avatarUrl'])
-      );
+      expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['name', 'avatarUrl']));
     });
 
     it('should make singular and plural fields', () => {
@@ -107,40 +105,26 @@ describe('PropertiesConverter', () => {
     });
 
     it('should return GraphQLJSON as fallback for unknown Elastic type', () => {
-      expect(propertyToSourceGraphQLType({ type: 'strange' })).toEqual(
-        GraphQLJSON
-      );
+      expect(propertyToSourceGraphQLType({ type: 'strange' })).toEqual(GraphQLJSON);
     });
 
     it('should return GraphQLInt for int types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'integer' })).toEqual(
-        GraphQLInt
-      );
+      expect(propertyToSourceGraphQLType({ type: 'integer' })).toEqual(GraphQLInt);
       expect(propertyToSourceGraphQLType({ type: 'long' })).toEqual(GraphQLInt);
     });
 
     it('should return GraphQLString for string types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'text' })).toEqual(
-        GraphQLString
-      );
-      expect(propertyToSourceGraphQLType({ type: 'keyword' })).toEqual(
-        GraphQLString
-      );
+      expect(propertyToSourceGraphQLType({ type: 'text' })).toEqual(GraphQLString);
+      expect(propertyToSourceGraphQLType({ type: 'keyword' })).toEqual(GraphQLString);
     });
 
     it('should return GraphQLFloat for float types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'float' })).toEqual(
-        GraphQLFloat
-      );
-      expect(propertyToSourceGraphQLType({ type: 'double' })).toEqual(
-        GraphQLFloat
-      );
+      expect(propertyToSourceGraphQLType({ type: 'float' })).toEqual(GraphQLFloat);
+      expect(propertyToSourceGraphQLType({ type: 'double' })).toEqual(GraphQLFloat);
     });
 
     it('should return GraphQLBoolean for float types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'boolean' })).toEqual(
-        GraphQLBoolean
-      );
+      expect(propertyToSourceGraphQLType({ type: 'boolean' })).toEqual(GraphQLBoolean);
     });
 
     it('should return GraphQLObjectType for object with subfields', () => {
@@ -160,9 +144,7 @@ describe('PropertiesConverter', () => {
       expect(type).toBeInstanceOf(GraphQLObjectType);
       const tc = TypeComposer.create(type);
       expect(tc.getTypeName()).toEqual('ComplexType');
-      expect(tc.getFieldNames()).toEqual(
-        expect.arrayContaining(['big', 'thumb'])
-      );
+      expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
       expect(tc.getFieldType('big')).toEqual(GraphQLString);
     });
   });
@@ -205,15 +187,9 @@ describe('PropertiesConverter', () => {
         },
       });
       expect(Object.keys(fields._all).length).toEqual(2);
-      expect(Object.keys(fields._all)).toEqual(
-        expect.arrayContaining(['name', 'name__keyword'])
-      );
-      expect(Object.keys(fields.keyword)).toEqual(
-        expect.arrayContaining(['name__keyword'])
-      );
-      expect(Object.keys(fields.text)).toEqual(
-        expect.arrayContaining(['name'])
-      );
+      expect(Object.keys(fields._all)).toEqual(expect.arrayContaining(['name', 'name__keyword']));
+      expect(Object.keys(fields.keyword)).toEqual(expect.arrayContaining(['name__keyword']));
+      expect(Object.keys(fields.text)).toEqual(expect.arrayContaining(['name']));
     });
 
     it('should not return index:false fields', () => {
@@ -229,21 +205,18 @@ describe('PropertiesConverter', () => {
         },
       });
       expect(Object.keys(fields._all).length).toEqual(1);
-      expect(Object.keys(fields._all)).toEqual(
-        expect.arrayContaining(['date'])
-      );
+      expect(Object.keys(fields._all)).toEqual(expect.arrayContaining(['date']));
       expect(Object.keys(fields.date).length).toEqual(1);
-      expect(Object.keys(fields.date)).toEqual(
-        expect.arrayContaining(['date'])
-      );
+      expect(Object.keys(fields.date)).toEqual(expect.arrayContaining(['date']));
     });
   });
 
   describe('getSubFields()', () => {
     it('should return array of sub fields', () => {
-      expect(
-        getSubFields('range', ['ok', 'range', 'range.min', 'range.max'])
-      ).toEqual(['min', 'max']);
+      expect(getSubFields('range', ['ok', 'range', 'range.min', 'range.max'])).toEqual([
+        'min',
+        'max',
+      ]);
     });
 
     it('should return array for empty/undefined list', () => {

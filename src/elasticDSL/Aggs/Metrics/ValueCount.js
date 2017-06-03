@@ -16,7 +16,6 @@ export function getValueCountITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -24,5 +23,6 @@ export function getValueCountITC(opts: mixed = {}): InputTypeComposer {
         field: getAllFields(opts),
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

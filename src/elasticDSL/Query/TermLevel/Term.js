@@ -19,7 +19,6 @@ export function getTermITC(opts: mixed = {}): InputTypeComposer {
   const fields = getAllAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -29,7 +28,8 @@ export function getTermITC(opts: mixed = {}): InputTypeComposer {
           prefix_length: 'Int',
           max_expansions: 'Int',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -38,7 +38,8 @@ export function getTermITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

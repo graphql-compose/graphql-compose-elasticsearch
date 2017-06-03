@@ -16,7 +16,6 @@ export function getCumulativeSumITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -24,5 +23,6 @@ export function getCumulativeSumITC(opts: mixed = {}): InputTypeComposer {
         buckets_path: 'String!',
         format: 'String',
       },
-    }));
+    })
+  );
 }

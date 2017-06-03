@@ -18,8 +18,8 @@ export function getExistsITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        // $FlowFixMe
         field: getAllFields(opts),
       },
-    }));
+    })
+  );
 }

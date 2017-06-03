@@ -13,7 +13,6 @@ export function getIdsITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -21,5 +20,6 @@ export function getIdsITC(opts: mixed = {}): InputTypeComposer {
         type: 'String!',
         values: '[String]!',
       },
-    }));
+    })
+  );
 }

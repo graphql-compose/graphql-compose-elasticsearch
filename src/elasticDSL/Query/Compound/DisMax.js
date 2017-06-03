@@ -17,7 +17,6 @@ export function getDisMaxITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -26,7 +25,8 @@ export function getDisMaxITC(opts: mixed = {}): InputTypeComposer {
         boost: 'Float',
         tie_breaker: 'Float',
       },
-    }));
+    })
+  );
 }
 
 /* eslint-disable no-param-reassign, camelcase */
@@ -36,7 +36,8 @@ export function prepareDisMaxResolve(
 ): { [argName: string]: any } {
   if (Array.isArray(dis_max.queries)) {
     dis_max.queries = dis_max.queries.map(query =>
-      prepareQueryInResolve(query, fieldMap));
+      prepareQueryInResolve(query, fieldMap)
+    );
   }
 
   return dis_max;

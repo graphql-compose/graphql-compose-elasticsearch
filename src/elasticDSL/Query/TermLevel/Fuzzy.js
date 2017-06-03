@@ -17,7 +17,6 @@ export function getFuzzyITC(opts: mixed = {}): InputTypeComposer {
   const fields = getAnalyzedAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -27,7 +26,8 @@ export function getFuzzyITC(opts: mixed = {}): InputTypeComposer {
           prefix_length: 'Int',
           max_expansions: 'Int',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -36,7 +36,8 @@ export function getFuzzyITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe

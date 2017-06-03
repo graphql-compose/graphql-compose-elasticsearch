@@ -14,7 +14,6 @@ export function getMoreLikeThisITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -26,5 +25,6 @@ export function getMoreLikeThisITC(opts: mixed = {}): InputTypeComposer {
         max_query_terms: 'Int',
         boost: 'Float',
       },
-    }));
+    })
+  );
 }

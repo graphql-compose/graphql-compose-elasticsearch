@@ -14,7 +14,6 @@ export function getScriptedMetricITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -28,5 +27,6 @@ export function getScriptedMetricITC(opts: mixed = {}): InputTypeComposer {
           _agg: JSON!
         }`,
       },
-    }));
+    })
+  );
 }

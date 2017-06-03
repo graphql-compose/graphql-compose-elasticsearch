@@ -15,12 +15,12 @@ export function getGeoCentroidITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         field: getGeoPointFields(opts),
       },
-    }));
+    })
+  );
 }

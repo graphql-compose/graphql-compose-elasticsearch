@@ -16,7 +16,6 @@ export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -33,5 +32,6 @@ export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
         offset: 'Int',
         keyed: 'Boolean',
       },
-    }));
+    })
+  );
 }

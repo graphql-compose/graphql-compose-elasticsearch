@@ -41,5 +41,6 @@ export function getSearchHitItemTC(opts: SearchOptsT = {}): TypeComposer {
         // return sort values for search_after
         sort: 'JSON',
       },
-    }));
+    })
+  );
 }

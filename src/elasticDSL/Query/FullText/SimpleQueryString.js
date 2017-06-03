@@ -16,7 +16,6 @@ export function getSimpleQueryStringITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -43,5 +42,6 @@ export function getSimpleQueryStringITC(opts: mixed = {}): InputTypeComposer {
         minimum_should_match: 'String',
         quote_field_suffix: 'String',
       },
-    }));
+    })
+  );
 }

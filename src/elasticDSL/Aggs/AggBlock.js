@@ -16,7 +16,6 @@ export function getAggBlockITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -30,5 +29,6 @@ export function getAggBlockITC(opts: mixed = {}): InputTypeComposer {
           description: 'Aggregation rules',
         },
       },
-    }));
+    })
+  );
 }

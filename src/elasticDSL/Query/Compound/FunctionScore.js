@@ -16,7 +16,6 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  // $FlowFixMe
   const RandomScoreType = InputTypeComposer.create({
     name: getTypeName('QueryFunctionScoreRandom', opts),
     fields: {
@@ -25,7 +24,6 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
   });
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -38,7 +36,6 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
         },
         random_score: RandomScoreType,
         functions: [
-          // $FlowFixMe
           InputTypeComposer.create({
             name: getTypeName('QueryFunctionScoreFunction', opts),
             fields: {
@@ -60,7 +57,8 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
         },
         min_score: 'Float',
       },
-    }));
+    })
+  );
 }
 
 /* eslint-disable no-param-reassign, camelcase */

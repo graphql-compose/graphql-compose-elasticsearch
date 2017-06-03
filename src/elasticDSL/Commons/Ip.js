@@ -6,12 +6,9 @@ import { getTypeName, getOrSetType, desc } from '../../utils';
 
 export function getIpRangeTypeITC(opts: mixed = {}): mixed {
   const name = getTypeName('IpRangeType', opts);
-  const description = desc(
-    `Ip range where \`from\` value includes and \`to\` value excludes.`
-  );
+  const description = desc(`Ip range where \`from\` value includes and \`to\` value excludes.`);
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -23,5 +20,6 @@ export function getIpRangeTypeITC(opts: mixed = {}): mixed {
           description: 'IP ranges can also be defined as CIDR masks 10.0.0.127/25',
         },
       },
-    }));
+    })
+  );
 }

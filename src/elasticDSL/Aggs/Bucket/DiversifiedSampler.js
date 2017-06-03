@@ -17,7 +17,6 @@ export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -31,5 +30,6 @@ export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
         script: () => getCommonsScriptITC(opts),
         execution_hint: 'String',
       },
-    }));
+    })
+  );
 }

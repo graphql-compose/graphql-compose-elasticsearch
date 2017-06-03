@@ -17,7 +17,6 @@ export function getIpRangeITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -25,5 +24,6 @@ export function getIpRangeITC(opts: mixed = {}): InputTypeComposer {
         field: getIpFields(opts),
         ranges: () => [getIpRangeTypeITC(opts)],
       },
-    }));
+    })
+  );
 }

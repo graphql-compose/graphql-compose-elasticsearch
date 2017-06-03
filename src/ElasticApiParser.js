@@ -22,7 +22,7 @@ import type {
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldMap,
   GraphQLInputType,
-} from 'graphql/type/definition'; // eslint-disable-line
+} from "graphql/type/definition"; // eslint-disable-line
 
 export type ElasticParamConfigT = {
   type: string,
@@ -80,7 +80,8 @@ export default class ElasticApiParser {
   constructor(opts: ElasticApiParserOptsT = {}) {
     // avaliable varsions can be found in installed package `elasticsearch`
     // in file /node_modules/elasticsearch/src/lib/apis/index.js
-    this.apiVersion = opts.apiVersion ||
+    this.apiVersion =
+      opts.apiVersion ||
       (opts.elasticClient &&
         opts.elasticClient.transport &&
         opts.elasticClient.transport._config &&
@@ -133,7 +134,10 @@ export default class ElasticApiParser {
 
     // parsing elasticsearch module 13.x and above
     //   get '5.3'() { return require('./5_3'); },
-    const re = new RegExp(`\\'${version}\\'\\(\\).*require\\(\\'(.+)\\'\\)`, 'gi');
+    const re = new RegExp(
+      `\\'${version}\\'\\(\\).*require\\(\\'(.+)\\'\\)`,
+      'gi'
+    );
     const match = re.exec(apiListCode);
     if (match && match[1]) {
       return path.resolve(apiFolder, `${match[1]}.js`);
@@ -141,7 +145,10 @@ export default class ElasticApiParser {
 
     // parsing elasticsearch module 12.x and below
     //   '5.0': require('./5_0'),
-    const re12 = new RegExp(`\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`, 'gi');
+    const re12 = new RegExp(
+      `\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`,
+      'gi'
+    );
     const match12 = re12.exec(apiListCode);
     if (match12 && match12[1]) {
       return path.resolve(apiFolder, `${match12[1]}.js`);
@@ -400,30 +407,27 @@ export default class ElasticApiParser {
     }
 
     if (!this.cachedEnums[key][subKey]) {
-      const values = vals.reduce(
-        (result, val) => {
-          if (val === '') {
-            result.empty_string = { value: '' };
-          } else if (val === 'true') {
-            result.true_string = { value: 'true' };
-          } else if (val === true) {
-            result.true_boolean = { value: true };
-          } else if (val === 'false') {
-            result.false_string = { value: 'false' };
-          } else if (val === false) {
-            result.false_boolean = { value: false };
-          } else if (val === 'null') {
-            result.null_string = { value: 'null' };
-          } else if (Number.isFinite(val)) {
-            // $FlowFixMe
-            result[`number_${val}`] = { value: val };
-          } else if (typeof val === 'string') {
-            result[val] = { value: val };
-          }
-          return result;
-        },
-        {}
-      );
+      const values = vals.reduce((result, val) => {
+        if (val === '') {
+          result.empty_string = { value: '' };
+        } else if (val === 'true') {
+          result.true_string = { value: 'true' };
+        } else if (val === true) {
+          result.true_boolean = { value: true };
+        } else if (val === 'false') {
+          result.false_string = { value: 'false' };
+        } else if (val === false) {
+          result.false_boolean = { value: false };
+        } else if (val === 'null') {
+          result.null_string = { value: 'null' };
+        } else if (Number.isFinite(val)) {
+          // $FlowFixMe
+          result[`number_${val}`] = { value: val };
+        } else if (typeof val === 'string') {
+          result[val] = { value: val };
+        }
+        return result;
+      }, {});
 
       let postfix = Object.keys(this.cachedEnums[key]).length;
       if (postfix === 0) postfix = '';

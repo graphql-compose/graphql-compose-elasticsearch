@@ -16,7 +16,6 @@ export function getDerivativeITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -26,5 +25,6 @@ export function getDerivativeITC(opts: mixed = {}): InputTypeComposer {
         format: 'String',
         unit: 'String',
       },
-    }));
+    })
+  );
 }

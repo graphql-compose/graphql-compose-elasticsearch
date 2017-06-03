@@ -1,22 +1,11 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import {
-  Resolver,
-  TypeComposer,
-  InputTypeComposer,
-  isObject,
-} from 'graphql-compose';
-import type {
-  ResolveParams,
-  ProjectionType,
-} from 'graphql-compose/lib/definition';
+import { Resolver, TypeComposer, InputTypeComposer, isObject } from 'graphql-compose';
+import type { ResolveParams, ProjectionType } from 'graphql-compose/lib/definition';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
-import {
-  getSearchBodyITC,
-  prepareBodyInResolve,
-} from '../elasticDSL/SearchBody';
+import { getSearchBodyITC, prepareBodyInResolve } from '../elasticDSL/SearchBody';
 import { getSearchOutputTC } from '../types/SearchOutput';
 
 export type ElasticSearchResolverOpts = {
@@ -39,9 +28,7 @@ export default function createSearchResolver(
   }
 
   if (!(sourceTC instanceof TypeComposer)) {
-    throw new Error(
-      'Second arg for Resolver search() should be instance of TypeComposer.'
-    );
+    throw new Error('Second arg for Resolver search() should be instance of TypeComposer.');
   }
 
   const prefix = opts.prefix || 'Es';
@@ -81,9 +68,7 @@ export default function createSearchResolver(
 
   delete argsConfigMap.size;
   delete argsConfigMap.from;
-  // $FlowFixMe
   argsConfigMap.limit = 'Int';
-  // $FlowFixMe
   argsConfigMap.skip = 'Int';
 
   const bodyITC = InputTypeComposer.create(argsConfigMap.body.type);
@@ -92,16 +77,7 @@ export default function createSearchResolver(
   argsConfigMap.sort = bodyITC.getField('sort');
   argsConfigMap.highlight = bodyITC.getField('highlight');
 
-  const topLevelArgs = [
-    'q',
-    'query',
-    'sort',
-    'limit',
-    'skip',
-    'aggs',
-    'highlight',
-    'opts',
-  ];
+  const topLevelArgs = ['q', 'query', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
   argsConfigMap.opts = InputTypeComposer.create({
     name: `${sourceTC.getTypeName()}Opts`,
     fields: Object.assign({}, argsConfigMap),
@@ -116,22 +92,11 @@ export default function createSearchResolver(
   const hitsType = type.get('hits.hits');
   type
     .addFields({
-      // $FlowFixMe
       count: 'Int',
-      // $FlowFixMe
       max_score: 'Float',
-      // $FlowFixMe
       hits: hitsType ? [hitsType] : 'JSON',
     })
-    .reorderFields([
-      'hits',
-      'count',
-      'aggregations',
-      'max_score',
-      'took',
-      'timed_out',
-      '_shards',
-    ]);
+    .reorderFields(['hits', 'count', 'aggregations', 'max_score', 'took', 'timed_out', '_shards']);
 
   // $FlowFixMe
   return new Resolver({
@@ -207,12 +172,7 @@ export default function createSearchResolver(
       }
 
       // $FlowFixMe
-      const res: any = await searchFC.resolve(
-        rp.source,
-        args,
-        rp.context,
-        rp.info
-      );
+      const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
 
       res.count = res.hits.total;
       res.max_score = res.hits.max_score;
@@ -223,14 +183,10 @@ export default function createSearchResolver(
   }).reorderArgs(['q', 'query', 'sort', 'limit', 'skip', 'aggs']);
 }
 
-export function toDottedList(
-  projection: ProjectionType,
-  prev?: string[]
-): string[] | boolean {
+export function toDottedList(projection: ProjectionType, prev?: string[]): string[] | boolean {
   let result = [];
   Object.keys(projection).forEach(k => {
     if (isObject(projection[k])) {
-      // $FlowFixMe
       const tmp = toDottedList(projection[k], prev ? [...prev, k] : [k]);
       if (Array.isArray(tmp)) {
         result = result.concat(tmp);

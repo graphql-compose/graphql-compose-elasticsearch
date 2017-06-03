@@ -15,7 +15,6 @@ export function getGeoBoundsITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -23,5 +22,6 @@ export function getGeoBoundsITC(opts: mixed = {}): InputTypeComposer {
         field: getGeoPointFields(opts),
         wrap_longitude: 'Boolean',
       },
-    }));
+    })
+  );
 }

@@ -15,7 +15,6 @@ export function getNestedITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -27,5 +26,6 @@ export function getNestedITC(opts: mixed = {}): InputTypeComposer {
         },
         query: () => getQueryITC(opts),
       },
-    }));
+    })
+  );
 }

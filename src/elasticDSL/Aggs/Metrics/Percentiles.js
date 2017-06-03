@@ -19,7 +19,6 @@ export function getPercentilesITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -33,5 +32,6 @@ export function getPercentilesITC(opts: mixed = {}): InputTypeComposer {
         missing: 'Float',
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

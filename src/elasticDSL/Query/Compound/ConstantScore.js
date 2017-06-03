@@ -15,7 +15,6 @@ export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -23,7 +22,8 @@ export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
         filter: () => getQueryITC(opts).getTypeAsRequired(),
         boost: 'Float!',
       },
-    }));
+    })
+  );
 }
 
 /* eslint-disable no-param-reassign, camelcase */

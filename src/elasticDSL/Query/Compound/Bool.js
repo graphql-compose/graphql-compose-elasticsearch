@@ -17,7 +17,6 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -76,7 +75,8 @@ export function getBoolITC(opts: mixed = {}): InputTypeComposer {
         },
         boost: 'Float',
       },
-    }));
+    })
+  );
 }
 
 function prepareQueryMayBeArray(vals, fieldMap) {

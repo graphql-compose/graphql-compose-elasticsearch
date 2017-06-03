@@ -16,12 +16,12 @@ export function getGlobalITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
       fields: {
         _without_fields_: 'JSON',
       },
-    }));
+    })
+  );
 }

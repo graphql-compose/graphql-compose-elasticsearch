@@ -15,7 +15,6 @@ export function getPercentilesBucketITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -25,5 +24,6 @@ export function getPercentilesBucketITC(opts: mixed = {}): InputTypeComposer {
         format: 'String',
         percents: '[Float]',
       },
-    }));
+    })
+  );
 }

@@ -14,7 +14,6 @@ export function getParentIdITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -23,5 +22,6 @@ export function getParentIdITC(opts: mixed = {}): InputTypeComposer {
         id: 'String',
         ignore_unmapped: 'Boolean',
       },
-    }));
+    })
+  );
 }

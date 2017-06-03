@@ -18,7 +18,6 @@ export function getMinITC(opts: mixed = {}): InputTypeComposer {
   );
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     InputTypeComposer.create({
       name,
       description,
@@ -27,5 +26,6 @@ export function getMinITC(opts: mixed = {}): InputTypeComposer {
         missing: 'Float',
         script: () => getCommonsScriptITC(opts),
       },
-    }));
+    })
+  );
 }

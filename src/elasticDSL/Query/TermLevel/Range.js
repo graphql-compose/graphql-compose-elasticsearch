@@ -17,7 +17,6 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   const fields = getAllAsFieldConfigMap(
     opts,
     getOrSetType(subName, () =>
-      // $FlowFixMe
       InputTypeComposer.create({
         name: subName,
         fields: {
@@ -27,7 +26,8 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
           lte: 'JSON',
           boost: 'Float',
         },
-      }))
+      })
+    )
   );
 
   if (typeof fields === 'object') {
@@ -36,7 +36,8 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
         name,
         description,
         fields,
-      }));
+      })
+    );
   }
 
   // $FlowFixMe
