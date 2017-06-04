@@ -22,7 +22,7 @@
     "import/no-extraneous-dependencies": 0,
     "import/prefer-default-export": 0,
     "prettier/prettier": ["error", {
-      "printWidth": 80,
+      "printWidth": 100,
       "singleQuote": true,
       "trailingComma": "es5",
     }]

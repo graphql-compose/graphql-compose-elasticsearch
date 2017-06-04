@@ -35,3 +35,6 @@
 [libs]
 
 [options]
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
+esproposal.class_instance_fields=enable
+unsafe.enable_getters_and_setters=true
