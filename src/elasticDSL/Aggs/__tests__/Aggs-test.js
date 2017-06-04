@@ -1,8 +1,9 @@
 /* @flow */
 
-import { printSchema, GraphQLSchema, GraphQLObjectType, GraphQLInt } from 'graphql';
-import { TypeMapper } from 'graphql-compose';
+import { TypeMapper, graphql } from 'graphql-compose';
 import { getAggsITC, prepareAggsInResolve, convertAggsBlocks, convertAggsRules } from '../Aggs';
+
+const { printSchema, GraphQLSchema, GraphQLObjectType, GraphQLInt } = graphql;
 
 describe('AGGS args converter', () => {
   it('Aggs DSL', () => {

@@ -25,7 +25,6 @@
     "dox": "^0.9.0"
   },
   "peerDependencies": {
-    "graphql": "^0.9.1",
     "elasticsearch": ">=12.0.0 || >=13.0.0",
     "graphql-compose": ">=1.19.2"
   },
@@ -81,7 +80,7 @@
     "docker": "npm run docker:v5",
     "docker:v2": "node ./scripts/docker/start 2 & wait",
     "docker:v5": "node ./scripts/docker/start 5 & wait",
-    "link": "yarn build && yarn link graphql && yarn link graphql-compose && yarn link",
-    "unlink": "yarn unlink graphql && yarn unlink graphql-compose && yarn add graphql graphql-compose"
+    "link": "yarn build && yarn link graphql-compose && yarn link",
+    "unlink": "yarn unlink graphql-compose && yarn add graphql-compose"
   }
 }

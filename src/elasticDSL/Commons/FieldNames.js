@@ -1,13 +1,14 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { upperFirst } from 'graphql-compose';
-import { GraphQLEnumType } from 'graphql';
+import { upperFirst, graphql } from 'graphql-compose';
 import type {
   GraphQLEnumValueConfigMap,
   GraphQLInputFieldConfigMap,
 } from 'graphql/type/definition';
 import { getTypeName, getOrSetType, desc } from '../../utils';
+
+const { GraphQLEnumType } = graphql;
 
 export type ElasticDataType = string;
 

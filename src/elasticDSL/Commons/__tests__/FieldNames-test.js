@@ -1,7 +1,9 @@
 /* @flow */
 
-import { GraphQLEnumType } from 'graphql';
+import { graphql } from 'graphql-compose';
 import * as FieldNames from '../FieldNames';
+
+const { GraphQLEnumType } = graphql;
 
 const fieldMap = {
   _all: {

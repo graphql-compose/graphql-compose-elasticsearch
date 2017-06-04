@@ -3,17 +3,17 @@
 // import fs from 'fs';
 import dox from 'dox';
 import path from 'path';
-import {
+import { GraphQLJSON, TypeComposer, graphql } from 'graphql-compose';
+import ElasticApiParser from '../ElasticApiParser';
+
+const {
   GraphQLString,
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLObjectType,
   GraphQLEnumType,
   GraphQLNonNull,
-} from 'graphql';
-import { GraphQLJSON, TypeComposer } from 'graphql-compose';
-
-import ElasticApiParser from '../ElasticApiParser';
+} = graphql;
 
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
 
@@ -29,9 +29,7 @@ describe('ElasticApiParser', () => {
   describe('static methods', () => {
     describe('loadApiFile()', () => {
       it('should load file with data', () => {
-        expect(ElasticApiParser.loadApiFile(apiPartialPath)).toContain(
-          'api.search = ca({'
-        );
+        expect(ElasticApiParser.loadApiFile(apiPartialPath)).toContain('api.search = ca({');
       });
 
       it('should replace invalid markup', () => {
@@ -126,9 +124,7 @@ describe('ElasticApiParser', () => {
 
     describe('cleanupDescription()', () => {
       it('should remove `- ` from start and trim', () => {
-        expect(ElasticApiParser.cleanupDescription('- Some param  ')).toEqual(
-          'Some param'
-        );
+        expect(ElasticApiParser.cleanupDescription('- Some param  ')).toEqual('Some param');
       });
     });
 
@@ -148,11 +144,9 @@ describe('ElasticApiParser', () => {
       });
 
       it("should api['delete'] convert to api.delete", () => {
-        expect(
-          ElasticApiParser.cleanUpSource(
-            `api.indices.prototype['delete'] = ca({`
-          )
-        ).toEqual(`api.indices.prototype.delete = ca({`);
+        expect(ElasticApiParser.cleanUpSource(`api.indices.prototype['delete'] = ca({`)).toEqual(
+          `api.indices.prototype.delete = ca({`
+        );
       });
     });
 
@@ -172,9 +166,7 @@ describe('ElasticApiParser', () => {
         `
         );
         const doxAST = dox.parseComments(source, { raw: true });
-        expect(
-          ElasticApiParser.parseParamsDescription(doxAST[0])
-        ).toMatchObject({
+        expect(ElasticApiParser.parseParamsDescription(doxAST[0])).toMatchObject({
           analyzeWildcard: 'Specify whether wildcard and prefix queries should be analyzed (default: false)',
           analyzer: 'The analyzer to use for the query string',
           from: 'Starting offset (default: 0)',
@@ -258,15 +250,14 @@ describe('ElasticApiParser', () => {
 
     describe('getMethodName()', () => {
       it('should return string', () => {
-        expect(ElasticApiParser.getMethodName('api.updateByQuery')).toEqual(
-          'updateByQuery'
-        );
+        expect(ElasticApiParser.getMethodName('api.updateByQuery')).toEqual('updateByQuery');
       });
 
       it('should return array of string', () => {
-        expect(
-          ElasticApiParser.getMethodName('api.cat.prototype.allocation')
-        ).toEqual(['cat', 'allocation']);
+        expect(ElasticApiParser.getMethodName('api.cat.prototype.allocation')).toEqual([
+          'cat',
+          'allocation',
+        ]);
       });
     });
 
@@ -283,9 +274,7 @@ describe('ElasticApiParser', () => {
 
       it('should return ElasticParsedSourceT', () => {
         expect(
-          ElasticApiParser.parseSource(
-            ElasticApiParser.loadApiFile(apiPartialPath)
-          )
+          ElasticApiParser.parseSource(ElasticApiParser.loadApiFile(apiPartialPath))
         ).toMatchSnapshot();
       });
     });
@@ -293,44 +282,27 @@ describe('ElasticApiParser', () => {
 
   describe('paramTypeToGraphQL()', () => {
     it('should convert scalar types', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'string' }, 'f1')).toEqual(
-        GraphQLString
-      );
-      expect(parser.paramTypeToGraphQL({ type: 'boolean' }, 'f1')).toEqual(
-        GraphQLBoolean
-      );
-      expect(parser.paramTypeToGraphQL({ type: 'number' }, 'f1')).toEqual(
-        GraphQLFloat
-      );
-      expect(parser.paramTypeToGraphQL({ type: 'time' }, 'f1')).toEqual(
-        GraphQLString
-      );
+      expect(parser.paramTypeToGraphQL({ type: 'string' }, 'f1')).toEqual(GraphQLString);
+      expect(parser.paramTypeToGraphQL({ type: 'boolean' }, 'f1')).toEqual(GraphQLBoolean);
+      expect(parser.paramTypeToGraphQL({ type: 'number' }, 'f1')).toEqual(GraphQLFloat);
+      expect(parser.paramTypeToGraphQL({ type: 'time' }, 'f1')).toEqual(GraphQLString);
     });
 
     it('should `list` convert to GraphQLJSON', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'list' }, 'f1')).toEqual(
-        GraphQLJSON
-      );
+      expect(parser.paramTypeToGraphQL({ type: 'list' }, 'f1')).toEqual(GraphQLJSON);
     });
 
     it('should `enum` convert to GraphQLString (if empty options)', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'enum' }, 'f1')).toEqual(
-        GraphQLString
-      );
+      expect(parser.paramTypeToGraphQL({ type: 'enum' }, 'f1')).toEqual(GraphQLString);
     });
 
     it('should `enum` convert to GraphQLEnumType', () => {
-      const type = parser.paramTypeToGraphQL(
-        { type: 'enum', options: ['AND', 'OR'] },
-        'f1'
-      );
+      const type = parser.paramTypeToGraphQL({ type: 'enum', options: ['AND', 'OR'] }, 'f1');
       expect(type).toBeInstanceOf(GraphQLEnumType);
     });
 
     it('should as fallback type return GraphQLJSON', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'crazy' }, 'f1')).toEqual(
-        GraphQLJSON
-      );
+      expect(parser.paramTypeToGraphQL({ type: 'crazy' }, 'f1')).toEqual(GraphQLJSON);
     });
   });
 
@@ -405,9 +377,7 @@ describe('ElasticApiParser', () => {
 
   describe('paramToGraphQLArgConfig()', () => {
     it('should return object with type property', () => {
-      expect(
-        parser.paramToGraphQLArgConfig({ type: 'string' }, 'f1')
-      ).toMatchObject({
+      expect(parser.paramToGraphQLArgConfig({ type: 'string' }, 'f1')).toMatchObject({
         type: GraphQLString,
       });
     });
@@ -422,9 +392,7 @@ describe('ElasticApiParser', () => {
     });
 
     it('should set defaultValue="json" for `format` argument', () => {
-      expect(
-        parser.paramToGraphQLArgConfig({ type: 'string' }, 'format')
-      ).toMatchObject({
+      expect(parser.paramToGraphQLArgConfig({ type: 'string' }, 'format')).toMatchObject({
         type: GraphQLString,
         defaultValue: 'json',
       });
@@ -558,9 +526,7 @@ describe('ElasticApiParser', () => {
         elasticApiFilePath: apiPartialPath,
       });
       expect(partialApiParser.generateFieldConfig('search')).toMatchSnapshot();
-      expect(
-        partialApiParser.generateFieldConfig('cat.allocation')
-      ).toMatchSnapshot();
+      expect(partialApiParser.generateFieldConfig('cat.allocation')).toMatchSnapshot();
     });
   });
 

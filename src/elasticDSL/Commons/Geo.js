@@ -1,10 +1,10 @@
 /* @flow */
 /* eslint-disable no-unused-vars */
 
-import { GraphQLScalarType } from 'graphql';
-import { Kind } from 'graphql/language';
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, graphql } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../utils';
+
+const { GraphQLScalarType, Kind } = graphql;
 
 export const ElasticGeoPointType = new GraphQLScalarType({
   name: 'ElasticGeoPointType',

@@ -1,22 +1,21 @@
 /* @flow */
 
-import { TypeComposer, GraphQLJSON } from 'graphql-compose';
-
-import {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLBoolean,
-  GraphQLList,
-  GraphQLObjectType,
-} from 'graphql';
-
+import { TypeComposer, GraphQLJSON, graphql } from 'graphql-compose';
 import {
   convertToSourceTC,
   propertyToSourceGraphQLType,
   inputPropertiesToGraphQLTypes,
   getSubFields,
 } from '../mappingConverter';
+
+const {
+  GraphQLString,
+  GraphQLInt,
+  GraphQLFloat,
+  GraphQLBoolean,
+  GraphQLList,
+  GraphQLObjectType,
+} = graphql;
 
 const mapping = {
   properties: {

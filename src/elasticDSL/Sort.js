@@ -1,9 +1,10 @@
 /* @flow */
 
-// import { InputTypeComposer } from 'graphql-compose';
-import { GraphQLEnumType } from 'graphql';
+import { graphql } from 'graphql-compose';
 import { getTypeName, getOrSetType } from '../utils';
 import { getFieldNamesByElasticType } from './Commons/FieldNames';
+
+const { GraphQLEnumType } = graphql;
 
 const sortableTypes = [
   'byte',

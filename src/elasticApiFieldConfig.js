@@ -1,16 +1,16 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { graphql } from 'graphql-compose';
 import type { GraphQLFieldConfig } from 'graphql/type/definition';
 import elasticsearch from 'elasticsearch';
 import ElasticApiParser from './ElasticApiParser';
 
+const { GraphQLObjectType, GraphQLString } = graphql;
+
 const DEFAULT_ELASTIC_API_VERSION = '_default';
 
-export function elasticApiFieldConfig(
-  esClientOrOpts: Object
-): GraphQLFieldConfig<*, *> {
+export function elasticApiFieldConfig(esClientOrOpts: Object): GraphQLFieldConfig<*, *> {
   if (!esClientOrOpts || typeof esClientOrOpts !== 'object') {
     throw new Error(
       'You should provide ElasticClient instance or ElasticClientConfig in first argument.'
@@ -24,11 +24,8 @@ export function elasticApiFieldConfig(
   }
 }
 
-function instanceElasticClient(
-  elasticClient: Object
-): GraphQLFieldConfig<*, *> {
-  const apiVersion = elasticClient.transport._config.apiVersion ||
-    DEFAULT_ELASTIC_API_VERSION;
+function instanceElasticClient(elasticClient: Object): GraphQLFieldConfig<*, *> {
+  const apiVersion = elasticClient.transport._config.apiVersion || DEFAULT_ELASTIC_API_VERSION;
   const prefix = `ElasticAPI${apiVersion.replace('.', '')}`;
 
   const apiParser = new ElasticApiParser({
@@ -90,12 +87,7 @@ function isElasticClient(obj) {
     return true;
   }
 
-  if (
-    obj &&
-    obj.transport &&
-    obj.transport._config &&
-    obj.transport._config.__reused
-  ) {
+  if (obj && obj.transport && obj.transport._config && obj.transport._config.__reused) {
     return true;
   }
 

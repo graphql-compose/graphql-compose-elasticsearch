@@ -8,9 +8,12 @@ import {
   GraphQLBuffer,
   upperFirst,
   isObject,
+  graphql,
 } from 'graphql-compose';
 
-import {
+import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
+
+const {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
@@ -18,9 +21,7 @@ import {
   GraphQLList,
   GraphQLObjectType,
   GraphQLInputObjectType,
-} from 'graphql';
-
-import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
+} = graphql;
 
 export type ElasticMappingT = {
   properties: ElasticMappingPropertiesT,
@@ -82,9 +83,7 @@ export function convertToSourceTC(
   opts?: ConvertOptsT = {}
 ): TypeComposer {
   if (!mapping || !mapping.properties) {
-    throw new Error(
-      'You provide incorrect mapping. It should be an object `{ properties: {} }`'
-    );
+    throw new Error('You provide incorrect mapping. It should be an object `{ properties: {} }`');
   }
   if (!typeName || typeof typeName !== 'string') {
     throw new Error(
@@ -95,10 +94,11 @@ export function convertToSourceTC(
   const tc = new TypeComposer(
     new GraphQLObjectType({
       name: `${opts.prefix || ''}${typeName}${opts.postfix || ''}`,
-      description: 'Elasticsearch mapping does not contains info about ' +
-        'is field plural or not. So `propName` is singular and returns value ' +
-        'or first value from array. ' +
-        '`propNameA` is plural and returns array of values.',
+      description:
+        'Elasticsearch mapping does not contains info about ' +
+          'is field plural or not. So `propName` is singular and returns value ' +
+          'or first value from array. ' +
+          '`propNameA` is plural and returns array of values.',
       fields: {},
     })
   );
@@ -108,14 +108,10 @@ export function convertToSourceTC(
   const pluralFields = opts.pluralFields || [];
 
   Object.keys(properties).forEach(name => {
-    const gqType = propertyToSourceGraphQLType(
-      properties[name],
-      `${typeName}${upperFirst(name)}`,
-      {
-        ...opts,
-        pluralFields: getSubFields(name, pluralFields),
-      }
-    );
+    const gqType = propertyToSourceGraphQLType(properties[name], `${typeName}${upperFirst(name)}`, {
+      ...opts,
+      pluralFields: getSubFields(name, pluralFields),
+    });
     if (gqType) {
       if (pluralFields.indexOf(name) >= 0) {
         fields[name] = {
@@ -220,10 +216,7 @@ export function inputPropertiesToGraphQLTypes(
   return result;
 }
 
-export function getSubFields(
-  fieldName: string,
-  pluralFields?: ?(string[])
-): string[] {
+export function getSubFields(fieldName: string, pluralFields?: ?(string[])): string[] {
   const st = `${fieldName}.`;
   return (pluralFields || [])
     .filter(o => typeof o === 'string' && o.startsWith(st))
