@@ -1,7 +1,6 @@
+/* @flow */
+
 export { composeWithElastic } from './composeWithElastic';
-export {
-  convertToSourceTC,
-  inputPropertiesToGraphQLTypes,
-} from './mappingConverter';
+export { convertToSourceTC, inputPropertiesToGraphQLTypes } from './mappingConverter';
 export { default as ElasticApiParser } from './ElasticApiParser';
 export { elasticApiFieldConfig } from './elasticApiFieldConfig';

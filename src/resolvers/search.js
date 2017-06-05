@@ -9,8 +9,7 @@ import { getSearchBodyITC, prepareBodyInResolve } from '../elasticDSL/SearchBody
 import { getSearchOutputTC } from '../types/SearchOutput';
 
 export type ElasticSearchResolverOpts = {
-  [name: string]: mixed,
-  prefix?: string,
+  prefix?: ?string,
   elasticIndex: string,
   elasticType: string,
   elasticClient: Object,
@@ -121,7 +120,7 @@ export default function createSearchResolver(
 
       const { hits = {} } = projection;
 
-      if (typeof hits === 'object') {
+      if (hits && typeof hits === 'object') {
         // Turn on explain if in projection requested this fields:
         if (hits._shard || hits._node || hits._explanation) {
           args.body.explain = true;

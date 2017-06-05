@@ -1,11 +1,11 @@
+/* @flow */
+
 import { TypeComposer } from 'graphql-compose';
-import {
-  convertToSourceTC,
-  inputPropertiesToGraphQLTypes,
-} from './mappingConverter';
-import type { ElasticMappingT } from './mappingConverter';
+import { convertToSourceTC, inputPropertiesToGraphQLTypes } from './mappingConverter';
 import createSearchResolver from './resolvers/search';
 import createSearchConnectionResolver from './resolvers/searchConnection';
+
+import type { ElasticMappingT } from './mappingConverter';
 
 export type composeWithElasticOptsT = {
   graphqlTypeName: string,
@@ -14,11 +14,11 @@ export type composeWithElasticOptsT = {
   elasticMapping: ElasticMappingT,
   elasticClient: Object,
   pluralFields?: string[],
+  prefix?: ?string,
+  postfix?: ?string,
 };
 
-export function composeWithElastic(
-  opts: composeWithElasticOptsT = {}
-): TypeComposer {
+export function composeWithElastic(opts: composeWithElasticOptsT): TypeComposer {
   if (!opts) {
     throw new Error('Opts is required argument for composeWithElastic()');
   }
@@ -46,7 +46,10 @@ export function composeWithElastic(
       'Opts.graphqlTypeName is required property for generated GraphQL Type name in composeWithElastic()'
     );
   }
-  opts.prefix = opts.graphqlTypeName; // eslint-disable-line
+
+  if (!opts.prefix) {
+    opts.prefix = opts.graphqlTypeName; // eslint-disable-line
+  }
 
   if (opts.pluralFields && !Array.isArray(opts.pluralFields)) {
     throw new Error(
@@ -56,11 +59,7 @@ export function composeWithElastic(
   }
 
   const fieldMap = inputPropertiesToGraphQLTypes(opts.elasticMapping);
-  const sourceTC = convertToSourceTC(
-    opts.elasticMapping,
-    opts.graphqlTypeName,
-    opts
-  );
+  const sourceTC = convertToSourceTC(opts.elasticMapping, opts.graphqlTypeName, opts);
 
   const searchR = createSearchResolver(fieldMap, sourceTC, opts);
   const searchConnectionR = createSearchConnectionResolver(searchR, opts);

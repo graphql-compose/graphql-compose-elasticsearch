@@ -6,10 +6,7 @@ export function getTypeName(name: string, opts: any): string {
   return `${(opts && opts.prefix) || 'Elastic'}${name}${(opts && opts.postfix) || ''}`;
 }
 
-export function getOrSetType<T>(
-  typeName: string,
-  typeOrThunk: (() => T) | T
-): T {
+export function getOrSetType<T>(typeName: string, typeOrThunk: (() => T) | T): T {
   // $FlowFixMe
   const type: T = typeStorage.getOrSet(typeName, typeOrThunk);
   return type;
@@ -17,7 +14,7 @@ export function getOrSetType<T>(
 
 // Remove newline multiline in descriptions
 export function desc(str: string): string {
-  return str.replace(/\n\s+/ig, ' ').replace(/^\s+/, '');
+  return str.replace(/\n\s+/gi, ' ').replace(/^\s+/, '');
 }
 
 export function reorderKeys<T: Object>(obj: T, names: string[]): T {

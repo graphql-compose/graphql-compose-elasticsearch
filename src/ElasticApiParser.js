@@ -12,7 +12,6 @@ import type {
   GraphQLFieldConfig,
   GraphQLFieldConfigMap,
   GraphQLFieldConfigArgumentMap,
-  GraphQLFieldMap,
   GraphQLInputType,
 } from "graphql/type/definition"; // eslint-disable-line
 
@@ -89,8 +88,7 @@ export default class ElasticApiParser {
         opts.elasticClient.transport._config.apiVersion) ||
       '_default';
     const apiFilePath = path.resolve(
-      opts.elasticApiFilePath ||
-        ElasticApiParser.findApiVersionFile(this.apiVersion)
+      opts.elasticApiFilePath || ElasticApiParser.findApiVersionFile(this.apiVersion)
     );
     const source = ElasticApiParser.loadApiFile(apiFilePath);
     this.parsedSource = ElasticApiParser.parseSource(source);
@@ -109,9 +107,7 @@ export default class ElasticApiParser {
     try {
       code = ElasticApiParser.loadFile(absolutePath);
     } catch (e) {
-      throw new Error(
-        `Cannot load Elastic API source file from ${absolutePath}`
-      );
+      throw new Error(`Cannot load Elastic API source file from ${absolutePath}`);
     }
     return ElasticApiParser.cleanUpSource(code);
   }
@@ -121,9 +117,7 @@ export default class ElasticApiParser {
     try {
       code = ElasticApiParser.loadFile(absolutePath);
     } catch (e) {
-      throw new Error(
-        `Cannot load Elastic API file with avaliable versions from ${absolutePath}`
-      );
+      throw new Error(`Cannot load Elastic API file with avaliable versions from ${absolutePath}`);
     }
     return code;
   }
@@ -135,10 +129,7 @@ export default class ElasticApiParser {
 
     // parsing elasticsearch module 13.x and above
     //   get '5.3'() { return require('./5_3'); },
-    const re = new RegExp(
-      `\\'${version}\\'\\(\\).*require\\(\\'(.+)\\'\\)`,
-      'gi'
-    );
+    const re = new RegExp(`\\'${version}\\'\\(\\).*require\\(\\'(.+)\\'\\)`, 'gi');
     const match = re.exec(apiListCode);
     if (match && match[1]) {
       return path.resolve(apiFolder, `${match[1]}.js`);
@@ -146,18 +137,13 @@ export default class ElasticApiParser {
 
     // parsing elasticsearch module 12.x and below
     //   '5.0': require('./5_0'),
-    const re12 = new RegExp(
-      `\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`,
-      'gi'
-    );
+    const re12 = new RegExp(`\\'${version}\\':\\srequire\\(\\'(.+)\\'\\)`, 'gi');
     const match12 = re12.exec(apiListCode);
     if (match12 && match12[1]) {
       return path.resolve(apiFolder, `${match12[1]}.js`);
     }
 
-    throw new Error(
-      `Can not found Elastic version '${version}' in ${apiListFile}`
-    );
+    throw new Error(`Can not found Elastic version '${version}' in ${apiListFile}`);
   }
 
   static cleanUpSource(code: string): string {
@@ -172,9 +158,7 @@ export default class ElasticApiParser {
     return codeCleaned;
   }
 
-  static parseParamsDescription(
-    doxItemAST: any
-  ): { [fieldName: string]: string } {
+  static parseParamsDescription(doxItemAST: any): { [fieldName: string]: string } {
     const descriptions = {};
     if (Array.isArray(doxItemAST.tags)) {
       doxItemAST.tags.forEach(tag => {
@@ -184,9 +168,7 @@ export default class ElasticApiParser {
         const name = ElasticApiParser.cleanupParamName(tag.name);
         if (!name) return;
 
-        descriptions[name] = ElasticApiParser.cleanupDescription(
-          tag.description
-        );
+        descriptions[name] = ElasticApiParser.cleanupDescription(tag.description);
       });
     }
     return descriptions;
@@ -258,9 +240,7 @@ export default class ElasticApiParser {
       // method description
       let description;
       if (item.description && item.description.full) {
-        description = ElasticApiParser.cleanupDescription(
-          item.description.full
-        );
+        description = ElasticApiParser.cleanupDescription(item.description.full);
       }
 
       const elasticMethod = ElasticApiParser.getMethodName(item.ctx.string);
@@ -310,12 +290,9 @@ export default class ElasticApiParser {
       throw new Error(`Elastic search method '${methodName}' does not exists.`);
     }
 
-    const {
-      description,
-      argsSettings,
-      argsDescriptions,
-      elasticMethod,
-    } = this.parsedSource[methodName];
+    const { description, argsSettings, argsDescriptions, elasticMethod } = this.parsedSource[
+      methodName
+    ];
 
     const argMap = this.settingsToArgMap(argsSettings, argsDescriptions);
 
@@ -366,10 +343,7 @@ export default class ElasticApiParser {
     return result;
   }
 
-  paramTypeToGraphQL(
-    paramCfg: ElasticParamConfigT,
-    fieldName: string
-  ): GraphQLInputType {
+  paramTypeToGraphQL(paramCfg: ElasticParamConfigT, fieldName: string): GraphQLInputType {
     switch (paramCfg.type) {
       case 'string':
         return GraphQLString;
@@ -458,11 +432,7 @@ export default class ElasticApiParser {
 
     if (params) {
       Object.keys(params).forEach(k => {
-        const fieldConfig = this.paramToGraphQLArgConfig(
-          params[k],
-          k,
-          descriptions[k]
-        );
+        const fieldConfig = this.paramToGraphQLArgConfig(params[k], k, descriptions[k]);
         if (fieldConfig) {
           result[k] = fieldConfig;
         }
@@ -475,11 +445,7 @@ export default class ElasticApiParser {
       urlList.forEach(item => {
         if (item.req) {
           Object.keys(item.req).forEach(k => {
-            const fieldConfig = this.paramToGraphQLArgConfig(
-              item.req[k],
-              k,
-              descriptions[k]
-            );
+            const fieldConfig = this.paramToGraphQLArgConfig(item.req[k], k, descriptions[k]);
             if (fieldConfig) {
               result[k] = fieldConfig;
             }
@@ -491,7 +457,7 @@ export default class ElasticApiParser {
     return result;
   }
 
-  reassembleNestedFields(fields: GraphQLFieldMap<*, *>): GraphQLFieldMap<*, *> {
+  reassembleNestedFields(fields: GraphQLFieldConfigMap<*, *>): GraphQLFieldConfigMap<*, *> {
     const result = {};
     Object.keys(fields).forEach(k => {
       const names = k.split('.');
@@ -510,10 +476,7 @@ export default class ElasticApiParser {
             },
           };
         }
-        TypeComposer.create(result[names[0]].type).setField(
-          names[1],
-          fields[k]
-        );
+        TypeComposer.create(result[names[0]].type).setField(names[1], fields[k]);
       }
     });
 

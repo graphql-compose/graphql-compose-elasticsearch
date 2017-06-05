@@ -2017,9 +2017,9 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graphql-compose@^1.19.2:
-  version "1.19.2"
-  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-1.19.2.tgz#277734f58aa65cd890e461916e17fbe34e4b5c68"
+graphql-compose@^1.19.3:
+  version "1.19.3"
+  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-1.19.3.tgz#cea43697378b4da864d34836bbd36376de71649a"
   dependencies:
     babel-runtime "^6.23.0"
     object-path "^0.11.4"
