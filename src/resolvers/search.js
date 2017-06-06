@@ -82,7 +82,7 @@ export default function createSearchResolver(
     fields: Object.assign({}, argsConfigMap),
   }).removeField(topLevelArgs);
   Object.keys(argsConfigMap).forEach(argKey => {
-    if (!topLevelArgs.includes(argKey)) {
+    if (topLevelArgs.indexOf(argKey) === -1) {
       delete argsConfigMap[argKey];
     }
   });
