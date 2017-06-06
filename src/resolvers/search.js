@@ -133,7 +133,6 @@ export default function createSearchResolver(
         if (!hits._source) {
           args.body._source = false;
         } else {
-          // $FlowFixMe
           args.body._source = toDottedList(hits._source);
         }
 

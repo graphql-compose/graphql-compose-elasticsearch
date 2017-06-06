@@ -86,10 +86,7 @@ function prepareQueryMayBeArray(vals, fieldMap) {
   return prepareQueryInResolve(vals, fieldMap);
 }
 
-export function prepareBoolInResolve(
-  bool: any,
-  fieldMap: mixed
-): { [argName: string]: any } {
+export function prepareBoolInResolve(bool: any, fieldMap: mixed): { [argName: string]: any } {
   /* eslint-disable no-param-reassign */
   if (bool.must) {
     bool.must = prepareQueryMayBeArray(bool.must, fieldMap);

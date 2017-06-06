@@ -1,4 +1,4 @@
-/* @Flow */
+/* @flow */
 
 import { Resolver, TypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType } from '../utils';
@@ -21,10 +21,14 @@ export default function createSearchConnectionResolver(
     .removeArg(['limit', 'skip'])
     .reorderArgs(['q', 'query', 'sort', 'aggs', 'first', 'after', 'last', 'before']);
 
-  const searchType = searchResolver.getTypeComposer();
-  const typeName = searchType.getTypeName();
+  const searchTC = searchResolver.getTypeComposer();
+  if (!searchTC) {
+    throw new Error('Cannot get TypeComposer from resolver. Maybe resolver return Scalar?!');
+  }
+
+  const typeName = searchTC.getTypeName();
   resolver.setType(
-    searchType
+    searchTC
       .clone(`${typeName}Connection`)
       .addFields({
         pageInfo: getPageInfoTC(opts),
@@ -32,7 +36,7 @@ export default function createSearchConnectionResolver(
           TypeComposer.create({
             name: `${typeName}Edge`,
             fields: {
-              node: searchType.get('hits'),
+              node: searchTC.get('hits'),
               cursor: 'String!',
             },
           }),

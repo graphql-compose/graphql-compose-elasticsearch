@@ -52,10 +52,7 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
   );
 }
 
-export function prepareBodyInResolve(
-  body: any,
-  fieldMap: mixed
-): { [argName: string]: any } {
+export function prepareBodyInResolve(body: any, fieldMap: mixed): { [argName: string]: any } {
   /* eslint-disable no-param-reassign */
   if (body.query) {
     body.query = prepareQueryInResolve(body.query, fieldMap);

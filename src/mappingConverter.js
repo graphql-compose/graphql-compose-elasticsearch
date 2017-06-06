@@ -10,6 +10,7 @@ import {
   isObject,
   graphql,
 } from 'graphql-compose';
+import type { GraphQLScalarType, GraphQLInputType } from 'graphql-compose/lib/definition';
 
 import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
 
@@ -20,7 +21,6 @@ const {
   GraphQLBoolean,
   GraphQLList,
   GraphQLObjectType,
-  GraphQLInputObjectType,
 } = graphql;
 
 export type ElasticMappingT = {
@@ -38,7 +38,7 @@ export type ElasticPropertyT = {
 };
 
 export type InputFieldsMap = {
-  [field: string]: GraphQLInputObjectType,
+  [field: string]: GraphQLInputType,
 };
 
 export type FieldsMapByElasticType = {
@@ -146,7 +146,7 @@ export function propertyToSourceGraphQLType(
   prop: ElasticPropertyT,
   typeName?: string,
   opts?: ConvertOptsT
-): GraphQLObjectType {
+): GraphQLObjectType | GraphQLScalarType {
   if (!prop || (typeof prop.type !== 'string' && !prop.properties)) {
     throw new Error('You provide incorrect Elastic property config.');
   }

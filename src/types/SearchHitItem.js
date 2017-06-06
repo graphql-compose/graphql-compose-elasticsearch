@@ -8,7 +8,6 @@ export function getSearchHitItemTC(opts: SearchOptsT = {}): TypeComposer {
   const name = getTypeName('SearchHitItem', opts);
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     TypeComposer.create({
       name,
       fields: {

@@ -1,7 +1,6 @@
-import {
-  inputPropertiesToGraphQLTypes,
-  convertToSourceTC,
-} from '../mappingConverter';
+/* @flow */
+
+import { inputPropertiesToGraphQLTypes, convertToSourceTC } from '../mappingConverter';
 import cvMapping from './cvMapping';
 
 export const CvFieldMap = inputPropertiesToGraphQLTypes(cvMapping);

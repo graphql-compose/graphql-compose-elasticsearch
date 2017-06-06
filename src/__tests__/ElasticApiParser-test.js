@@ -167,7 +167,8 @@ describe('ElasticApiParser', () => {
         );
         const doxAST = dox.parseComments(source, { raw: true });
         expect(ElasticApiParser.parseParamsDescription(doxAST[0])).toMatchObject({
-          analyzeWildcard: 'Specify whether wildcard and prefix queries should be analyzed (default: false)',
+          analyzeWildcard:
+            'Specify whether wildcard and prefix queries should be analyzed (default: false)',
           analyzer: 'The analyzer to use for the query string',
           from: 'Starting offset (default: 0)',
         });

@@ -1,3 +1,5 @@
+/* @flow */
+
 import elasticsearch from 'elasticsearch';
 
 const elasticClient = new elasticsearch.Client({

@@ -1,3 +1,5 @@
+/* @flow */
+
 import { Resolver } from 'graphql-compose';
 import createSearchResolver, * as Search from '../search';
 import elasticClient from '../../__mocks__/elasticClient';
@@ -12,7 +14,7 @@ describe('search resolver', () => {
     const SearchResolver = createSearchResolver(CvFieldMap, CvTC, elasticClient);
 
     it.skip('should return result', () => {
-      return SearchResolver.resolve({}, {}, {}).then(res => {
+      return SearchResolver.resolve({}).then(res => {
         console.log(res); // eslint-disable-line
       });
     });

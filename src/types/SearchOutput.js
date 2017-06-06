@@ -18,7 +18,6 @@ export function getSearchOutputTC(opts: SearchOptsT = {}): TypeComposer {
   const nameHits = getTypeName('SearchHits', opts);
 
   return getOrSetType(name, () =>
-    // $FlowFixMe
     TypeComposer.create({
       name,
       fields: {
@@ -26,7 +25,6 @@ export function getSearchOutputTC(opts: SearchOptsT = {}): TypeComposer {
         timed_out: 'Boolean',
         _shards: getShardsTC(opts),
         hits: getOrSetType(nameHits, () =>
-          // $FlowFixMe
           TypeComposer.create({
             name: nameHits,
             fields: {

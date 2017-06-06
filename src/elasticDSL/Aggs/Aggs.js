@@ -1,3 +1,5 @@
+/* @flow */
+
 import { getAggBlockITC } from './AggBlock';
 
 export function getAggsITC(opts: mixed) {
@@ -10,7 +12,7 @@ export type ElasticAggsT = {
 
 export type ElasticAggsRulesT = {
   [aggOperationName: string]: mixed,
-  aggs: ElasticAggsT,
+  aggs?: ElasticAggsT,
 };
 
 export type GqlAggBlock = {
@@ -20,7 +22,7 @@ export type GqlAggBlock = {
 
 export type GqlAggRules = {
   [aggOperationName: string]: mixed,
-  aggs: GqlAggBlock[],
+  aggs?: GqlAggBlock[],
 };
 
 export function prepareAggsInResolve(

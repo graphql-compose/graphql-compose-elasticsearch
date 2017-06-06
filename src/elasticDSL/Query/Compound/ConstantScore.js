@@ -32,10 +32,7 @@ export function prepareConstantScoreInResolve(
   fieldMap: mixed
 ): { [argName: string]: any } {
   if (constant_score.filter) {
-    constant_score.filter = prepareQueryInResolve(
-      constant_score.filter,
-      fieldMap
-    );
+    constant_score.filter = prepareQueryInResolve(constant_score.filter, fieldMap);
   }
 
   return constant_score;

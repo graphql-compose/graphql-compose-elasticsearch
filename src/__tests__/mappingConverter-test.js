@@ -141,10 +141,12 @@ describe('PropertiesConverter', () => {
         'ComplexType'
       );
       expect(type).toBeInstanceOf(GraphQLObjectType);
-      const tc = TypeComposer.create(type);
-      expect(tc.getTypeName()).toEqual('ComplexType');
-      expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
-      expect(tc.getFieldType('big')).toEqual(GraphQLString);
+      if (type instanceof GraphQLObjectType) {
+        const tc = TypeComposer.create(type);
+        expect(tc.getTypeName()).toEqual('ComplexType');
+        expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
+        expect(tc.getFieldType('big')).toEqual(GraphQLString);
+      }
     });
   });
 

@@ -67,10 +67,7 @@ export function prepareFunctionScoreInResolve(
   fieldMap: mixed
 ): { [argName: string]: any } {
   if (function_score.query) {
-    function_score.query = prepareQueryInResolve(
-      function_score.query,
-      fieldMap
-    );
+    function_score.query = prepareQueryInResolve(function_score.query, fieldMap);
   }
 
   if (Array.isArray(function_score.functions)) {
