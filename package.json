@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "elasticsearch": ">=12.0.0 || >=13.0.0",
-    "graphql-compose": ">=1.19.3"
+    "graphql-compose": ">=1.20.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -48,7 +48,7 @@
     "express-graphql": "^0.6.6",
     "flow-bin": "^0.47.0",
     "graphql": "^0.10.1",
-    "graphql-compose": "^1.19.3",
+    "graphql-compose": "^1.20.1",
     "jest": "^20.0.4",
     "jest-babel": "^1.0.1",
     "npm-run-all": "^4.0.1",
@@ -78,6 +78,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "watch": "npm run test:watch",
+    "flow": "./node_modules/.bin/flow",
+    "all": "npm run test && npm run lint && npm run flow",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "docker": "npm run docker:v5",
     "docker:v2": "node ./scripts/docker/start 2 & wait",
