@@ -8,6 +8,9 @@ notifications:
   email: true
 node_js:
   - "7"
+  - "6"
+  - "5"
+  - "4"
 script:
   - yarn run coverage
   - yarn run build
