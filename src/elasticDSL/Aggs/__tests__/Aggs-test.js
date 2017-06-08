@@ -12,7 +12,6 @@ describe('AGGS args converter', () => {
         name: 'RootQuery',
         fields: {
           search: {
-            // $FlowFixMe
             args: TypeMapper.convertArgConfigMap({
               body: {
                 type: getAggsITC({

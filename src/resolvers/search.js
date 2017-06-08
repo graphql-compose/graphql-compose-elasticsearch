@@ -97,7 +97,6 @@ export default function createSearchResolver(
     })
     .reorderFields(['hits', 'count', 'aggregations', 'max_score', 'took', 'timed_out', '_shards']);
 
-  // $FlowFixMe
   return new Resolver({
     type,
     name: 'search',

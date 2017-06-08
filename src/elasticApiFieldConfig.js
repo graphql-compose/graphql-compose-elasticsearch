@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 
 import { graphql } from 'graphql-compose';
-import type { GraphQLFieldConfig } from 'graphql/type/definition';
+import type { GraphQLFieldConfig } from 'graphql-compose/lib/definition';
 import elasticsearch from 'elasticsearch';
 import ElasticApiParser from './ElasticApiParser';
 
