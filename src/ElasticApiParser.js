@@ -13,7 +13,7 @@ import type {
   GraphQLFieldConfigMap,
   GraphQLFieldConfigArgumentMap,
   GraphQLInputType,
-} from "graphql/type/definition"; // eslint-disable-line
+} from 'graphql-compose/lib/definition'; // eslint-disable-line
 
 const {
   GraphQLString,
