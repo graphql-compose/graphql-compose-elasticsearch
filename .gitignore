@@ -44,4 +44,3 @@ node_modules
 
 coverage
 .nyc_output
-flow-typed
