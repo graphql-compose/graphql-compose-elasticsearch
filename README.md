@@ -1,5 +1,7 @@
 graphql-compose-elasticsearch
 ======================
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/nodkz/graphql-compose-elasticsearch.svg)](https://greenkeeper.io/)
 [![](https://img.shields.io/npm/v/graphql-compose-elasticsearch.svg)](https://www.npmjs.com/package/graphql-compose-elasticsearch)
 [![npm](https://img.shields.io/npm/dt/graphql-compose-elasticsearch.svg)](http://www.npmtrends.com/graphql-compose-elasticsearch)
 [![Travis](https://img.shields.io/travis/nodkz/graphql-compose-elasticsearch.svg?maxAge=2592000)](https://travis-ci.org/nodkz/graphql-compose-elasticsearch)
