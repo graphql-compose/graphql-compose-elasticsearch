@@ -88,7 +88,12 @@ export default function createSearchResolver(
   });
 
   const type = getSearchOutputTC({ prefix, fieldMap, sourceTC });
-  const hitsType = type.get('hits.hits');
+  let hitsType;
+  try {
+    hitsType = type.get('hits.hits');
+  } catch (e) {
+    hitsType = 'JSON';
+  }
   type
     .addFields({
       count: 'Int',
