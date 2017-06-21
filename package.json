@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "elasticsearch": ">=12.0.0 || >=13.0.0",
-    "graphql-compose": ">=1.20.4"
+    "graphql-compose": ">=1.20.4 || >=2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -38,18 +38,18 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.5.2",
     "cz-conventional-changelog": "^2.0.0",
-    "elasticsearch": "^13.0.1",
-    "eslint": "^3.19.0",
+    "elasticsearch": "^13.1.1",
+    "eslint": "^4.0.0",
     "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-config-prettier": "^2.1.1",
+    "eslint-config-prettier": "^2.2.0",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-prettier": "^2.1.1",
+    "eslint-plugin-prettier": "^2.1.2",
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
     "flow-bin": "^0.48.0",
-    "graphql": "^0.10.1",
-    "graphql-compose": "^1.21.1",
+    "graphql": "^0.10.3",
+    "graphql-compose": "^2.0.0",
     "jest": "^20.0.4",
     "npm-run-all": "^4.0.1",
     "prettier": "^1.4.4",
