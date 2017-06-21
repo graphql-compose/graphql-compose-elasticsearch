@@ -49,7 +49,7 @@
     "express-graphql": "^0.6.6",
     "flow-bin": "^0.48.0",
     "graphql": "^0.10.1",
-    "graphql-compose": "^1.21.1",
+    "graphql-compose": "^2.0.0",
     "jest": "^20.0.4",
     "npm-run-all": "^4.0.1",
     "prettier": "^1.4.4",
