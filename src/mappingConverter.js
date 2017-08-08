@@ -96,9 +96,9 @@ export function convertToSourceTC(
       name: `${opts.prefix || ''}${typeName}${opts.postfix || ''}`,
       description:
         'Elasticsearch mapping does not contains info about ' +
-          'is field plural or not. So `propName` is singular and returns value ' +
-          'or first value from array. ' +
-          '`propNameA` is plural and returns array of values.',
+        'is field plural or not. So `propName` is singular and returns value ' +
+        'or first value from array. ' +
+        '`propNameA` is plural and returns array of values.',
       fields: {},
     })
   );
