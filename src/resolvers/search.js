@@ -155,6 +155,11 @@ export default function createSearchResolver(
         delete args.aggs;
       }
 
+      if (args.highlight) {
+        args.body.highlight = args.highlight;
+        delete args.highlight;
+      }
+
       if (args.sort) {
         args.body.sort = args.sort;
         delete args.sort;
