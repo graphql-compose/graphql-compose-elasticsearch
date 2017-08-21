@@ -1,6 +1,6 @@
 /* @flow */
 
-import { TypeComposer, GraphQLJSON, graphql } from 'graphql-compose';
+import { TypeComposer, GraphQLJSON, graphql, GQC } from 'graphql-compose';
 import {
   convertToSourceTC,
   propertyToSourceGraphQLType,
@@ -223,6 +223,67 @@ describe('PropertiesConverter', () => {
     it('should return array for empty/undefined list', () => {
       expect(getSubFields('range', null)).toEqual([]);
       expect(getSubFields('range')).toEqual([]);
+    });
+  });
+
+  describe('issue #9', () => {
+    const mapping9 = {
+      properties: {
+        $id: {
+          type: 'long',
+        },
+        lastName: {
+          type: 'string',
+        },
+        email: {
+          type: 'string',
+          analyzer: 'email_analyzer',
+        },
+        $passwordHash: {
+          type: 'string',
+          index: 'not_analyzed',
+        },
+      },
+    };
+    const tc9 = convertToSourceTC(mapping9, 'Type9');
+
+    it('should replace unacceptable characters in GraphQL fieldnames', () => {
+      expect(tc9).toBeInstanceOf(TypeComposer);
+      expect(tc9.getFieldNames()).toEqual(
+        expect.arrayContaining(['_id', 'lastName', 'email', '_passwordHash'])
+      );
+    });
+
+    it('should work with graphql schema without errors', () => {
+      GQC.rootQuery().addFields({ userES: tc9 });
+      expect(() => GQC.buildSchema()).not.toThrowError();
+    });
+
+    it('should use Elastic field names from source', async () => {
+      GQC.rootQuery().addFields({ userES: tc9 });
+      const result = await graphql.graphql(
+        GQC.buildSchema(),
+        `query { userES { _id, lastName, email, _passwordHash } }`,
+        {
+          // simulate elastic responce
+          userES: {
+            $id: 123,
+            lastName: 'Tyler',
+            email: 'tyler@example.com',
+            $passwordHash: 'abc1234def',
+          },
+        }
+      );
+      expect(result).toEqual({
+        data: {
+          userES: {
+            _id: 123,
+            lastName: 'Tyler',
+            email: 'tyler@example.com',
+            _passwordHash: 'abc1234def',
+          },
+        },
+      });
     });
   });
 });

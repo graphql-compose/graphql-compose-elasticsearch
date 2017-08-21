@@ -107,30 +107,35 @@ export function convertToSourceTC(
   const fields = {};
   const pluralFields = opts.pluralFields || [];
 
-  Object.keys(properties).forEach(name => {
-    const gqType = propertyToSourceGraphQLType(properties[name], `${typeName}${upperFirst(name)}`, {
-      ...opts,
-      pluralFields: getSubFields(name, pluralFields),
-    });
+  Object.keys(properties).forEach(sourceName => {
+    const fieldName = sourceName.replace(/[^_a-zA-Z0-9]/g, '_');
+    const gqType = propertyToSourceGraphQLType(
+      properties[sourceName],
+      `${typeName}${upperFirst(fieldName)}`,
+      {
+        ...opts,
+        pluralFields: getSubFields(sourceName, pluralFields),
+      }
+    );
     if (gqType) {
-      if (pluralFields.indexOf(name) >= 0) {
-        fields[name] = {
+      if (pluralFields.indexOf(sourceName) >= 0) {
+        fields[fieldName] = {
           type: new GraphQLList(gqType),
           resolve: source => {
-            if (Array.isArray(source[name])) {
-              return source[name];
+            if (Array.isArray(source[sourceName])) {
+              return source[sourceName];
             }
-            return [source[name]];
+            return [source[sourceName]];
           },
         };
       } else {
-        fields[name] = {
+        fields[fieldName] = {
           type: gqType,
           resolve: source => {
-            if (Array.isArray(source[name])) {
-              return source[name][0];
+            if (Array.isArray(source[sourceName])) {
+              return source[sourceName][0];
             }
-            return source[name];
+            return source[sourceName];
           },
         };
       }
