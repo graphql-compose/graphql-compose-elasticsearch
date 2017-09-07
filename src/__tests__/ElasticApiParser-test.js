@@ -3,17 +3,16 @@
 // import fs from 'fs';
 import dox from 'dox';
 import path from 'path';
-import { GraphQLJSON, TypeComposer, graphql } from 'graphql-compose';
-import ElasticApiParser from '../ElasticApiParser';
-
-const {
+import { GraphQLJSON, TypeComposer } from 'graphql-compose';
+import {
   GraphQLString,
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLObjectType,
   GraphQLEnumType,
   GraphQLNonNull,
-} = graphql;
+} from 'graphql-compose/lib/graphql';
+import ElasticApiParser from '../ElasticApiParser';
 
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
 
@@ -44,7 +43,7 @@ describe('ElasticApiParser', () => {
 
     describe('findApiVersionFile()', () => {
       it('should find proper version in elasticsearch 12.x', () => {
-        const loadApiListFile = ElasticApiParser.loadApiListFile;
+        const { loadApiListFile } = ElasticApiParser;
         // $FlowFixMe
         ElasticApiParser.loadApiListFile = () =>
           `
@@ -82,7 +81,7 @@ describe('ElasticApiParser', () => {
       });
 
       it('should find proper version in elasticsearch 13.x', () => {
-        const loadApiListFile = ElasticApiParser.loadApiListFile;
+        const { loadApiListFile } = ElasticApiParser;
         // $FlowFixMe
         ElasticApiParser.loadApiListFile = () =>
           `

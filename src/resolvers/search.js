@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 
 import { Resolver, TypeComposer, InputTypeComposer, isObject } from 'graphql-compose';
-import type { ResolveParams, ProjectionType } from 'graphql-compose/lib/definition';
+import type { ResolveParams, ProjectionType } from 'graphql-compose';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
 import { getSearchBodyITC, prepareBodyInResolve } from '../elasticDSL/SearchBody';

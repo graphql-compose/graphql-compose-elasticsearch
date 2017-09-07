@@ -1,21 +1,21 @@
 /* @flow */
 
-import { TypeComposer, GraphQLJSON, graphql, GQC } from 'graphql-compose';
+import { TypeComposer, GraphQLJSON, GQC } from 'graphql-compose';
 import {
-  convertToSourceTC,
-  propertyToSourceGraphQLType,
-  inputPropertiesToGraphQLTypes,
-  getSubFields,
-} from '../mappingConverter';
-
-const {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLList,
   GraphQLObjectType,
-} = graphql;
+  graphql,
+} from 'graphql-compose/lib/graphql';
+import {
+  convertToSourceTC,
+  propertyToSourceGraphQLType,
+  inputPropertiesToGraphQLTypes,
+  getSubFields,
+} from '../mappingConverter';
 
 const mapping = {
   properties: {
@@ -261,7 +261,7 @@ describe('PropertiesConverter', () => {
 
     it('should use Elastic field names from source', async () => {
       GQC.rootQuery().addFields({ userES: tc9 });
-      const result = await graphql.graphql(
+      const result = await graphql(
         GQC.buildSchema(),
         `query { userES { _id, lastName, email, _passwordHash } }`,
         {

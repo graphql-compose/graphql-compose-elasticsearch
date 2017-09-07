@@ -1,10 +1,8 @@
 /* @flow */
 
-import { graphql } from 'graphql-compose';
+import { GraphQLEnumType } from 'graphql-compose/lib/graphql';
 import { getTypeName, getOrSetType } from '../utils';
 import { getFieldNamesByElasticType } from './Commons/FieldNames';
-
-const { GraphQLEnumType } = graphql;
 
 const sortableTypes = [
   'byte',

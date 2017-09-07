@@ -4,25 +4,23 @@
 import dox from 'dox';
 import fs from 'fs';
 import path from 'path';
-import { GraphQLJSON, upperFirst, TypeComposer, graphql } from 'graphql-compose';
-import { reorderKeys } from './utils';
-
-import type {
-  GraphQLArgumentConfig,
-  GraphQLFieldConfig,
-  GraphQLFieldConfigMap,
-  GraphQLFieldConfigArgumentMap,
-  GraphQLInputType,
-} from 'graphql-compose/lib/definition'; // eslint-disable-line
-
-const {
+import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
+import {
   GraphQLString,
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLObjectType,
   GraphQLEnumType,
   GraphQLNonNull,
-} = graphql;
+} from 'graphql-compose/lib/graphql';
+import type {
+  GraphQLArgumentConfig,
+  GraphQLFieldConfig,
+  GraphQLFieldConfigMap,
+  GraphQLFieldConfigArgumentMap,
+  GraphQLInputType,
+} from 'graphql-compose/lib/graphql';
+import { reorderKeys } from './utils';
 
 export type ElasticParamConfigT = {
   type: string,

@@ -156,11 +156,11 @@ function getPageInfoTC(opts: mixed = {}): TypeComposer {
 }
 
 export function base64(i: string): string {
-  return new Buffer(i, 'ascii').toString('base64');
+  return Buffer.from(i, 'ascii').toString('base64');
 }
 
 export function unbase64(i: string): string {
-  return new Buffer(i, 'base64').toString('ascii');
+  return Buffer.from(i, 'base64').toString('ascii');
 }
 
 export function cursorToData(cursor: string): mixed {

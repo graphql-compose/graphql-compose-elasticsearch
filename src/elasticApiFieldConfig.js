@@ -1,12 +1,13 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { graphql } from 'graphql-compose';
-import type { GraphQLFieldConfig } from 'graphql-compose/lib/definition';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  type GraphQLFieldConfig,
+} from 'graphql-compose/lib/graphql';
 import elasticsearch from 'elasticsearch';
 import ElasticApiParser from './ElasticApiParser';
-
-const { GraphQLObjectType, GraphQLString } = graphql;
 
 const DEFAULT_ELASTIC_API_VERSION = '_default';
 
@@ -47,7 +48,7 @@ function contextElasticClient(elasticConfig: Object): GraphQLFieldConfig<*, *> {
   if (!elasticConfig.apiVersion) {
     elasticConfig.apiVersion = DEFAULT_ELASTIC_API_VERSION;
   }
-  const apiVersion = elasticConfig.apiVersion;
+  const { apiVersion } = elasticConfig;
   const prefix = `ElasticAPI${apiVersion.replace('.', '')}`;
 
   const apiParser = new ElasticApiParser({

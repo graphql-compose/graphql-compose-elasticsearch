@@ -8,20 +8,18 @@ import {
   GraphQLBuffer,
   upperFirst,
   isObject,
-  graphql,
 } from 'graphql-compose';
-import type { GraphQLScalarType, GraphQLInputType } from 'graphql-compose/lib/definition';
-
-import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
-
-const {
+import {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLList,
   GraphQLObjectType,
-} = graphql;
+} from 'graphql-compose/lib/graphql';
+import type { GraphQLScalarType, GraphQLInputType } from 'graphql-compose/lib/graphql';
+
+import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
 
 export type ElasticMappingT = {
   properties: ElasticMappingPropertiesT,
