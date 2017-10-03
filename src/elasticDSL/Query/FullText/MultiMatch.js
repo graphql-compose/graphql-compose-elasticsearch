@@ -40,6 +40,15 @@ export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
         }`,
         minimum_should_match: 'String',
         analyzer: 'String',
+        slop: 'Int',
+        boost: 'Float',
+        fuzziness: 'JSON',
+        prefix_length: 'Int',
+        max_expansions: 'Int',
+        rewrite: 'String',
+        zero_terms_query: 'JSON',
+        cutoff_frequency: 'Float',
+        // lenient: 'JSON', // depricated from ES 5.3
       },
     })
   );

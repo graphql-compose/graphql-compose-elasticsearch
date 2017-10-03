@@ -301,6 +301,14 @@ input Elastic_QueryMultiMatch_50 {
   operator: Elastic_QueryMultiMatchOperatorEnum_50
   minimum_should_match: String
   analyzer: String
+  slop: Int
+  boost: Float
+  fuzziness: JSON
+  prefix_length: Int
+  max_expansions: Int
+  rewrite: String
+  zero_terms_query: JSON
+  cutoff_frequency: Float
 }
 
 enum Elastic_QueryMultiMatchOperatorEnum_50 {
