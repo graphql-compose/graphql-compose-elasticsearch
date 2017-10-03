@@ -263,7 +263,16 @@ describe('PropertiesConverter', () => {
       GQC.rootQuery().addFields({ userES: tc9 });
       const result = await graphql(
         GQC.buildSchema(),
-        `query { userES { _id, lastName, email, _passwordHash } }`,
+        `
+          query {
+            userES {
+              _id
+              lastName
+              email
+              _passwordHash
+            }
+          }
+        `,
         {
           // simulate elastic responce
           userES: {
