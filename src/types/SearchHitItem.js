@@ -39,6 +39,11 @@ export function getSearchHitItemTC(opts: SearchOptsT = {}): TypeComposer {
 
         // return sort values for search_after
         sort: 'JSON',
+
+        fields: {
+          type: 'JSON',
+          description: 'Returns result from `script_fields`',
+        },
       },
     })
   );
