@@ -410,6 +410,7 @@ input Elastic_QuerySimpleQueryString_50 {
   lenient: Boolean
   minimum_should_match: String
   quote_field_suffix: String
+  boost: Float
 }
 
 enum Elastic_QuerySimpleQueryStringOperatorEnum_50 {
