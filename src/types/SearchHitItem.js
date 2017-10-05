@@ -31,18 +31,19 @@ export function getSearchHitItemTC(opts: SearchOptsT = {}): TypeComposer {
           description: desc(`Use explain API on query`),
         },
 
-        // if arg.version = true
         _version: 'Int',
 
-        // if args.highlight is provided
-        highlight: 'JSON',
+        highlight: {
+          type: 'JSON',
+          description: 'Returns data only if `args.highlight` is provided',
+        },
 
         // return sort values for search_after
         sort: 'JSON',
 
         fields: {
           type: 'JSON',
-          description: 'Returns result from `script_fields`',
+          description: 'Returns result from `args.opts.body.script_fields`',
         },
       },
     })
