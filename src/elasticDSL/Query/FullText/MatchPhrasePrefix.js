@@ -23,6 +23,7 @@ export function getMatchPhrasePrefixITC(opts: mixed = {}): InputTypeComposer {
         fields: {
           query: 'String',
           max_expansions: 'Int',
+          boost: 'Float',
         },
       })
     )

@@ -23,6 +23,7 @@ export function getMatchPhraseITC(opts: mixed = {}): InputTypeComposer {
         fields: {
           query: 'String',
           analyzer: 'String',
+          boost: 'Float',
         },
       })
     )

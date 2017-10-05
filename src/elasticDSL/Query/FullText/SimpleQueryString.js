@@ -41,6 +41,7 @@ export function getSimpleQueryStringITC(opts: mixed = {}): InputTypeComposer {
         lenient: 'Boolean',
         minimum_should_match: 'String',
         quote_field_suffix: 'String',
+        boost: 'Float',
       },
     })
   );

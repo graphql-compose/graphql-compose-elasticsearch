@@ -24,6 +24,7 @@ export function getMatchITC(opts: mixed = {}): InputTypeComposer {
           operator: 'String',
           zero_terms_query: 'String',
           cutoff_frequency: 'Float',
+          boost: 'Float',
         },
       })
     )

@@ -27,6 +27,7 @@ export function getCommonITC(opts: mixed = {}): InputTypeComposer {
           minimum_should_match: 'JSON',
           low_freq_operator: 'String',
           high_freq_operator: 'String',
+          boost: 'Float',
         },
       })
     )
