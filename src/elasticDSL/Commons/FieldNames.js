@@ -2,11 +2,9 @@
 /* eslint-disable no-param-reassign */
 
 import { upperFirst } from 'graphql-compose';
+import type { ComposeInputFieldConfigMap } from 'graphql-compose';
 import { GraphQLEnumType } from 'graphql-compose/lib/graphql';
-import type {
-  GraphQLEnumValueConfigMap,
-  GraphQLInputFieldConfigMap,
-} from 'graphql-compose/lib/graphql';
+import type { GraphQLEnumValueConfigMap } from 'graphql-compose/lib/graphql';
 import { getTypeName, getOrSetType, desc } from '../../utils';
 
 export type ElasticDataType = string;
@@ -190,7 +188,7 @@ export function getFieldConfigMap(
   types: ElasticDataType[],
   fc: any,
   addAll: boolean = false
-): GraphQLInputFieldConfigMap | string {
+): ComposeInputFieldConfigMap | string {
   if (!fc) fc = 'JSON';
   if (!opts || !opts.fieldMap) {
     return 'JSON';
