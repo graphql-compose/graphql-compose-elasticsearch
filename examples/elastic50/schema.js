@@ -1,7 +1,7 @@
 /* @flow */
 
 import elasticsearch from 'elasticsearch';
-import { graphql } from 'graphql-compose';
+import { graphql, TypeComposer } from 'graphql-compose';
 import { composeWithElastic, elasticApiFieldConfig } from '../../src'; // from 'graphql-compose-elasticsearch';
 
 const { GraphQLSchema, GraphQLObjectType } = graphql;
@@ -102,12 +102,34 @@ const UserEsTC = composeWithElastic({
   pluralFields: ['skills', 'languages'],
 });
 
+const ProxyTC = TypeComposer.create(`type ProxyDebugType { source: JSON }`);
+ProxyTC.addResolver({
+  name: 'showArgs',
+  kind: 'query',
+  args: {
+    source: 'JSON',
+  },
+  type: 'ProxyDebugType',
+  resolve: ({ args }) => args,
+});
+
+UserEsTC.addRelation('showRelationArguments', {
+  resolver: () => ProxyTC.getResolver('showArgs'),
+  prepareArgs: {
+    source: source => source,
+  },
+  projection: {
+    name: true,
+    salary: true,
+  },
+});
+
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: {
-      user: UserEsTC.getResolver('search').getFieldConfig(),
-      userConnection: UserEsTC.getResolver('searchConnection').getFieldConfig(),
+      userSearch: UserEsTC.getResolver('search').getFieldConfig(),
+      userSearchConnection: UserEsTC.getResolver('searchConnection').getFieldConfig(),
       elastic50: elasticApiFieldConfig({
         host: 'http://user:pass@localhost:9200',
         apiVersion: '5.0',
