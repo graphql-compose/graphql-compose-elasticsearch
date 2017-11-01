@@ -1,10 +1,12 @@
 /* @flow */
 
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getAnalyzedAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getMatchPhrasePrefixITC(opts: mixed = {}): InputTypeComposer {
+export function getMatchPhrasePrefixITC(
+  opts: mixed = {}
+): InputTypeComposer | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryMatchPhrasePrefix', opts);
   const description = desc(
     `
@@ -39,7 +41,6 @@ export function getMatchPhrasePrefixITC(opts: mixed = {}): InputTypeComposer {
     );
   }
 
-  // $FlowFixMe
   return {
     type: 'JSON',
     description,

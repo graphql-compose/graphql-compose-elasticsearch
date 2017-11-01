@@ -7,8 +7,7 @@ export function getTypeName(name: string, opts: any): string {
 }
 
 export function getOrSetType<T>(typeName: string, typeOrThunk: (() => T) | T): T {
-  // $FlowFixMe
-  const type: T = typeStorage.getOrSet(typeName, typeOrThunk);
+  const type: any = typeStorage.getOrSet(typeName, typeOrThunk);
   return type;
 }
 

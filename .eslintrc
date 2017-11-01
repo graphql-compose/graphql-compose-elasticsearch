@@ -34,5 +34,9 @@
   "plugins": [
     "flowtype",
     "prettier"
-  ]
+  ],
+  "globals": {
+    "$Shape": true,
+    "$FlowFixMe": true,
+  }
 }

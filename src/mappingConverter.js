@@ -176,11 +176,11 @@ export function inputPropertiesToGraphQLTypes(
   }
 
   // mapping
-  if (prop.properties && isObject(prop.properties)) {
-    Object.keys(prop.properties).forEach(subFieldName => {
+  const { properties } = ((prop: any): ElasticMappingT);
+  if (properties && isObject(properties)) {
+    Object.keys(properties).forEach(subFieldName => {
       inputPropertiesToGraphQLTypes(
-        // $FlowFixMe
-        prop.properties[subFieldName],
+        properties[subFieldName],
         [fieldName, subFieldName].filter(o => !!o).join('__'),
         result
       );
@@ -189,11 +189,11 @@ export function inputPropertiesToGraphQLTypes(
   }
 
   // object type with subfields
-  if (prop.fields && isObject(prop.fields)) {
-    Object.keys(prop.fields).forEach(subFieldName => {
+  const { fields } = ((prop: any): ElasticPropertyT);
+  if (fields && isObject(fields)) {
+    Object.keys(fields).forEach(subFieldName => {
       inputPropertiesToGraphQLTypes(
-        // $FlowFixMe
-        prop.fields[subFieldName],
+        fields[subFieldName],
         [fieldName, subFieldName].filter(o => !!o).join('__'),
         result
       );

@@ -51,9 +51,8 @@ export function convertAggsRules(rules: GqlAggRules): ElasticAggsRulesT {
     if (key === 'aggs' && rules.aggs) {
       result.aggs = convertAggsBlocks(rules.aggs);
     } else {
-      // $FlowFixMe
       result[key] = rules[key];
     }
   });
-  return result;
+  return (result: any);
 }

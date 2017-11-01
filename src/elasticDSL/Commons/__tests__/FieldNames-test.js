@@ -53,9 +53,8 @@ const opts = { fieldMap };
 
 describe('FieldNames', () => {
   it('getStringFields()', () => {
-    const type = FieldNames.getStringFields(opts);
+    const type: any = FieldNames.getStringFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticStringFields',
@@ -68,9 +67,8 @@ describe('FieldNames', () => {
   });
 
   it('getNumericFields()', () => {
-    const type = FieldNames.getNumericFields(opts);
+    const type: any = FieldNames.getNumericFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticNumericFields',
@@ -83,9 +81,8 @@ describe('FieldNames', () => {
   });
 
   it('getDateFields()', () => {
-    const type = FieldNames.getDateFields(opts);
+    const type: any = FieldNames.getDateFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticDateFields',
@@ -96,9 +93,8 @@ describe('FieldNames', () => {
   });
 
   it('getBooleanFields()', () => {
-    const type = FieldNames.getBooleanFields(opts);
+    const type: any = FieldNames.getBooleanFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticBooleanFields',
@@ -109,9 +105,8 @@ describe('FieldNames', () => {
   });
 
   it('getGeoPointFields()', () => {
-    const type = FieldNames.getGeoPointFields(opts);
+    const type: any = FieldNames.getGeoPointFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticGeoPointFields',
@@ -122,9 +117,8 @@ describe('FieldNames', () => {
   });
 
   it('getNestedFields()', () => {
-    const type = FieldNames.getNestedFields(opts);
+    const type: any = FieldNames.getNestedFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticNestedFields',
@@ -135,9 +129,8 @@ describe('FieldNames', () => {
   });
 
   it('getIpFields()', () => {
-    const type = FieldNames.getIpFields(opts);
+    const type: any = FieldNames.getIpFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticIpFields',
@@ -148,9 +141,8 @@ describe('FieldNames', () => {
   });
 
   it('getAllFields()', () => {
-    const type = FieldNames.getAllFields(opts);
+    const type: any = FieldNames.getAllFields(opts);
     expect(type).toBeInstanceOf(GraphQLEnumType);
-    // $FlowFixMe
     expect(type._enumConfig).toMatchObject({
       description: 'Avaliable fields from mapping.',
       name: 'ElasticAllFields',

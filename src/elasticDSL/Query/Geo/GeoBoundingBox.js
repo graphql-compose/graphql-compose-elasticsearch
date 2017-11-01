@@ -1,11 +1,13 @@
 /* @flow */
 
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getGeoPointAsFieldConfigMap } from '../../Commons/FieldNames';
 import { getGeoPointFC } from '../../Commons/Geo';
 
-export function getGeoBoundingBoxITC(opts: mixed = {}): InputTypeComposer {
+export function getGeoBoundingBoxITC(
+  opts: mixed = {}
+): InputTypeComposer | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryGeoBoundingBox', opts);
   const description = desc(
     `
@@ -39,7 +41,6 @@ export function getGeoBoundingBoxITC(opts: mixed = {}): InputTypeComposer {
     );
   }
 
-  // $FlowFixMe
   return {
     type: 'JSON',
     description,

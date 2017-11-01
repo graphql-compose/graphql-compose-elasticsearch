@@ -1,10 +1,10 @@
 /* @flow */
 /* eslint-disable no-unused-vars */
 
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../utils';
 
-export function getDateRangeITC(opts: mixed = {}): mixed {
+export function getDateRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('DateRange', opts);
   const description = desc(`Date range where \`from\` value includes and \`to\` value excludes.`);
 
@@ -20,7 +20,7 @@ export function getDateRangeITC(opts: mixed = {}): mixed {
   );
 }
 
-export function getDateFormatFC(opts: mixed = {}): mixed {
+export function getDateFormatFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -32,7 +32,7 @@ export function getDateFormatFC(opts: mixed = {}): mixed {
   };
 }
 
-export function getDateIntervalFC(opts: mixed = {}): mixed {
+export function getDateIntervalFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -45,7 +45,7 @@ export function getDateIntervalFC(opts: mixed = {}): mixed {
   };
 }
 
-export function getDateMathFC(opts: mixed = {}): mixed {
+export function getDateMathFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -59,7 +59,7 @@ export function getDateMathFC(opts: mixed = {}): mixed {
   };
 }
 
-export function getDateTimeZoneFC(opts: mixed = {}): mixed {
+export function getDateTimeZoneFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(

@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable no-unused-vars */
 
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
 import { GraphQLScalarType, Kind } from 'graphql-compose/lib/graphql';
 import { getTypeName, getOrSetType, desc } from '../../utils';
 
@@ -45,11 +45,11 @@ export const ElasticGeoPointType = new GraphQLScalarType({
   },
 });
 
-export function getGeoPointFC(opts: mixed = {}): mixed {
+export function getGeoPointFC(opts: mixed = {}): GraphQLScalarType {
   return ElasticGeoPointType;
 }
 
-export function getDistanceUnitFC(opts: mixed = {}): mixed {
+export function getDistanceUnitFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -62,7 +62,7 @@ export function getDistanceUnitFC(opts: mixed = {}): mixed {
   };
 }
 
-export function getDistanceCalculationModeFC(opts: mixed = {}): mixed {
+export function getDistanceCalculationModeFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(

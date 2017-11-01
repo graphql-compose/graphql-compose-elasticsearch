@@ -4,7 +4,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../utils';
 
-export function getIpRangeTypeITC(opts: mixed = {}): mixed {
+export function getIpRangeTypeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('IpRangeType', opts);
   const description = desc(`Ip range where \`from\` value includes and \`to\` value excludes.`);
 

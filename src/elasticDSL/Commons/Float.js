@@ -4,7 +4,7 @@
 import { InputTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../utils';
 
-export function getFloatRangeITC(opts: mixed = {}): mixed {
+export function getFloatRangeITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('FloatRange', opts);
   const description = desc(`Float range where \`from\` value includes and \`to\` value excludes.`);
 
@@ -20,7 +20,7 @@ export function getFloatRangeITC(opts: mixed = {}): mixed {
   );
 }
 
-export function getFloatRangeKeyedITC(opts: mixed = {}): mixed {
+export function getFloatRangeKeyedITC(opts: mixed = {}): InputTypeComposer {
   const name = getTypeName('FloatRangeKeyed', opts);
   const description = desc(
     `

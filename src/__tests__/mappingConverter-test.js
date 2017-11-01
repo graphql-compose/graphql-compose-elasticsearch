@@ -60,8 +60,10 @@ const mapping = {
 describe('PropertiesConverter', () => {
   describe('convertToSourceTC()', () => {
     it('should throw error on empty mapping', () => {
-      // $FlowFixMe
-      expect(() => convertToSourceTC()).toThrowError('incorrect mapping');
+      expect(() => {
+        // $FlowFixMe
+        convertToSourceTC();
+      }).toThrowError('incorrect mapping');
     });
 
     it('should throw error on empty typeName', () => {

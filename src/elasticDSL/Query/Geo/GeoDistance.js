@@ -1,11 +1,13 @@
 /* @flow */
 
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getGeoPointAsFieldConfigMap } from '../../Commons/FieldNames';
 import { getGeoPointFC, getDistanceCalculationModeFC } from '../../Commons/Geo';
 
-export function getGeoDistanceITC(opts: mixed = {}): InputTypeComposer {
+export function getGeoDistanceITC(
+  opts: mixed = {}
+): InputTypeComposer | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryGeoDistance', opts);
   const description = desc(
     `
@@ -48,7 +50,6 @@ export function getGeoDistanceITC(opts: mixed = {}): InputTypeComposer {
     );
   }
 
-  // $FlowFixMe
   return {
     type: 'JSON',
     description,

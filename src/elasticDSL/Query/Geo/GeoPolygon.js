@@ -22,7 +22,7 @@ export function getGeoPolygonITC(opts: mixed = {}): InputTypeComposer {
       InputTypeComposer.create({
         name: subName,
         fields: {
-          points: [getGeoPointFC(opts)],
+          points: ([getGeoPointFC(opts)]: $FlowFixMe),
           validation_method: 'String',
         },
       })

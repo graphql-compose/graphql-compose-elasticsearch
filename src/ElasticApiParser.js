@@ -4,7 +4,7 @@
 import dox from 'dox';
 import fs from 'fs';
 import path from 'path';
-import { GraphQLJSON, upperFirst, TypeComposer } from 'graphql-compose';
+import { GraphQLJSON, upperFirst, TypeComposer, type ComposeFieldConfigMap } from 'graphql-compose';
 import {
   GraphQLString,
   GraphQLFloat,
@@ -15,7 +15,6 @@ import {
 } from 'graphql-compose/lib/graphql';
 import type {
   GraphQLArgumentConfig,
-  GraphQLFieldConfig,
   GraphQLFieldConfigMap,
   GraphQLFieldConfigArgumentMap,
   GraphQLInputType,
@@ -277,10 +276,7 @@ export default class ElasticApiParser {
     ]);
   }
 
-  generateFieldConfig(
-    methodName: string,
-    methodArgs?: { [paramName: string]: mixed }
-  ): GraphQLFieldConfig<*, *> {
+  generateFieldConfig(methodName: string, methodArgs?: { [paramName: string]: mixed }) {
     if (!methodName) {
       throw new Error(`You should provide Elastic search method.`);
     }
@@ -299,7 +295,8 @@ export default class ElasticApiParser {
       type: GraphQLJSON,
       description,
       args: argMap,
-      resolve: (src, args, context) => {
+      // eslint-disable-next-line no-unused-vars
+      resolve: (source: any, args: Object, context: any, info: any) => {
         const client = (context && context.elasticClient) || this.elasticClient;
 
         if (!client) {
@@ -395,8 +392,7 @@ export default class ElasticApiParser {
         } else if (val === 'null') {
           result.null_string = { value: 'null' };
         } else if (Number.isFinite(val)) {
-          // $FlowFixMe
-          result[`number_${val}`] = { value: val };
+          result[`number_${(val: any)}`] = { value: val };
         } else if (typeof val === 'string') {
           result[val] = { value: val };
         }
@@ -456,7 +452,7 @@ export default class ElasticApiParser {
     return result;
   }
 
-  reassembleNestedFields(fields: GraphQLFieldConfigMap<*, *>): GraphQLFieldConfigMap<*, *> {
+  reassembleNestedFields(fields: ComposeFieldConfigMap<any, any>): GraphQLFieldConfigMap<*, *> {
     const result = {};
     Object.keys(fields).forEach(k => {
       const names = k.split('.');
@@ -467,8 +463,7 @@ export default class ElasticApiParser {
           result[names[0]] = {
             type: new GraphQLObjectType({
               name: `${this.prefix}_${upperFirst(names[0])}`,
-              // $FlowFixMe
-              fields: () => {},
+              fields: (() => {}: any),
             }),
             resolve: () => {
               return {};

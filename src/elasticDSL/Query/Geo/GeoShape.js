@@ -1,10 +1,12 @@
 /* @flow */
 
-import { InputTypeComposer } from 'graphql-compose';
+import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
 import { getTypeName, getOrSetType, desc } from '../../../utils';
 import { getGeoShapeAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getGeoShapeITC(opts: mixed = {}): InputTypeComposer {
+export function getGeoShapeITC(
+  opts: mixed = {}
+): InputTypeComposer | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryGeoShape', opts);
   const description = desc(
     `
@@ -39,7 +41,6 @@ export function getGeoShapeITC(opts: mixed = {}): InputTypeComposer {
     );
   }
 
-  // $FlowFixMe
   return {
     type: 'JSON',
     description,

@@ -178,7 +178,6 @@ export default function createSearchResolver(
         args.body = prepareBodyInResolve(args.body, fieldMap);
       }
 
-      // $FlowFixMe
       const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
 
       res.count = res.hits.total;

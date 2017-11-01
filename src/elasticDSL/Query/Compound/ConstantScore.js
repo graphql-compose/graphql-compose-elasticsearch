@@ -19,7 +19,7 @@ export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
       name,
       description,
       fields: {
-        filter: () => getQueryITC(opts).getTypeAsRequired(),
+        filter: (() => getQueryITC(opts).getTypeAsRequired(): $FlowFixMe),
         boost: 'Float!',
       },
     })

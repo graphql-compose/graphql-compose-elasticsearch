@@ -11,7 +11,7 @@ import ElasticApiParser from './ElasticApiParser';
 
 const DEFAULT_ELASTIC_API_VERSION = '_default';
 
-export function elasticApiFieldConfig(esClientOrOpts: Object): GraphQLFieldConfig<*, *> {
+export function elasticApiFieldConfig(esClientOrOpts: Object): GraphQLFieldConfig<any, any> {
   if (!esClientOrOpts || typeof esClientOrOpts !== 'object') {
     throw new Error(
       'You should provide ElasticClient instance or ElasticClientConfig in first argument.'
@@ -25,7 +25,7 @@ export function elasticApiFieldConfig(esClientOrOpts: Object): GraphQLFieldConfi
   }
 }
 
-function instanceElasticClient(elasticClient: Object): GraphQLFieldConfig<*, *> {
+function instanceElasticClient(elasticClient: Object): GraphQLFieldConfig<any, any> {
   const apiVersion = elasticClient.transport._config.apiVersion || DEFAULT_ELASTIC_API_VERSION;
   const prefix = `ElasticAPI${apiVersion.replace('.', '')}`;
 
@@ -44,7 +44,7 @@ function instanceElasticClient(elasticClient: Object): GraphQLFieldConfig<*, *> 
   };
 }
 
-function contextElasticClient(elasticConfig: Object): GraphQLFieldConfig<*, *> {
+function contextElasticClient(elasticConfig: Object): GraphQLFieldConfig<any, any> {
   if (!elasticConfig.apiVersion) {
     elasticConfig.apiVersion = DEFAULT_ELASTIC_API_VERSION;
   }

@@ -200,7 +200,6 @@ export function getFieldConfigMap(
 
   const fcMap = {};
   if (addAll) {
-    // $FlowFixMe
     fcMap._all = fc;
   }
   getFieldNamesByElasticType(opts.fieldMap, types).forEach(fieldName => {

@@ -17,7 +17,7 @@ import ElasticApiParser from '../ElasticApiParser';
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
 
 describe('ElasticApiParser', () => {
-  let parser;
+  let parser: ElasticApiParser;
 
   beforeEach(() => {
     parser = new ElasticApiParser({
@@ -44,6 +44,7 @@ describe('ElasticApiParser', () => {
     describe('findApiVersionFile()', () => {
       it('should find proper version in elasticsearch 12.x', () => {
         const { loadApiListFile } = ElasticApiParser;
+
         // $FlowFixMe
         ElasticApiParser.loadApiListFile = () =>
           `
@@ -60,19 +61,15 @@ describe('ElasticApiParser', () => {
         `;
 
         expect(ElasticApiParser.findApiVersionFile('5.0')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/5_0.js'
         );
         expect(ElasticApiParser.findApiVersionFile('2.4')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/2_4.js'
         );
         expect(ElasticApiParser.findApiVersionFile('1.7')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/1_7.js'
         );
         expect(ElasticApiParser.findApiVersionFile('_default')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/5_0.js'
         );
 
@@ -82,6 +79,7 @@ describe('ElasticApiParser', () => {
 
       it('should find proper version in elasticsearch 13.x', () => {
         const { loadApiListFile } = ElasticApiParser;
+
         // $FlowFixMe
         ElasticApiParser.loadApiListFile = () =>
           `
@@ -100,19 +98,15 @@ describe('ElasticApiParser', () => {
         `;
 
         expect(ElasticApiParser.findApiVersionFile('5.0')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/5_0.js'
         );
         expect(ElasticApiParser.findApiVersionFile('2.4')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/2_4.js'
         );
         expect(ElasticApiParser.findApiVersionFile('1.7')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/1_7.js'
         );
         expect(ElasticApiParser.findApiVersionFile('_default')).toMatch(
-          // $FlowFixMe
           'elasticsearch/src/lib/apis/5_3.js'
         );
 
@@ -267,8 +261,7 @@ describe('ElasticApiParser', () => {
           ElasticApiParser.parseSource('');
         }).toThrowError('Empty source');
         expect(() => {
-          // $FlowFixMe
-          ElasticApiParser.parseSource(123);
+          ElasticApiParser.parseSource((123: any));
         }).toThrowError('should be non-empty string');
       });
 
@@ -482,7 +475,7 @@ describe('ElasticApiParser', () => {
     });
 
     it('should combine nested field in GraphQLObjectType', () => {
-      const reFields = parser.reassembleNestedFields({
+      const reFields: any = parser.reassembleNestedFields({
         'cat.field1': { type: GraphQLString },
         'cat.field2': { type: GraphQLString },
         'index.exists': { type: GraphQLBoolean },
@@ -490,7 +483,7 @@ describe('ElasticApiParser', () => {
       expect(Object.keys(reFields).length).toEqual(2);
       expect(reFields.cat).toBeDefined();
       expect(reFields.cat.type).toBeInstanceOf(GraphQLObjectType);
-      // $FlowFixMe
+
       const tc = TypeComposer.create(reFields.cat.type);
       expect(tc.getFieldNames()).toEqual(['field1', 'field2']);
       expect(tc.getFieldType('field1')).toEqual(GraphQLString);
@@ -498,7 +491,7 @@ describe('ElasticApiParser', () => {
 
       expect(reFields.index).toBeDefined();
       expect(reFields.index.type).toBeInstanceOf(GraphQLObjectType);
-      // $FlowFixMe
+
       const tc2 = TypeComposer.create(reFields.index.type);
       expect(tc2.getFieldNames()).toEqual(['exists']);
       expect(tc2.getFieldType('exists')).toEqual(GraphQLBoolean);
@@ -508,8 +501,7 @@ describe('ElasticApiParser', () => {
   describe('generateFieldConfig()', () => {
     it('should throw error if provided empty method name', () => {
       expect(() => {
-        // $FlowFixMe
-        parser.generateFieldConfig();
+        parser.generateFieldConfig((undefined: any));
       }).toThrowError('provide Elastic search method');
     });
 
