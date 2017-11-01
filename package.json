@@ -27,19 +27,19 @@
   },
   "peerDependencies": {
     "elasticsearch": ">=12.0.0 || >=13.0.0",
-    "graphql-compose": ">=2.9.0"
+    "graphql-compose": ">=2.9.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
-    "cz-conventional-changelog": "^2.0.0",
+    "cz-conventional-changelog": "^2.1.0",
     "elasticsearch": "^13.3.1",
-    "eslint": "^4.8.0",
+    "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.0.1",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-flowtype": "^2.37.0",
@@ -49,13 +49,13 @@
     "express-graphql": "^0.6.11",
     "flow-bin": "^0.57.3",
     "graphql": "^0.11.7",
-    "graphql-compose": "^2.9.4",
+    "graphql-compose": "^2.9.5",
     "jest": "^21.2.1",
     "nodemon": "^1.12.1",
     "npm-run-all": "^4.1.1",
     "prettier": "^1.7.4",
     "rimraf": "^2.6.2",
-    "semantic-release": "^8.2.1"
+    "semantic-release": "^8.2.0"
   },
   "config": {
     "commitizen": {
