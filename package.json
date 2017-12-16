@@ -48,7 +48,7 @@
     "express": "^4.16.1",
     "express-graphql": "^0.6.11",
     "flow-bin": "^0.57.3",
-    "graphql": "^0.11.7",
+    "graphql": "^0.12.0",
     "graphql-compose": "^2.9.5",
     "jest": "^21.2.1",
     "nodemon": "^1.12.1",
