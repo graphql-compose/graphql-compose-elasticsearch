@@ -3,7 +3,7 @@
 // import fs from 'fs';
 import dox from 'dox';
 import path from 'path';
-import { GraphQLJSON, TypeComposer } from 'graphql-compose';
+import { GraphQLJSON, TypeComposer, EnumTypeComposer } from 'graphql-compose';
 import {
   GraphQLString,
   GraphQLFloat,
@@ -303,14 +303,18 @@ describe('ElasticApiParser', () => {
     it('should convert to GraphQLEnumType', () => {
       const type = parser.getEnumType('f1', ['AND', 'OR']);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      expect(type._values[0]).toMatchObject({ name: 'AND', value: 'AND' });
-      expect(type._values[1]).toMatchObject({ name: 'OR', value: 'OR' });
+
+      const etc = EnumTypeComposer.create(type);
+      expect(etc.getField('AND')).toMatchObject({ name: 'AND', value: 'AND' });
+      expect(etc.getField('OR')).toMatchObject({ name: 'OR', value: 'OR' });
     });
 
     it("should convert '' to empty_string", () => {
       const type = parser.getEnumType('f1', ['']);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      expect(type._values[0]).toMatchObject({
+
+      const etc = EnumTypeComposer.create(type);
+      expect(etc.getField('empty_string')).toMatchObject({
         name: 'empty_string',
         value: '',
       });
@@ -322,19 +326,21 @@ describe('ElasticApiParser', () => {
       // But we allow to use this values, just renaming it.
       const type = parser.getEnumType('f1', ['true', true, 'false', false]);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      expect(type._values[0]).toMatchObject({
+
+      const etc = EnumTypeComposer.create(type);
+      expect(etc.getField('true_string')).toMatchObject({
         name: 'true_string',
         value: 'true',
       });
-      expect(type._values[1]).toMatchObject({
+      expect(etc.getField('true_boolean')).toMatchObject({
         name: 'true_boolean',
         value: true,
       });
-      expect(type._values[2]).toMatchObject({
+      expect(etc.getField('false_string')).toMatchObject({
         name: 'false_string',
         value: 'false',
       });
-      expect(type._values[3]).toMatchObject({
+      expect(etc.getField('false_boolean')).toMatchObject({
         name: 'false_boolean',
         value: false,
       });
@@ -343,7 +349,9 @@ describe('ElasticApiParser', () => {
     it('should convert 1 to number_1', () => {
       const type = parser.getEnumType('f1', [1]);
       expect(type).toBeInstanceOf(GraphQLEnumType);
-      expect(type._values[0]).toMatchObject({ name: 'number_1', value: 1 });
+
+      const etc = EnumTypeComposer.create(type);
+      expect(etc.getField('number_1')).toMatchObject({ name: 'number_1', value: 1 });
     });
 
     it('should provide name started with ElasticEnum', () => {
