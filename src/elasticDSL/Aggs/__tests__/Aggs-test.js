@@ -39,12 +39,12 @@ describe('AGGS args converter', () => {
   });
 
   it('convertAggsBlocks()', () => {
-    expect(
-      convertAggsBlocks([{ key: 'field1', value: {} }, { key: 'field2', value: {} }])
-    ).toEqual({
-      field1: {},
-      field2: {},
-    });
+    expect(convertAggsBlocks([{ key: 'field1', value: {} }, { key: 'field2', value: {} }])).toEqual(
+      {
+        field1: {},
+        field2: {},
+      }
+    );
   });
 
   it('should convert recursively aggs', () => {
