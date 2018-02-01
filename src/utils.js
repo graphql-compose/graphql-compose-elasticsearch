@@ -1,6 +1,8 @@
 /* @flow */
 
-import typeStorage from './typeStorage';
+import { TypeStorage } from 'graphql-compose';
+
+const typeStorage = new TypeStorage();
 
 export function getTypeName(name: string, opts: any): string {
   return `${(opts && opts.prefix) || 'Elastic'}${name}${(opts && opts.postfix) || ''}`;
