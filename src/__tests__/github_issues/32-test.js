@@ -70,6 +70,7 @@ describe('github issue #72 - hits returns me the found id, score, type...', () =
     ]);
 
     const SourceTC = HitsTC.getFieldTC('_source');
+    expect(SourceTC.getTypeName()).toBe('SearchActivitiesSearchActivities');
     expect(SourceTC).toBeInstanceOf(TypeComposer);
     expect(SourceTC.getFieldNames()).toEqual(['id', 'title', 'description']);
   });
@@ -115,6 +116,7 @@ describe('github issue #72 - hits returns me the found id, score, type...', () =
     ]);
 
     const SourceTC = HitsTC.getFieldTC('_source');
+    expect(SourceTC.getTypeName()).toBe('SearchActivitiesSearchActivities');
     expect(SourceTC).toBeInstanceOf(TypeComposer);
     expect(SourceTC.getFieldNames()).toEqual(['id', 'title', 'description']);
   });
