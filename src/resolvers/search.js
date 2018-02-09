@@ -26,7 +26,7 @@ export default function createSearchResolver(
     );
   }
 
-  if (!(sourceTC instanceof TypeComposer)) {
+  if (!sourceTC || sourceTC.constructor.name !== 'TypeComposer') {
     throw new Error('Second arg for Resolver search() should be instance of TypeComposer.');
   }
 
