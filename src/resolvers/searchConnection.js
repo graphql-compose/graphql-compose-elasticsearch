@@ -4,9 +4,9 @@ import { Resolver, TypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType } from '../utils';
 
 export default function createSearchConnectionResolver(
-  searchResolver: Resolver<*, *>,
+  searchResolver: Resolver,
   opts: mixed = {}
-): Resolver<*, *> {
+): Resolver {
   const resolver = searchResolver.clone({
     name: `searchConnection`,
   });

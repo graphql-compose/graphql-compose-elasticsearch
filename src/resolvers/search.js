@@ -19,7 +19,7 @@ export default function createSearchResolver(
   fieldMap: FieldsMapByElasticType,
   sourceTC: TypeComposer,
   opts: ElasticSearchResolverOpts
-): Resolver<*, *> {
+): Resolver {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
       'First arg for Resolver search() should be fieldMap of FieldsMapByElasticType type.'
