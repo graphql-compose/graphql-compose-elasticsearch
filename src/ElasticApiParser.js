@@ -75,7 +75,7 @@ export default class ElasticApiParser {
   parsedSource: ElasticParsedSourceT;
 
   constructor(opts: ElasticApiParserOptsT = {}) {
-    // avaliable varsions can be found in installed package `elasticsearch`
+    // avaliable versions can be found in installed package `elasticsearch`
     // in file /node_modules/elasticsearch/src/lib/apis/index.js
     this.apiVersion =
       opts.apiVersion ||
@@ -312,7 +312,6 @@ export default class ElasticApiParser {
             ...args,
           });
         }
-
         return client[elasticMethod]({ ...methodArgs, ...args });
       },
     };
