@@ -103,11 +103,13 @@ export default function createSearchConnectionResolver(
       const cursor = dataToCursor(node.sort);
       if (cursorMap.has(cursor)) {
         throw new Error(
-          'Argument `sort` should be more complex. `cursor` are constructed ' +
-            'according to the sort fields. Detected that two records have ' +
+          `Argument \`sort {${args.sort.join(', ')}}\` must be more complex! ` +
+            'Values from record which are used in `sort` will be used for `cursor` fields. ' +
+            'According to connection spec `cursor` must be unique for every node.' +
+            'Detected that two nodes have ' +
             `the same cursors '${cursor}' with data '${unbase64(cursor)}'. ` +
-            'You should add more `sort` fields, which provide unique data ' +
-            'for all cursors in the result set (eg. `id` field).'
+            'You must add more `sort` fields, which provide unique data ' +
+            'for all cursors in the result set.'
         );
       }
       cursorMap.set(cursor, node);
