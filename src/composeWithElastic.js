@@ -4,6 +4,7 @@ import { TypeComposer } from 'graphql-compose';
 import { convertToSourceTC, inputPropertiesToGraphQLTypes } from './mappingConverter';
 import createSearchResolver from './resolvers/search';
 import createSearchConnectionResolver from './resolvers/searchConnection';
+import createFindByIdResolver from './resolvers/findById';
 
 import type { ElasticMappingT } from './mappingConverter';
 
@@ -63,9 +64,11 @@ export function composeWithElastic(opts: composeWithElasticOptsT): TypeComposer 
 
   const searchR = createSearchResolver(fieldMap, sourceTC, opts);
   const searchConnectionR = createSearchConnectionResolver(searchR, opts);
+  const findByIdR = createFindByIdResolver(fieldMap, sourceTC, opts);
 
   sourceTC.addResolver(searchR);
   sourceTC.addResolver(searchConnectionR);
+  sourceTC.addResolver(findByIdR);
 
   return sourceTC;
 }

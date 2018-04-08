@@ -5,22 +5,25 @@ import createFindByIdResolver, * as FindById from '../findById';
 import elasticClient from '../../__mocks__/elasticClient';
 import { CvTC, CvFieldMap } from '../../__mocks__/cv';
 
-describe.only('findById', () => {
+const findByIdResolver = createFindByIdResolver(CvFieldMap, CvTC, {
+  elasticClient,
+  elasticIndex: 'cv',
+  elasticType: 'cv',
+});
+
+describe('findById', () => {
   it('return instance of Resolver', () => {
-    expect(createFindByIdResolver(CvFieldMap, CvTC, elasticClient)).toBeInstanceOf(Resolver);
+    expect(findByIdResolver).toBeInstanceOf(Resolver);
   });
 
-  it('return result', () => {
-    const findByIdResolver = createFindByIdResolver(CvFieldMap, CvTC, {
-      elasticClient,
-      elasticIndex: 'cv',
-      elasticType: 'cv',
-    });
-    return findByIdResolver
-      .resolve({ args: { id: '4554' }, context: { elasticClient } })
-      .then(res => {
+  it('check args', () => {
+    expect(findByIdResolver.hasArg('id')).toBeTruthy();
+  });
+
+  it('resolve', () => {
+    findByIdResolver.resolve({ args: { id: '4554' }, context: { elasticClient } }).then(res => {
         console.log(res); // eslint-disable-line
-      });
+    });
   });
 
   it('toDottedList()', () => {
