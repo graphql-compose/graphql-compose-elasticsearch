@@ -3,15 +3,14 @@
 import elasticsearch from 'elasticsearch';
 import awsElasticConnection from './elasticAwsConnection';
 
-// TODO: make test and production connections depends of NODE_ENV
-const ELASTIC_HOST = `https://search-rabota-staging-vsl4lltip4tl46tzb556vc23uq.eu-west-1.es.amazonaws.com`;
+const ELASTIC_HOST = ``;
 const elasticClient = new elasticsearch.Client({
   host: ELASTIC_HOST,
   connectionClass: awsElasticConnection,
   amazonES: {
     region: /([^.]+).es.amazonaws.com/.exec(ELASTIC_HOST)[1],
-    accessKey: 'AKIAI36RLINJS36JW7JQ',
-    secretKey: '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',
+    accessKey: '',
+    secretKey: '',
   },
   apiVersion: '5.0',
   // log: 'trace',
