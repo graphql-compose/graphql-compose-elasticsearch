@@ -5,7 +5,7 @@ import { Resolver, TypeComposer, isObject } from 'graphql-compose';
 import type { ResolveParams, ProjectionType } from 'graphql-compose';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
-import { getSearchOutputTC } from '../types/SearchOutput';
+import { getFindByIdOutputTC } from '../types/FindByIdOutput';
 
 export type ElasticFindByIdResolverOpts = {
   prefix?: ?string,
@@ -39,6 +39,7 @@ export default function createFindByIdResolver(
   const findByIdFC = parser.generateFieldConfig('getSource', {
     index: opts.elasticIndex,
     type: opts.elasticType,
+    _source: true,
   });
 
   const argsConfigMap = Object.assign({}, findByIdFC.args);
@@ -51,20 +52,7 @@ export default function createFindByIdResolver(
     }
   });
 
-  const type = getSearchOutputTC({ prefix, fieldMap, sourceTC });
-  let hitsType;
-  try {
-    hitsType = type.get('hits.hits');
-  } catch (e) {
-    hitsType = 'JSON';
-  }
-  type
-    .addFields({
-      count: 'Int',
-      max_score: 'Float',
-      hits: hitsType ? [hitsType] : 'JSON',
-    })
-    .reorderFields(['hits', 'count', 'aggregations', 'max_score', 'took', 'timed_out', '_shards']);
+  const type = getFindByIdOutputTC({ prefix, fieldMap, sourceTC });
 
   return new Resolver({
     type,
@@ -72,37 +60,18 @@ export default function createFindByIdResolver(
     kind: 'query',
     args: argsConfigMap,
     resolve: async (rp: ResolveParams<*, *>) => {
-      const args: Object = rp.args || {};
-      const projection = rp.projection || {};
-      const { hits = {} } = projection;
+      // const projection = rp.projection || {};
+      const res = await findByIdFC.resolve(rp.source, rp.args, rp.context, rp.info);
+      console.log(res);
 
-      if (hits && typeof hits === 'object') {
-        if (hits._version) {
-          args.version = true;
-        }
-
-        if (!hits._source) {
-          args._source = false;
-        } else {
-          args._source = toDottedList(hits._source);
-        }
-
-        if (hits._realtime) {
-          args.realtime = true;
-        }
-
-        if (hits._refresh) {
-          args.refresh = true;
-        }
-      }
-
-      const res: any = await findByIdFC.resolve(rp.source, args, rp.context, rp.info);
-
-      res.count = res.hits.total;
-      res.max_score = res.hits.max_score;
-      res.hits = res.hits.hits;
-
-      return res;
+      return {
+        _index: opts.elasticIndex,
+        _type: opts.elasticType,
+        _id: rp.args.id,
+        _version: 1,
+        found: !!res,
+        _source: res,
+      };
     },
   });
 }

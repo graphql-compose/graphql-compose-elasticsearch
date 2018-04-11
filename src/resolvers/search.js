@@ -180,6 +180,8 @@ export default function createSearchResolver(
 
       const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
 
+      console.log(res);
+
       res.count = res.hits.total;
       res.max_score = res.hits.max_score;
       res.hits = res.hits.hits;
