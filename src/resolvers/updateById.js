@@ -1,7 +1,6 @@
 /* @flow */
 
-import { Resolver, TypeComposer, InputTypeComposer } from 'graphql-compose';
-import type { ResolveParams } from 'graphql-compose';
+import { Resolver, TypeComposer, InputTypeComposer, type ResolveParams } from 'graphql-compose';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
 import { getUpdateByIdOutputTC } from '../types/UpdateByIdOutput';
@@ -42,19 +41,10 @@ export default function createUpdateByIdResolver(
     _source: true,
   });
 
-  const argsConfigMap = Object.assign({}, updateByIdFC.args);
-
-  argsConfigMap.record = {
-    type: getRecordITC(fieldMap),
+  const argsConfigMap = {
+    id: 'String!',
+    record: getRecordITC(fieldMap).getTypeAsRequired(),
   };
-
-  const topLevelArgs = ['id', 'record'];
-
-  Object.keys(argsConfigMap).forEach(argKey => {
-    if (topLevelArgs.indexOf(argKey) === -1) {
-      delete argsConfigMap[argKey];
-    }
-  });
 
   const type = getUpdateByIdOutputTC({ prefix, fieldMap, sourceTC });
 
@@ -65,14 +55,6 @@ export default function createUpdateByIdResolver(
     args: argsConfigMap,
     resolve: async (rp: ResolveParams<*, *>) => {
       const { source, args, context, info } = rp;
-
-      if (!args.record) {
-        throw new Error(`Missed 'record' argument!`);
-      }
-
-      if (!args.id) {
-        throw new Error(`Missed 'id' argument!`);
-      }
 
       args.body = {
         doc: {

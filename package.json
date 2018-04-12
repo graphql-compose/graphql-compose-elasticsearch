@@ -86,6 +86,7 @@
     "docker:v2": "node ./scripts/docker/start 2 & wait",
     "docker:v5": "node ./scripts/docker/start 5 & wait",
     "link": "yarn build && yarn link graphql-compose && yarn link",
-    "unlink": "yarn unlink graphql-compose && yarn add graphql-compose"
+    "unlink": "yarn unlink graphql-compose && yarn add graphql-compose",
+    "my-demo": "./node_modules/.bin/babel-node ./__fixtures__/index.js"
   }
 }

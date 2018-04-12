@@ -40,15 +40,9 @@ export default function createFindByIdResolver(
     type: opts.elasticType,
   });
 
-  const argsConfigMap = Object.assign({}, findByIdFC.args);
-
-  const topLevelArgs = ['id'];
-
-  Object.keys(argsConfigMap).forEach(argKey => {
-    if (topLevelArgs.indexOf(argKey) === -1) {
-      delete argsConfigMap[argKey];
-    }
-  });
+  const argsConfigMap = {
+    id: 'String!',
+  };
 
   const type = getFindByIdOutputTC({ prefix, fieldMap, sourceTC });
 

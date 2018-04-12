@@ -41,6 +41,7 @@ node_modules
 # Transpiled code
 /es
 /lib
+/__fixtures__
 
 coverage
 .nyc_output
