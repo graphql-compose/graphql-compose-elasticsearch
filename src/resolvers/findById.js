@@ -1,13 +1,12 @@
 /* @flow */
-/* eslint-disable no-param-reassign */
 
-import { Resolver, TypeComposer, isObject } from 'graphql-compose';
-import type { ResolveParams, ProjectionType } from 'graphql-compose';
+import { Resolver, TypeComposer } from 'graphql-compose';
+import type { ResolveParams } from 'graphql-compose';
 import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
 import { getFindByIdOutputTC } from '../types/FindByIdOutput';
 
-export type ElasticFindByIdResolverOpts = {
+export type ElasticResolverOpts = {
   prefix?: ?string,
   elasticIndex: string,
   elasticType: string,
@@ -17,7 +16,7 @@ export type ElasticFindByIdResolverOpts = {
 export default function createFindByIdResolver(
   fieldMap: FieldsMapByElasticType,
   sourceTC: TypeComposer,
-  opts: ElasticFindByIdResolverOpts
+  opts: ElasticResolverOpts
 ): Resolver {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
@@ -36,10 +35,9 @@ export default function createFindByIdResolver(
     prefix,
   });
 
-  const findByIdFC = parser.generateFieldConfig('getSource', {
+  const findByIdFC = parser.generateFieldConfig('get', {
     index: opts.elasticIndex,
     type: opts.elasticType,
-    _source: true,
   });
 
   const argsConfigMap = Object.assign({}, findByIdFC.args);
@@ -60,38 +58,22 @@ export default function createFindByIdResolver(
     kind: 'query',
     args: argsConfigMap,
     resolve: async (rp: ResolveParams<*, *>) => {
-      // const projection = rp.projection || {};
-      const res = await findByIdFC.resolve(rp.source, rp.args, rp.context, rp.info);
-      console.log(res);
+      const { source, args, context, info } = rp;
+
+      if (!args.id) {
+        throw new Error(`Missed 'id' argument!`);
+      }
+
+      const res = await findByIdFC.resolve(source, args, context, info);
+      const { _index, _type, _id, _version, _source } = res || {};
 
       return {
-        _index: opts.elasticIndex,
-        _type: opts.elasticType,
-        _id: rp.args.id,
-        _version: 1,
-        found: !!res,
-        _source: res,
+        _index,
+        _type,
+        _id,
+        _version,
+        ..._source,
       };
     },
   });
-}
-
-export function toDottedList(projection: ProjectionType, prev?: string[]): string[] | boolean {
-  let result = [];
-  Object.keys(projection).forEach(k => {
-    if (isObject(projection[k])) {
-      const tmp = toDottedList(projection[k], prev ? [...prev, k] : [k]);
-      if (Array.isArray(tmp)) {
-        result = result.concat(tmp);
-        return;
-      }
-    }
-
-    if (prev) {
-      result.push([...prev, k].join('.'));
-    } else {
-      result.push(k);
-    }
-  });
-  return result.length > 0 ? result : true;
 }

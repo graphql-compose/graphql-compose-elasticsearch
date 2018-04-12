@@ -8,7 +8,7 @@ import ElasticApiParser from '../ElasticApiParser';
 import { getSearchBodyITC, prepareBodyInResolve } from '../elasticDSL/SearchBody';
 import { getSearchOutputTC } from '../types/SearchOutput';
 
-export type ElasticSearchResolverOpts = {
+export type ElasticResolverOpts = {
   prefix?: ?string,
   elasticIndex: string,
   elasticType: string,
@@ -18,7 +18,7 @@ export type ElasticSearchResolverOpts = {
 export default function createSearchResolver(
   fieldMap: FieldsMapByElasticType,
   sourceTC: TypeComposer,
-  opts: ElasticSearchResolverOpts
+  opts: ElasticResolverOpts
 ): Resolver {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
@@ -179,8 +179,6 @@ export default function createSearchResolver(
       }
 
       const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
-
-      console.log(res);
 
       res.count = res.hits.total;
       res.max_score = res.hits.max_score;
