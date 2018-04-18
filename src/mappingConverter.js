@@ -33,6 +33,7 @@ export type ElasticPropertyT = {
   type?: string,
   fields?: ElasticMappingPropertiesT,
   properties?: ElasticMappingPropertiesT,
+  index?: any,
 };
 
 export type InputFieldsMap = {
