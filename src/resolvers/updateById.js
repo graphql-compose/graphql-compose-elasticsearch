@@ -43,7 +43,7 @@ export default function createUpdateByIdResolver(
 
   const argsConfigMap = {
     id: 'String!',
-    record: getRecordITC(fieldMap).getTypeAsRequired(),
+    record: getRecordITC(fieldMap).getTypeNonNull(),
   };
 
   const type = getUpdateByIdOutputTC({ prefix, fieldMap, sourceTC });
