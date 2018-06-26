@@ -2,7 +2,7 @@
 .*/coverage/.*
 .*/resources/.*
 <PROJECT_ROOT>/lib/.*
-<PROJECT_ROOT>/dist/.*
+<PROJECT_ROOT>/mjs/.*
 .*/node_modules/ajv.*
 .*/node_modules/acorn.*
 .*/node_modules/async.*

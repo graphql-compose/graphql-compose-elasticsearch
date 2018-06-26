@@ -2,13 +2,45 @@
   "plugins": [
     "transform-object-rest-spread",
     "transform-flow-strip-types",
-    ["transform-runtime", { "polyfill": false }]
   ],
-  "presets": [
-    ["env", {
-      "targets": {
-        "node": 4
-      },
-    }]
-  ],
+  "env": {
+    "cjs": {
+      "plugins": [
+        "transform-class-properties",
+        ["transform-runtime", { "polyfill": false }]
+      ],
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": 4
+          },
+        }]
+      ],
+    },
+    "mjs": {
+      "plugins": ["transform-class-properties"],
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "node": "8.0.0"
+            },
+            "loose": true,
+            "modules": false
+          }
+        ]
+      ]
+    },
+    "test": {
+      "plugins": ["transform-class-properties"],
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current"
+          },
+        }]
+      ]
+    }
+  }
 }
