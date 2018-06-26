@@ -69,6 +69,7 @@ export default class ElasticApiParser {
   cachedEnums: {
     [fieldName: string]: { [valsStringified: string]: GraphQLEnumType },
   };
+
   apiVersion: string;
   prefix: string;
   elasticClient: any;
