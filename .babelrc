@@ -1,11 +1,13 @@
 {
   "plugins": [
     "transform-object-rest-spread",
-    "transform-flow-strip-types",
+    "transform-flow-strip-types"
   ],
   "env": {
     "cjs": {
       "plugins": [
+        "transform-object-rest-spread",
+        "transform-flow-strip-types",
         "transform-class-properties",
         ["transform-runtime", { "polyfill": false }]
       ],
@@ -13,12 +15,16 @@
         ["env", {
           "targets": {
             "node": 4
-          },
+          }
         }]
-      ],
+      ]
     },
     "mjs": {
-      "plugins": ["transform-class-properties"],
+      "plugins": [
+        "transform-object-rest-spread",
+        "transform-flow-strip-types",
+        "transform-class-properties"
+      ],
       "presets": [
         [
           "env",
@@ -33,12 +39,16 @@
       ]
     },
     "test": {
-      "plugins": ["transform-class-properties"],
+      "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread",
+        "transform-flow-strip-types"
+      ],
       "presets": [
         ["env", {
           "targets": {
             "node": "current"
-          },
+          }
         }]
       ]
     }
