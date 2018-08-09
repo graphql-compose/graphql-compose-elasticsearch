@@ -1,5 +1,7 @@
 sudo: false
 language: node_js
+services:
+  - elasticsearch
 cache:
   yarn: true
   directories:
@@ -9,9 +11,10 @@ notifications:
 node_js:
   - "9"
   - "8"
-before_install: yarn global add greenkeeper-lockfile@1
-before_script: greenkeeper-lockfile-update
-after_script: greenkeeper-lockfile-upload
+before_install: 
+  - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.deb && sudo dpkg -i --force-confnew elasticsearch-5.2.2.deb && sudo service elasticsearch restart
+before_script:
+  - sleep 10
 script:
   - yarn run test
   - yarn run build
