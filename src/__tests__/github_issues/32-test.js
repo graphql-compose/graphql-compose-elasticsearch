@@ -33,7 +33,7 @@ const ActivitiesEsTC = composeWithElastic({
   }),
 });
 
-describe('github issue #72 - hits returns me the found id, score, type...', () => {
+describe('github issue #32 - hits returns me the found id, score, type...', () => {
   it('test `search` resolver', () => {
     expect(ActivitiesEsTC).toBeInstanceOf(TypeComposer);
 

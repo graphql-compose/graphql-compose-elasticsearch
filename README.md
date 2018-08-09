@@ -3,10 +3,9 @@ graphql-compose-elasticsearch
 
 [![](https://img.shields.io/npm/v/graphql-compose-elasticsearch.svg)](https://www.npmjs.com/package/graphql-compose-elasticsearch)
 [![npm](https://img.shields.io/npm/dt/graphql-compose-elasticsearch.svg)](http://www.npmtrends.com/graphql-compose-elasticsearch)
-[![Travis](https://img.shields.io/travis/nodkz/graphql-compose-elasticsearch.svg?maxAge=2592000)](https://travis-ci.org/nodkz/graphql-compose-elasticsearch)
+[![Travis](https://img.shields.io/travis/graphql-compose/graphql-compose-elasticsearch.svg?maxAge=2592000)](https://travis-ci.org/graphql-compose/graphql-compose-elasticsearch)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![Greenkeeper badge](https://badges.greenkeeper.io/nodkz/graphql-compose-elasticsearch.svg)](https://greenkeeper.io/)
 
 This module expose Elastic Search REST API via GraphQL.
 
@@ -46,7 +45,7 @@ const schema = new GraphQLSchema({
 });
 ```
 
-Full [code example](https://github.com/nodkz/graphql-compose-elasticsearch/tree/master/examples/differentVersions)
+Full [code example](https://github.com/graphql-compose/graphql-compose-elasticsearch/tree/master/examples/differentVersions)
 
 Live demo of [Introspection of Elasticsearch API via Graphiql](https://graphql-compose.herokuapp.com/elasticsearch/)
 
@@ -126,7 +125,7 @@ const Schema = new GraphQLSchema({
 });
 ```
 
-Full [code example](https://github.com/nodkz/graphql-compose-elasticsearch/blob/master/examples/elastic50/index.js)
+Full [code example](https://github.com/graphql-compose/graphql-compose-elasticsearch/blob/master/examples/elastic50/index.js)
 
 ## Installation
 ```
@@ -150,6 +149,36 @@ Modules `graphql`, `graphql-compose`, `elasticsearch` are in `peerDependencies`,
 ### Mapping: Generated GraphQL Types and Documentation
 <img width="1703" alt="screen shot 2017-03-22 at 19 33 24" src="https://cloud.githubusercontent.com/assets/1946920/24200220/a05944b6-0f36-11e7-9919-39b7001af203.png">
 
+## FAQ
+
+### Creating custom Resolvers
+
+If you need create something special, you may create a custom Resolver. For example, if you need to add a new tag for existing record, do it in the following manner ([see full test-case](https://github.com/graphql-compose/graphql-compose-elasticsearch/blob/master/src/__tests__/github_issues/37-test.js)):
+
+```js
+ActivitiesEsTC.addResolver({
+  name: 'addTag',
+  kind: 'mutation',
+  type: 'JSON',
+  args: {
+    id: 'String!',
+    tag: 'String!',
+  },
+  resolve: ({ args }) => {
+    return elasticClient.update({
+      index: elasticIndex,
+      type: elasticType,
+      id: args.id,
+      body: {
+        script: {
+          inline: 'ctx._source.tags.add(params.tag)',
+          params: { tag: args.tag },
+        },
+      },
+    });
+  },
+});
+```
 
 ## License
-[MIT](https://github.com/nodkz/graphql-compose-elasticsearch/blob/master/LICENSE.md)
+[MIT](https://github.com/graphql-compose/graphql-compose-elasticsearch/blob/master/LICENSE.md)

@@ -1,3 +1,4 @@
-from elasticsearch:2-alpine
+FROM elasticsearch:2-alpine
 
-copy elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+ENV ES_JAVA_OPTS="-Xms750m -Xmx750m"
