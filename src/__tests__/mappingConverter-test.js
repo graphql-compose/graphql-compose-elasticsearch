@@ -1,15 +1,6 @@
 /* @flow */
 
-import { TypeComposer, GraphQLJSON, GQC } from 'graphql-compose';
-import {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLBoolean,
-  GraphQLList,
-  GraphQLObjectType,
-  graphql,
-} from 'graphql-compose/lib/graphql';
+import { TypeComposer, schemaComposer, graphql } from 'graphql-compose';
 import {
   convertToSourceTC,
   propertyToSourceGraphQLType,
@@ -83,14 +74,13 @@ describe('PropertiesConverter', () => {
     it('should make singular and plural fields', () => {
       const tc1 = convertToSourceTC(mapping, 'TestMapping');
       const singular: any = tc1.getField('name');
-      expect(singular.type).toBe(GraphQLString);
+      expect(singular.type).toBe('String');
 
       const tc2 = convertToSourceTC(mapping, 'TestMapping', {
         pluralFields: ['name'],
       });
       const plural: any = tc2.getField('name');
-      expect(plural.type).toBeInstanceOf(GraphQLList);
-      expect(plural.type.ofType).toBe(GraphQLString);
+      expect(plural.type).toEqual(['String']);
     });
   });
 
@@ -106,30 +96,30 @@ describe('PropertiesConverter', () => {
     });
 
     it('should return GraphQLJSON as fallback for unknown Elastic type', () => {
-      expect(propertyToSourceGraphQLType({ type: 'strange' })).toEqual(GraphQLJSON);
+      expect(propertyToSourceGraphQLType({ type: 'strange' })).toEqual('JSON');
     });
 
     it('should return GraphQLInt for int types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'integer' })).toEqual(GraphQLInt);
-      expect(propertyToSourceGraphQLType({ type: 'long' })).toEqual(GraphQLInt);
+      expect(propertyToSourceGraphQLType({ type: 'integer' })).toEqual('Int');
+      expect(propertyToSourceGraphQLType({ type: 'long' })).toEqual('Int');
     });
 
-    it('should return GraphQLString for string types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'text' })).toEqual(GraphQLString);
-      expect(propertyToSourceGraphQLType({ type: 'keyword' })).toEqual(GraphQLString);
+    it('should return String for string types', () => {
+      expect(propertyToSourceGraphQLType({ type: 'text' })).toEqual('String');
+      expect(propertyToSourceGraphQLType({ type: 'keyword' })).toEqual('String');
     });
 
-    it('should return GraphQLFloat for float types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'float' })).toEqual(GraphQLFloat);
-      expect(propertyToSourceGraphQLType({ type: 'double' })).toEqual(GraphQLFloat);
+    it('should return Float for float types', () => {
+      expect(propertyToSourceGraphQLType({ type: 'float' })).toEqual('Float');
+      expect(propertyToSourceGraphQLType({ type: 'double' })).toEqual('Float');
     });
 
-    it('should return GraphQLBoolean for float types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'boolean' })).toEqual(GraphQLBoolean);
+    it('should return Boolean for float types', () => {
+      expect(propertyToSourceGraphQLType({ type: 'boolean' })).toEqual('Boolean');
     });
 
     it('should return GraphQLObjectType for object with subfields', () => {
-      const type = propertyToSourceGraphQLType(
+      const tc: any = propertyToSourceGraphQLType(
         {
           properties: {
             big: {
@@ -142,13 +132,10 @@ describe('PropertiesConverter', () => {
         },
         'ComplexType'
       );
-      expect(type).toBeInstanceOf(GraphQLObjectType);
-      if (type instanceof GraphQLObjectType) {
-        const tc = TypeComposer.create(type);
-        expect(tc.getTypeName()).toEqual('ComplexType');
-        expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
-        expect(tc.getFieldType('big')).toEqual(GraphQLString);
-      }
+      expect(tc).toBeInstanceOf(TypeComposer);
+      expect(tc.getTypeName()).toEqual('ComplexType');
+      expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
+      expect(tc.getField('big').type).toEqual('String');
     });
   });
 
@@ -166,8 +153,8 @@ describe('PropertiesConverter', () => {
         },
         'lastname'
       );
-      expect(fields._all.lastname).toEqual(GraphQLString);
-      expect(fields.text.lastname).toEqual(GraphQLString);
+      expect(fields._all.lastname).toEqual('String');
+      expect(fields.text.lastname).toEqual('String');
     });
 
     it('should accept mapping', () => {
@@ -257,14 +244,14 @@ describe('PropertiesConverter', () => {
     });
 
     it('should work with graphql schema without errors', () => {
-      GQC.rootQuery().addFields({ userES: tc9 });
-      expect(() => GQC.buildSchema()).not.toThrowError();
+      schemaComposer.rootQuery().addFields({ userES: tc9 });
+      expect(() => schemaComposer.buildSchema()).not.toThrowError();
     });
 
     it('should use Elastic field names from source', async () => {
-      GQC.rootQuery().addFields({ userES: tc9 });
-      const result = await graphql(
-        GQC.buildSchema(),
+      schemaComposer.rootQuery().addFields({ userES: tc9 });
+      const result = await graphql.graphql(
+        schemaComposer.buildSchema(),
         `
           query {
             userES {

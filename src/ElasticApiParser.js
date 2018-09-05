@@ -4,21 +4,15 @@
 import dox from 'dox';
 import fs from 'fs';
 import path from 'path';
-import { GraphQLJSON, upperFirst, TypeComposer, type ComposeFieldConfigMap } from 'graphql-compose';
 import {
-  GraphQLString,
-  GraphQLFloat,
-  GraphQLBoolean,
-  GraphQLObjectType,
-  GraphQLEnumType,
-  GraphQLNonNull,
-} from 'graphql-compose/lib/graphql';
-import type {
-  GraphQLArgumentConfig,
-  GraphQLFieldConfigMap,
-  GraphQLFieldConfigArgumentMap,
-  GraphQLInputType,
-} from 'graphql-compose/lib/graphql';
+  upperFirst,
+  TypeComposer,
+  EnumTypeComposer,
+  type ComposeFieldConfigMap,
+  type ComposeFieldConfigArgumentMap,
+  type ComposeArgumentConfig,
+  type ComposeArgumentConfigAsObject,
+} from 'graphql-compose';
 import { reorderKeys } from './utils';
 
 export type ElasticParamConfigT = {
@@ -67,7 +61,7 @@ export type ElasticApiParserOptsT = {
 
 export default class ElasticApiParser {
   cachedEnums: {
-    [fieldName: string]: { [valsStringified: string]: GraphQLEnumType },
+    [fieldName: string]: { [valsStringified: string]: EnumTypeComposer },
   };
 
   apiVersion: string;
@@ -258,7 +252,7 @@ export default class ElasticApiParser {
     return result;
   }
 
-  generateFieldMap(): GraphQLFieldConfigMap<*, *> {
+  generateFieldMap(): ComposeFieldConfigMap<any, any> {
     const result = {};
     Object.keys(this.parsedSource).forEach(methodName => {
       result[methodName] = this.generateFieldConfig(methodName);
@@ -293,7 +287,7 @@ export default class ElasticApiParser {
     const argMap = this.settingsToArgMap(argsSettings, argsDescriptions);
 
     return {
-      type: GraphQLJSON,
+      type: 'JSON',
       description,
       args: argMap,
       // eslint-disable-next-line no-unused-vars
@@ -322,10 +316,11 @@ export default class ElasticApiParser {
     paramCfg: ElasticParamConfigT,
     fieldName: string,
     description?: ?string
-  ): GraphQLArgumentConfig {
-    const result: GraphQLArgumentConfig = {
+  ): ComposeArgumentConfig {
+    const result: { ...ComposeArgumentConfigAsObject } = {
       type: this.paramTypeToGraphQL(paramCfg, fieldName),
     };
+
     if (paramCfg.default) {
       result.defaultValue = paramCfg.default;
     } else if (fieldName === 'format') {
@@ -336,40 +331,40 @@ export default class ElasticApiParser {
       result.description = description;
     }
 
-    return result;
+    return (result: any);
   }
 
-  paramTypeToGraphQL(paramCfg: ElasticParamConfigT, fieldName: string): GraphQLInputType {
+  paramTypeToGraphQL(paramCfg: ElasticParamConfigT, fieldName: string): EnumTypeComposer | string {
     switch (paramCfg.type) {
       case 'string':
-        return GraphQLString;
+        return 'String';
       case 'boolean':
-        return GraphQLBoolean;
+        return 'Boolean';
       case 'number':
-        return GraphQLFloat;
+        return 'Float';
       case 'time':
-        return GraphQLString;
+        return 'String';
       case 'list':
-        return GraphQLJSON;
+        return 'JSON';
       case 'enum':
         if (Array.isArray(paramCfg.options)) {
           return this.getEnumType(fieldName, paramCfg.options);
         }
-        return GraphQLString;
+        return 'String';
       case undefined:
         // some fields may not have type definition in API file,
         // eg '@param {anything} params.operationThreading - ?'
-        return GraphQLJSON;
+        return 'JSON';
       default:
         // console.log(
         //   // eslint-disable-line
         //   `New type '${paramCfg.type}' in elastic params setting for field ${fieldName}.`
         // );
-        return GraphQLJSON;
+        return 'JSON';
     }
   }
 
-  getEnumType(fieldName: string, vals: mixed[]): GraphQLEnumType {
+  getEnumType(fieldName: string, vals: mixed[]): EnumTypeComposer {
     const key = fieldName;
     const subKey = JSON.stringify(vals);
 
@@ -403,7 +398,7 @@ export default class ElasticApiParser {
       if (postfix === 0) postfix = '';
       else postfix = `_${postfix}`;
 
-      this.cachedEnums[key][subKey] = new GraphQLEnumType({
+      this.cachedEnums[key][subKey] = EnumTypeComposer.create({
         name: `${this.prefix}Enum_${upperFirst(fieldName)}${postfix}`,
         values,
       });
@@ -415,13 +410,13 @@ export default class ElasticApiParser {
   settingsToArgMap(
     settings: ?ElasticCaSettingsT,
     descriptions: ElasticParsedArgsDescriptionsT = {}
-  ): GraphQLFieldConfigArgumentMap {
+  ): ComposeFieldConfigArgumentMap {
     const result = {};
     const { params, urls, url, method, needBody } = settings || {};
 
     if (method === 'POST' || method === 'PUT') {
       result.body = {
-        type: needBody ? new GraphQLNonNull(GraphQLJSON) : GraphQLJSON,
+        type: needBody ? 'JSON!' : 'JSON',
       };
     }
 
@@ -452,7 +447,7 @@ export default class ElasticApiParser {
     return result;
   }
 
-  reassembleNestedFields(fields: ComposeFieldConfigMap<any, any>): GraphQLFieldConfigMap<*, *> {
+  reassembleNestedFields(fields: ComposeFieldConfigMap<any, any>): ComposeFieldConfigMap<any, any> {
     const result = {};
     Object.keys(fields).forEach(k => {
       const names = k.split('.');
@@ -461,7 +456,7 @@ export default class ElasticApiParser {
       } else {
         if (!result[names[0]]) {
           result[names[0]] = {
-            type: new GraphQLObjectType({
+            type: TypeComposer.create({
               name: `${this.prefix}_${upperFirst(names[0])}`,
               fields: (() => {}: any),
             }),
@@ -470,7 +465,7 @@ export default class ElasticApiParser {
             },
           };
         }
-        TypeComposer.create(result[names[0]].type).setField(names[1], fields[k]);
+        result[names[0]].type.setField(names[1], fields[k]);
       }
     });
 

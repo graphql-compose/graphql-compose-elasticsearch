@@ -1,6 +1,6 @@
 /* @flow */
 
-import { GraphQLEnumType } from 'graphql-compose/lib/graphql';
+import { EnumTypeComposer } from 'graphql-compose';
 import { getTypeName, getOrSetType } from '../utils';
 import { getFieldNamesByElasticType } from './Commons/FieldNames';
 
@@ -20,7 +20,7 @@ const sortableTypes = [
   'keyword',
 ];
 
-export function getSortITC(opts: any = {}): GraphQLEnumType | string {
+export function getSortITC(opts: any = {}): EnumTypeComposer | string {
   const name = getTypeName('SortEnum', opts);
   const description = 'Sortable fields from mapping';
 
@@ -49,7 +49,7 @@ export function getSortITC(opts: any = {}): GraphQLEnumType | string {
       };
     });
 
-    return new GraphQLEnumType({
+    return EnumTypeComposer.create({
       name,
       description,
       values,

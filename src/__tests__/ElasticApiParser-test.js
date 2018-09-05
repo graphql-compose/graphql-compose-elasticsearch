@@ -3,15 +3,7 @@
 // import fs from 'fs';
 import dox from 'dox';
 import path from 'path';
-import { GraphQLJSON, TypeComposer, EnumTypeComposer } from 'graphql-compose';
-import {
-  GraphQLString,
-  GraphQLFloat,
-  GraphQLBoolean,
-  GraphQLObjectType,
-  GraphQLEnumType,
-  GraphQLNonNull,
-} from 'graphql-compose/lib/graphql';
+import { TypeComposer, EnumTypeComposer } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
@@ -275,47 +267,42 @@ describe('ElasticApiParser', () => {
 
   describe('paramTypeToGraphQL()', () => {
     it('should convert scalar types', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'string' }, 'f1')).toEqual(GraphQLString);
-      expect(parser.paramTypeToGraphQL({ type: 'boolean' }, 'f1')).toEqual(GraphQLBoolean);
-      expect(parser.paramTypeToGraphQL({ type: 'number' }, 'f1')).toEqual(GraphQLFloat);
-      expect(parser.paramTypeToGraphQL({ type: 'time' }, 'f1')).toEqual(GraphQLString);
+      expect(parser.paramTypeToGraphQL({ type: 'string' }, 'f1')).toEqual('String');
+      expect(parser.paramTypeToGraphQL({ type: 'boolean' }, 'f1')).toEqual('Boolean');
+      expect(parser.paramTypeToGraphQL({ type: 'number' }, 'f1')).toEqual('Float');
+      expect(parser.paramTypeToGraphQL({ type: 'time' }, 'f1')).toEqual('String');
     });
 
-    it('should `list` convert to GraphQLJSON', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'list' }, 'f1')).toEqual(GraphQLJSON);
+    it('should `list` convert to JSON', () => {
+      expect(parser.paramTypeToGraphQL({ type: 'list' }, 'f1')).toEqual('JSON');
     });
 
-    it('should `enum` convert to GraphQLString (if empty options)', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'enum' }, 'f1')).toEqual(GraphQLString);
+    it('should `enum` convert to String (if empty options)', () => {
+      expect(parser.paramTypeToGraphQL({ type: 'enum' }, 'f1')).toEqual('String');
     });
 
-    it('should `enum` convert to GraphQLEnumType', () => {
+    it('should `enum` convert to EnumTypeComposer', () => {
       const type = parser.paramTypeToGraphQL({ type: 'enum', options: ['AND', 'OR'] }, 'f1');
-      expect(type).toBeInstanceOf(GraphQLEnumType);
+      expect(type).toBeInstanceOf(EnumTypeComposer);
     });
 
-    it('should as fallback type return GraphQLJSON', () => {
-      expect(parser.paramTypeToGraphQL({ type: 'crazy' }, 'f1')).toEqual(GraphQLJSON);
+    it('should as fallback type return JSON', () => {
+      expect(parser.paramTypeToGraphQL({ type: 'crazy' }, 'f1')).toEqual('JSON');
     });
   });
 
   describe('getEnumType()', () => {
-    it('should convert to GraphQLEnumType', () => {
-      const type = parser.getEnumType('f1', ['AND', 'OR']);
-      expect(type).toBeInstanceOf(GraphQLEnumType);
-
-      const etc = EnumTypeComposer.create(type);
-      expect(etc.getField('AND')).toMatchObject({ name: 'AND', value: 'AND' });
-      expect(etc.getField('OR')).toMatchObject({ name: 'OR', value: 'OR' });
+    it('should convert to EnumTypeComposer', () => {
+      const etc = parser.getEnumType('f1', ['AND', 'OR']);
+      expect(etc).toBeInstanceOf(EnumTypeComposer);
+      expect(etc.getField('AND')).toMatchObject({ value: 'AND' });
+      expect(etc.getField('OR')).toMatchObject({ value: 'OR' });
     });
 
     it("should convert '' to empty_string", () => {
-      const type = parser.getEnumType('f1', ['']);
-      expect(type).toBeInstanceOf(GraphQLEnumType);
-
-      const etc = EnumTypeComposer.create(type);
+      const etc = parser.getEnumType('f1', ['']);
+      expect(etc).toBeInstanceOf(EnumTypeComposer);
       expect(etc.getField('empty_string')).toMatchObject({
-        name: 'empty_string',
         value: '',
       });
     });
@@ -324,39 +311,31 @@ describe('ElasticApiParser', () => {
       // This is fix for https://github.com/graphql/graphql-js/pull/812
       // Which throw error on `true`, `false` and `null`.
       // But we allow to use this values, just renaming it.
-      const type = parser.getEnumType('f1', ['true', true, 'false', false]);
-      expect(type).toBeInstanceOf(GraphQLEnumType);
-
-      const etc = EnumTypeComposer.create(type);
+      const etc = parser.getEnumType('f1', ['true', true, 'false', false]);
+      expect(etc).toBeInstanceOf(EnumTypeComposer);
       expect(etc.getField('true_string')).toMatchObject({
-        name: 'true_string',
         value: 'true',
       });
       expect(etc.getField('true_boolean')).toMatchObject({
-        name: 'true_boolean',
         value: true,
       });
       expect(etc.getField('false_string')).toMatchObject({
-        name: 'false_string',
         value: 'false',
       });
       expect(etc.getField('false_boolean')).toMatchObject({
-        name: 'false_boolean',
         value: false,
       });
     });
 
     it('should convert 1 to number_1', () => {
-      const type = parser.getEnumType('f1', [1]);
-      expect(type).toBeInstanceOf(GraphQLEnumType);
-
-      const etc = EnumTypeComposer.create(type);
-      expect(etc.getField('number_1')).toMatchObject({ name: 'number_1', value: 1 });
+      const etc = parser.getEnumType('f1', [1]);
+      expect(etc).toBeInstanceOf(EnumTypeComposer);
+      expect(etc.getField('number_1')).toMatchObject({ value: 1 });
     });
 
     it('should provide name started with ElasticEnum', () => {
-      const type = parser.getEnumType('f1', ['']);
-      expect(type.name).toMatch(/^ElasticEnum/);
+      const etc = parser.getEnumType('f1', ['']);
+      expect(etc.getTypeName()).toMatch(/^ElasticEnum/);
     });
 
     it('should reuse generated Enums', () => {
@@ -368,18 +347,18 @@ describe('ElasticApiParser', () => {
     });
 
     it('should generated different name for Enums', () => {
-      const type = parser.getEnumType('f1', ['a', 'b']);
-      const type2 = parser.getEnumType('f1', ['c', 'd']);
-      expect(type).not.toBe(type2);
-      expect(type.name).toMatch(/F1$/);
-      expect(type2.name).toMatch(/F1_1$/);
+      const etc = parser.getEnumType('f1', ['a', 'b']);
+      const etc2 = parser.getEnumType('f1', ['c', 'd']);
+      expect(etc).not.toBe(etc2);
+      expect(etc.getTypeName()).toMatch(/F1$/);
+      expect(etc2.getTypeName()).toMatch(/F1_1$/);
     });
   });
 
   describe('paramToGraphQLArgConfig()', () => {
     it('should return object with type property', () => {
       expect(parser.paramToGraphQLArgConfig({ type: 'string' }, 'f1')).toMatchObject({
-        type: GraphQLString,
+        type: 'String',
       });
     });
 
@@ -387,14 +366,14 @@ describe('ElasticApiParser', () => {
       expect(
         parser.paramToGraphQLArgConfig({ type: 'string', default: 'ABC' }, 'f1')
       ).toMatchObject({
-        type: GraphQLString,
+        type: 'String',
         defaultValue: 'ABC',
       });
     });
 
     it('should set defaultValue="json" for `format` argument', () => {
       expect(parser.paramToGraphQLArgConfig({ type: 'string' }, 'format')).toMatchObject({
-        type: GraphQLString,
+        type: 'String',
         defaultValue: 'json',
       });
     });
@@ -402,22 +381,22 @@ describe('ElasticApiParser', () => {
 
   describe('settingsToArgMap()', () => {
     it('should create body arg if POST or PUT method', () => {
-      const args = parser.settingsToArgMap({
+      const args: any = parser.settingsToArgMap({
         params: {},
         method: 'POST',
       });
       expect(args).toMatchObject({ body: {} });
-      expect(args.body.type).toEqual(GraphQLJSON);
+      expect(args.body.type).toEqual('JSON');
     });
 
     it('should create required body arg if POST or PUT method', () => {
-      const args = parser.settingsToArgMap({
+      const args: any = parser.settingsToArgMap({
         params: {},
         method: 'POST',
         needBody: true,
       });
       expect(args).toMatchObject({ body: {} });
-      expect(args.body.type).toBeInstanceOf(GraphQLNonNull);
+      expect(args.body.type).toBe('JSON!');
     });
 
     it('should traverse params', () => {
@@ -473,36 +452,34 @@ describe('ElasticApiParser', () => {
     it('should pass single fields', () => {
       expect(
         parser.reassembleNestedFields({
-          field1: { type: GraphQLString },
-          field2: { type: GraphQLString },
+          field1: { type: 'String' },
+          field2: { type: 'String' },
         })
       ).toMatchObject({
-        field1: { type: GraphQLString },
-        field2: { type: GraphQLString },
+        field1: { type: 'String' },
+        field2: { type: 'String' },
       });
     });
 
     it('should combine nested field in GraphQLObjectType', () => {
       const reFields: any = parser.reassembleNestedFields({
-        'cat.field1': { type: GraphQLString },
-        'cat.field2': { type: GraphQLString },
-        'index.exists': { type: GraphQLBoolean },
+        'cat.field1': { type: 'String' },
+        'cat.field2': { type: 'String' },
+        'index.exists': { type: 'Boolean' },
       });
       expect(Object.keys(reFields).length).toEqual(2);
       expect(reFields.cat).toBeDefined();
-      expect(reFields.cat.type).toBeInstanceOf(GraphQLObjectType);
-
-      const tc = TypeComposer.create(reFields.cat.type);
+      expect(reFields.cat.type).toBeInstanceOf(TypeComposer);
+      const tc = reFields.cat.type;
       expect(tc.getFieldNames()).toEqual(['field1', 'field2']);
-      expect(tc.getFieldType('field1')).toEqual(GraphQLString);
-      expect(tc.getFieldType('field2')).toEqual(GraphQLString);
+      expect(tc.getField('field1').type).toEqual('String');
+      expect(tc.getField('field2').type).toEqual('String');
 
       expect(reFields.index).toBeDefined();
-      expect(reFields.index.type).toBeInstanceOf(GraphQLObjectType);
-
-      const tc2 = TypeComposer.create(reFields.index.type);
+      expect(reFields.index.type).toBeInstanceOf(TypeComposer);
+      const tc2 = reFields.index.type;
       expect(tc2.getFieldNames()).toEqual(['exists']);
-      expect(tc2.getFieldType('exists')).toEqual(GraphQLBoolean);
+      expect(tc2.getField('exists').type).toEqual('Boolean');
     });
   });
 

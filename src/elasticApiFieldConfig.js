@@ -1,15 +1,13 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  type GraphQLFieldConfig,
-} from 'graphql-compose/lib/graphql';
+import { TypeComposer, graphql } from 'graphql-compose';
+import type { GraphQLFieldConfig } from 'graphql';
 import elasticsearch from 'elasticsearch';
 import ElasticApiParser from './ElasticApiParser';
 
 const DEFAULT_ELASTIC_API_VERSION = '_default';
+const { GraphQLString } = graphql;
 
 export function elasticApiFieldConfig(esClientOrOpts: Object): GraphQLFieldConfig<any, any> {
   if (!esClientOrOpts || typeof esClientOrOpts !== 'object') {
@@ -36,10 +34,10 @@ function instanceElasticClient(elasticClient: Object): GraphQLFieldConfig<any, a
 
   return {
     description: `Elastic API v${apiVersion}`,
-    type: new GraphQLObjectType({
+    type: TypeComposer.create({
       name: prefix,
       fields: apiParser.generateFieldMap(),
-    }),
+    }).getType(),
     resolve: () => ({}),
   };
 }
@@ -58,10 +56,10 @@ function contextElasticClient(elasticConfig: Object): GraphQLFieldConfig<any, an
 
   return {
     description: `Elastic API v${apiVersion}`,
-    type: new GraphQLObjectType({
+    type: TypeComposer.create({
       name: prefix,
       fields: apiParser.generateFieldMap(),
-    }),
+    }).getType(),
     args: {
       host: {
         type: GraphQLString,

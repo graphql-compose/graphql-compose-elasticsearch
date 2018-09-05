@@ -1,9 +1,7 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { upperFirst } from 'graphql-compose';
-import type { ComposeInputFieldConfigMap } from 'graphql-compose';
-import { GraphQLEnumType } from 'graphql-compose/lib/graphql';
+import { upperFirst, EnumTypeComposer, type ComposeInputFieldConfigMap } from 'graphql-compose';
 import type { GraphQLEnumValueConfigMap } from 'graphql-compose/lib/graphql';
 import { getTypeName, getOrSetType, desc } from '../../utils';
 
@@ -126,7 +124,7 @@ export function getFieldNamesType(
   types: ElasticDataType[],
   typePrefix: string,
   addAll: boolean = false
-) {
+): EnumTypeComposer | string {
   if (!opts || !opts.fieldMap) {
     return 'String';
   }
@@ -152,7 +150,7 @@ export function getFieldNamesType(
       return 'String';
     }
 
-    return new GraphQLEnumType({
+    return EnumTypeComposer.create({
       name,
       description,
       values,

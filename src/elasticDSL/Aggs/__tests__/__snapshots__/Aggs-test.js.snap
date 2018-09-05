@@ -1,11 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AGGS args converter Aggs DSL 1`] = `
-"schema {
-  query: RootQuery
-}
-
-\\"\\"\\"
+"\\"\\"\\"
 The aggregations framework helps provide aggregated data based on a search
 query. It is based on simple building blocks called aggregations, that can be
 composed in order to build complex summaries of the data. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html) 
@@ -1611,7 +1607,7 @@ The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http:
 \\"\\"\\"
 scalar JSON
 
-type RootQuery {
+type Query {
   search(body: [Elastic_AggBlock_50]): Int
 }
 "

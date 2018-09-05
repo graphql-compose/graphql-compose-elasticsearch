@@ -1,5 +1,11 @@
 /* @flow */
 
+// -------------------------------------------------------------------
+// You should have running elasticsearch instance for passing this test
+// you may run (this package has built-in docker container for tests)
+//   yarn docker:v5
+// -------------------------------------------------------------------
+
 import elasticsearch from 'elasticsearch';
 import { TypeComposer, schemaComposer } from 'graphql-compose';
 import { graphql } from 'graphql';

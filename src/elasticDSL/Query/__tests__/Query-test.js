@@ -1,34 +1,30 @@
 /* @flow */
 
-import { TypeMapper } from 'graphql-compose';
-import {
-  printSchema,
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLInt,
-} from 'graphql-compose/lib/graphql';
+import { schemaComposer, graphql } from 'graphql-compose';
 import { getQueryITC } from '../Query';
+
+const { printSchema } = graphql;
+
+beforeEach(() => {
+  schemaComposer.clear();
+});
 
 describe('AGGS args converter', () => {
   it('Query DSL', () => {
-    const schema = new GraphQLSchema({
-      query: new GraphQLObjectType({
-        name: 'RootQuery',
-        fields: {
-          search: {
-            args: TypeMapper.convertArgConfigMap({
-              body: {
-                type: getQueryITC({
-                  prefix: 'Elastic_',
-                  postfix: '_50',
-                }),
-              },
+    schemaComposer.Query.addFields({
+      search: {
+        args: {
+          body: {
+            type: getQueryITC({
+              prefix: 'Elastic_',
+              postfix: '_50',
             }),
-            type: GraphQLInt,
           },
         },
-      }),
+        type: 'Int',
+      },
     });
+    const schema = schemaComposer.buildSchema();
     expect(printSchema(schema)).toMatchSnapshot();
   });
 });
