@@ -1,33 +1,35 @@
 {
   "plugins": [
-    "transform-object-rest-spread",
-    "transform-flow-strip-types"
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-flow-strip-types"
   ],
   "env": {
     "cjs": {
       "plugins": [
-        "transform-object-rest-spread",
-        "transform-flow-strip-types",
-        "transform-class-properties",
-        ["transform-runtime", { "polyfill": false }]
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-proposal-class-properties"
       ],
       "presets": [
-        ["env", {
-          "targets": {
-            "node": 4
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": 6
+            }
           }
-        }]
+        ]
       ]
     },
     "mjs": {
       "plugins": [
-        "transform-object-rest-spread",
-        "transform-flow-strip-types",
-        "transform-class-properties"
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-proposal-class-properties"
       ],
       "presets": [
         [
-          "env",
+          "@babel/preset-env",
           {
             "targets": {
               "node": "8.0.0"
@@ -40,16 +42,19 @@
     },
     "test": {
       "plugins": [
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        "transform-flow-strip-types"
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-flow-strip-types"
       ],
       "presets": [
-        ["env", {
-          "targets": {
-            "node": "current"
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            }
           }
-        }]
+        ]
       ]
     }
   }

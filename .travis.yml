@@ -9,7 +9,7 @@ cache:
 notifications:
   email: true
 node_js:
-  - "9"
+  - "10"
   - "8"
 before_install: 
   - curl -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.deb && sudo dpkg -i --force-confnew elasticsearch-5.2.2.deb && sudo service elasticsearch restart
