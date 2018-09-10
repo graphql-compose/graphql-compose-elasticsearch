@@ -4,6 +4,7 @@ import { TypeComposer } from 'graphql-compose';
 import { convertToSourceTC, inputPropertiesToGraphQLTypes } from './mappingConverter';
 import createSearchResolver from './resolvers/search';
 import createSearchConnectionResolver from './resolvers/searchConnection';
+import createSearchPaginationResolver from './resolvers/searchPagination';
 import createFindByIdResolver from './resolvers/findById';
 import createUpdateByIdResolver from './resolvers/updateById';
 
@@ -65,11 +66,13 @@ export function composeWithElastic(opts: composeWithElasticOptsT): TypeComposer 
 
   const searchR = createSearchResolver(fieldMap, sourceTC, opts);
   const searchConnectionR = createSearchConnectionResolver(searchR, opts);
+  const searchPaginationR = createSearchPaginationResolver(searchR, opts);
   const findByIdR = createFindByIdResolver(fieldMap, sourceTC, opts);
   const updateByIdR = createUpdateByIdResolver(fieldMap, sourceTC, opts);
 
   sourceTC.addResolver(searchR);
   sourceTC.addResolver(searchConnectionR);
+  sourceTC.addResolver(searchPaginationR);
   sourceTC.addResolver(findByIdR);
   sourceTC.addResolver(updateByIdR);
 

@@ -52,12 +52,15 @@ Live demo of [Introspection of Elasticsearch API via Graphiql](https://graphql-c
 ---
 
 ## TypeComposer from Elastic mapping
-In other side this module is a plugin for [graphql-compose](https://github.com/nodkz/graphql-compose), which derives GraphQLType from your [elastic mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) generates tons of types, provides all available methods in QueryDSL, Aggregations, Sorting with field autocompletion according to types in your mapping (like Dev Tools Console in Kibana).
+In other side this module is a plugin for [graphql-compose](https://github.com/graphql-compose/graphql-compose), which derives GraphQLType from your [elastic mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) generates tons of types, provides all available methods in QueryDSL, Aggregations, Sorting with field autocompletion according to types in your mapping (like Dev Tools Console in Kibana).
 
 Generated TypeComposer model has several awesome resolvers:
 - `search` - greatly simplified elastic `search` method. According to GraphQL adaptation and its projection bunch of params setup automatically due your graphql query (eg `_source`, `explain`, `version`, `trackScores`), other rare fine tuning params moved to `opts` input field.  
 - `searchConnection` - elastic `search` method that implements Relay Cursor Connection [spec](https://facebook.github.io/relay/graphql/connections.htm) for infinite lists. Internally it uses cheap [search_after](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html) API. One downside, Elastic does not support backward scrolling, so `before` argument will not work.
-- more resolvers will be later after my vacation: `suggest`, `getById`, `updateById` and others
+- `searchPagination` - elastic `search` method that has `page` and `perPage` arguments
+- `findById` - get elastic record by id
+- `updateById` - update elastic record by id
+- feel free to add your resolver or ask for a new one
 
 ```js
 import { GraphQLSchema, GraphQLObjectType } from 'graphql';
@@ -118,8 +121,9 @@ const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'Query',
     fields: {
-      user: UserTC.get('$search').getFieldConfig(),
-      userConnection: UserTC.get('$searchConnection').getFieldConfig(),
+      user: UserTC.getResolver('search').getFieldConfig(),
+      userPagination: UserTC.getResolver('searchPagination').getFieldConfig(),
+      userConnection: UserTC.getResolver('searchConnection').getFieldConfig(),
     },
   }),
 });
