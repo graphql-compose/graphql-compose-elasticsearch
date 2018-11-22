@@ -1,6 +1,7 @@
 /* @flow */
 
 import { TypeStorage } from 'graphql-compose';
+import type { ElasticMappingT } from './mappingConverter';
 
 const typeStorage = new TypeStorage();
 
@@ -34,20 +35,16 @@ export type fetchElasticMappingOptsT = {
   elasticIndex: string,
   elasticType: string,
   elasticMapping: ElasticMappingT,
-  elasticClient: Object
+  elasticClient: Object,
 };
 
 export async function fetchElasticMapping(opts: fetchElasticMappingOptsT): ElasticMappingT {
   if (!opts.elasticIndex || typeof opts.elasticIndex !== 'string') {
-    throw new Error(
-      'Must provide `elasticIndex` string parameter from your Elastic server.'
-    );
+    throw new Error('Must provide `elasticIndex` string parameter from your Elastic server.');
   }
 
   if (!opts.elasticType || typeof opts.elasticType !== 'string') {
-    throw new Error(
-      'Must provide `elasticType` string parameter from your Elastic server.'
-    );
+    throw new Error('Must provide `elasticType` string parameter from your Elastic server.');
   }
 
   if (!opts.elasticClient) {
@@ -58,8 +55,8 @@ export async function fetchElasticMapping(opts: fetchElasticMappingOptsT): Elast
 
   const elasticMapping = (await opts.elasticClient.indices.getMapping({
     index: opts.elasticIndex,
-    type: opts.elasticType
+    type: opts.elasticType,
   }))[opts.elasticIndex].mappings[opts.elasticType];
 
   return elasticMapping;
-};
+}
