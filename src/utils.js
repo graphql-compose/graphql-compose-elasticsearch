@@ -29,3 +29,37 @@ export function reorderKeys<T: Object>(obj: T, names: string[]): T {
   });
   return { ...orderedFields, ...fields };
 }
+
+export type fetchElasticMappingOptsT = {
+  elasticIndex: string,
+  elasticType: string,
+  elasticMapping: ElasticMappingT,
+  elasticClient: Object
+};
+
+export async function fetchElasticMapping(opts: fetchElasticMappingOptsT): ElasticMappingT {
+  if (!opts.elasticIndex || typeof opts.elasticIndex !== 'string') {
+    throw new Error(
+      'Must provide `elasticIndex` string parameter from your Elastic server.'
+    );
+  }
+
+  if (!opts.elasticType || typeof opts.elasticType !== 'string') {
+    throw new Error(
+      'Must provide `elasticType` string parameter from your Elastic server.'
+    );
+  }
+
+  if (!opts.elasticClient) {
+    throw new Error(
+      'Must provide `elasticClient` Object parameter connected to your Elastic server.'
+    );
+  }
+
+  const elasticMapping = (await opts.elasticClient.indices.getMapping({
+    index: opts.elasticIndex,
+    type: opts.elasticType
+  }))[opts.elasticIndex].mappings[opts.elasticType];
+
+  return elasticMapping;
+};
