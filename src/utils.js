@@ -38,7 +38,7 @@ export type fetchElasticMappingOptsT = {
   elasticClient: Object,
 };
 
-export async function fetchElasticMapping(opts: fetchElasticMappingOptsT): ElasticMappingT {
+export async function fetchElasticMapping(opts: fetchElasticMappingOptsT): Promise<ElasticMappingT> {
   if (!opts.elasticIndex || typeof opts.elasticIndex !== 'string') {
     throw new Error('Must provide `elasticIndex` string parameter from your Elastic server.');
   }
