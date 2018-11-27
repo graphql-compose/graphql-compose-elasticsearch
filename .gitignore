@@ -40,7 +40,7 @@ node_modules
 
 # Transpiled code
 /es
-/lib
+#/lib # push to be able to use as a git+ dependency
 /mjs
 /__fixtures__
 
