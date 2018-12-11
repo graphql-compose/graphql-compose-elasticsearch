@@ -34,6 +34,7 @@
 .*/node_modules/uglify.*
 .*/node_modules/yargs.*
 .*/node_modules/express-graphql/dist/index.js.flow
+.*/node_modules/graphql/utilities/buildASTSchema.js.flow
 
 [include]
 

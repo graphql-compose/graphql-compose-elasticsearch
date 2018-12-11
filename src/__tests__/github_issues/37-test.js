@@ -44,25 +44,25 @@ const ActivitiesEsTC = composeWithElastic({
   elasticClient,
 });
 
-beforeAll(async () => {
-  const indexExists = await elasticClient.indices.exists({ index: elasticIndex });
-  if (indexExists) {
-    await elasticClient.indices.delete({ index: elasticIndex });
-  }
+describe.skip('github issue #37 - Mutations via updateById overwrite arrays instead of appending to them', () => {
+  beforeAll(async () => {
+    const indexExists = await elasticClient.indices.exists({ index: elasticIndex });
+    if (indexExists) {
+      await elasticClient.indices.delete({ index: elasticIndex });
+    }
 
-  // create demo record directly in elastic
-  await elasticClient.create({
-    index: elasticIndex,
-    type: elasticType,
-    id: '333',
-    body: {
-      title: 'Test 1',
-      tags: ['y', 'z'],
-    },
+    // create demo record directly in elastic
+    await elasticClient.create({
+      index: elasticIndex,
+      type: elasticType,
+      id: '333',
+      body: {
+        title: 'Test 1',
+        tags: ['y', 'z'],
+      },
+    });
   });
-});
 
-describe('github issue #37 - Mutations via updateById overwrite arrays instead of appending to them', () => {
   it('create custom resolver', async () => {
     expect(ActivitiesEsTC).toBeInstanceOf(TypeComposer);
 

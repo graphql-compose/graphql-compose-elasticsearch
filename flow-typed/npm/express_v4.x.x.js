@@ -182,7 +182,7 @@ declare module 'express' {
 
   declare module.exports: {
     (): express$Application, // If you try to call like a function, it will use this signature
-    static: serveStatic, // `static` property on the function
+    static: typeof serveStatic, // `static` property on the function
     Router: typeof express$Router, // `Router` property on the function
   };
 }
