@@ -323,10 +323,15 @@ export default class ElasticApiParser {
 
     if (paramCfg.default) {
       result.defaultValue = paramCfg.default;
-      // Handle broken data where default is not valid for the given type
-      // https://github.com/graphql-compose/graphql-compose-elasticsearch/issues/49
-      if (result.type === 'Float' && Number.isNaN(Number(paramCfg.default))) {
-        delete result.defaultValue;
+      if (result.type === 'Float') {
+        const defaultNumber = Number(result.defaultValue);
+        if (Number.isNaN(defaultNumber)) {
+          // Handle broken data where default is not valid for the given type
+          // https://github.com/graphql-compose/graphql-compose-elasticsearch/issues/49
+          delete result.defaultValue;
+        } else {
+          result.defaultValue = defaultNumber;
+        }
       }
     } else if (fieldName === 'format') {
       result.defaultValue = 'json';
