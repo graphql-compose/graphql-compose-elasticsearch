@@ -6,7 +6,7 @@ import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 import { composeWithElastic } from '../..';
 
 const ELASTICSEARCH_HOST = '';
-const ELASTICSEARCH_API_VERSION = '5.0';
+const ELASTICSEARCH_API_VERSION = '6.0';
 const mapping = {
   properties: {
     id: {

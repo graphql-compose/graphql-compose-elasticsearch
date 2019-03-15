@@ -12,7 +12,7 @@ import { graphql } from 'graphql';
 import { composeWithElastic } from '../..';
 
 const ELASTICSEARCH_HOST = '';
-const ELASTICSEARCH_API_VERSION = '5.2';
+const ELASTICSEARCH_API_VERSION = '5.6';
 const mapping = {
   properties: {
     id: {

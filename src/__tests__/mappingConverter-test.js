@@ -244,12 +244,12 @@ describe('PropertiesConverter', () => {
     });
 
     it('should work with graphql schema without errors', () => {
-      schemaComposer.rootQuery().addFields({ userES: tc9 });
+      schemaComposer.Query.addFields({ userES: tc9 });
       expect(() => schemaComposer.buildSchema()).not.toThrowError();
     });
 
     it('should use Elastic field names from source', async () => {
-      schemaComposer.rootQuery().addFields({ userES: tc9 });
+      schemaComposer.Query.addFields({ userES: tc9 });
       const result = await graphql.graphql(
         schemaComposer.buildSchema(),
         `

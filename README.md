@@ -1,8 +1,7 @@
-graphql-compose-elasticsearch
-======================
+# graphql-compose-elasticsearch
 
-[![](https://img.shields.io/npm/v/graphql-compose-elasticsearch.svg)](https://www.npmjs.com/package/graphql-compose-elasticsearch)
-[![npm](https://img.shields.io/npm/dt/graphql-compose-elasticsearch.svg)](http://www.npmtrends.com/graphql-compose-elasticsearch)
+[![npm](https://img.shields.io/npm/v/graphql-compose-elasticsearch.svg)](https://www.npmjs.com/package/graphql-compose-elasticsearch)
+[![trends](https://img.shields.io/npm/dt/graphql-compose-elasticsearch.svg)](http://www.npmtrends.com/graphql-compose-elasticsearch)
 [![Travis](https://img.shields.io/travis/graphql-compose/graphql-compose-elasticsearch.svg?maxAge=2592000)](https://travis-ci.org/graphql-compose/graphql-compose-elasticsearch)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
@@ -52,9 +51,11 @@ Live demo of [Introspection of Elasticsearch API via Graphiql](https://graphql-c
 ---
 
 ## TypeComposer from Elastic mapping
+
 In other side this module is a plugin for [graphql-compose](https://github.com/graphql-compose/graphql-compose), which derives GraphQLType from your [elastic mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) generates tons of types, provides all available methods in QueryDSL, Aggregations, Sorting with field autocompletion according to types in your mapping (like Dev Tools Console in Kibana).
 
 Generated TypeComposer model has several awesome resolvers:
+
 - `search` - greatly simplified elastic `search` method. According to GraphQL adaptation and its projection bunch of params setup automatically due your graphql query (eg `_source`, `explain`, `version`, `trackScores`), other rare fine tuning params moved to `opts` input field.  
 - `searchConnection` - elastic `search` method that implements Relay Cursor Connection [spec](https://facebook.github.io/relay/graphql/connections.htm) for infinite lists. Internally it uses cheap [search_after](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html) API. One downside, Elastic does not support backward scrolling, so `before` argument will not work.
 - `searchPagination` - elastic `search` method that has `page` and `perPage` arguments
@@ -132,25 +133,31 @@ const Schema = new GraphQLSchema({
 Full [code example](https://github.com/graphql-compose/graphql-compose-elasticsearch/blob/master/examples/elastic50/index.js)
 
 ## Installation
-```
+
+```bash
 yarn add graphql graphql-compose elasticsearch graphql-compose-elasticsearch
 // or
 npm install graphql graphql-compose elasticsearch graphql-compose-elasticsearch --save
 ```
+
 Modules `graphql`, `graphql-compose`, `elasticsearch` are in `peerDependencies`, so should be installed explicitly in your app.
 
 ## Screenshots
 
 ### API proxy: Raw search method
+
 <img width="1316" alt="screen shot 2017-03-07 at 22 26 17" src="https://cloud.githubusercontent.com/assets/1946920/23859886/61066f40-082f-11e7-89d0-8443aa2ae930.png">
 
 ### API proxy: Getting several raw elastic metric in one request
+
 <img width="1314" alt="screen shot 2017-03-07 at 22 34 01" src="https://cloud.githubusercontent.com/assets/1946920/23859892/65e71744-082f-11e7-8c1a-cafeb87e08e6.png">
 
 ### Mapping: Relay Cursor Connection
+
 <img width="1411" alt="screen shot 2017-03-22 at 19 34 09" src="https://cloud.githubusercontent.com/assets/1946920/24200219/a058c220-0f36-11e7-9cf1-38394052f922.png">
 
 ### Mapping: Generated GraphQL Types and Documentation
+
 <img width="1703" alt="screen shot 2017-03-22 at 19 33 24" src="https://cloud.githubusercontent.com/assets/1946920/24200220/a05944b6-0f36-11e7-9919-39b7001af203.png">
 
 ## FAQ
@@ -185,4 +192,5 @@ ActivitiesEsTC.addResolver({
 ```
 
 ## License
+
 [MIT](https://github.com/graphql-compose/graphql-compose-elasticsearch/blob/master/LICENSE.md)

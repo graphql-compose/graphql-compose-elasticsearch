@@ -20,9 +20,14 @@ describe('findById', () => {
     expect(findByIdResolver.hasArg('id')).toBeTruthy();
   });
 
-  it('resolve', () => {
-    findByIdResolver.resolve({ args: { id: '4554' }, context: { elasticClient } }).then(res => {
+  it('resolve', async () => {
+    await findByIdResolver
+      .resolve({ args: { id: '4554' }, context: { elasticClient } })
+      .then(res => {
         console.log(res); // eslint-disable-line
-    });
+      })
+      .catch(e => {
+        expect(e).toMatchObject({ message: /unknown error/ });
+      });
   });
 });
