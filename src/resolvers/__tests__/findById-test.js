@@ -1,14 +1,23 @@
 /* @flow */
 
-import { Resolver } from 'graphql-compose';
+import { Resolver, schemaComposer } from 'graphql-compose';
 import createFindByIdResolver from '../findById';
 import elasticClient from '../../__mocks__/elasticClient';
 import { CvTC, CvFieldMap } from '../../__mocks__/cv';
+import { prepareCommonOpts } from '../../utils';
 
-const findByIdResolver = createFindByIdResolver(CvFieldMap, CvTC, {
-  elasticClient,
-  elasticIndex: 'cv',
-  elasticType: 'cv',
+const findByIdResolver = createFindByIdResolver(
+  prepareCommonOpts(schemaComposer, {
+    sourceTC: CvTC,
+    fieldMap: CvFieldMap,
+    elasticClient,
+    elasticIndex: 'cv',
+    elasticType: 'cv',
+  })
+);
+
+beforeEach(() => {
+  schemaComposer.clear();
 });
 
 describe('findById', () => {

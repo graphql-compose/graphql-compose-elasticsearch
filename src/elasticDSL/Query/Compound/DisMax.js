@@ -2,9 +2,9 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC, prepareQueryInResolve } from '../Query';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getDisMaxITC(opts: mixed = {}): InputTypeComposer {
+export function getDisMaxITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('QueryDisMax', opts);
   const description = desc(
     `
@@ -16,17 +16,15 @@ export function getDisMaxITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        queries: () => [getQueryITC(opts)],
-        boost: 'Float',
-        tie_breaker: 'Float',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      queries: () => [getQueryITC(opts)],
+      boost: 'Float',
+      tie_breaker: 'Float',
+    },
+  }));
 }
 
 /* eslint-disable no-param-reassign, camelcase */

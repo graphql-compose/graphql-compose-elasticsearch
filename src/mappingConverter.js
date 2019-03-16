@@ -2,7 +2,8 @@
 /* eslint-disable no-use-before-define, no-param-reassign */
 
 import {
-  TypeComposer,
+  ObjectTypeComposer,
+  SchemaComposer,
   upperFirst,
   isObject,
   type ComposeInputType,
@@ -65,11 +66,12 @@ export type ConvertOptsT = {
   pluralFields?: string[],
 };
 
-export function convertToSourceTC(
+export function convertToSourceTC<TContext>(
+  schemaComposer: SchemaComposer<TContext>,
   mapping: ElasticMappingT | ElasticPropertyT,
   typeName: string,
   opts?: ConvertOptsT = {}
-): TypeComposer {
+): ObjectTypeComposer<any, TContext> {
   if (!mapping || !mapping.properties) {
     throw new Error('You provide incorrect mapping. It should be an object `{ properties: {} }`');
   }
@@ -79,7 +81,7 @@ export function convertToSourceTC(
     );
   }
 
-  const tc = TypeComposer.create({
+  const tc = schemaComposer.createObjectTC({
     name: `${opts.prefix || ''}${typeName}${opts.postfix || ''}`,
     description:
       'Elasticsearch mapping does not contains info about ' +
@@ -95,6 +97,7 @@ export function convertToSourceTC(
   Object.keys(properties).forEach(sourceName => {
     const fieldName = sourceName.replace(/[^_a-zA-Z0-9]/g, '_');
     const gqType = propertyToSourceGraphQLType(
+      schemaComposer,
       properties[sourceName],
       `${typeName}${upperFirst(fieldName)}`,
       {
@@ -132,18 +135,19 @@ export function convertToSourceTC(
   return tc;
 }
 
-export function propertyToSourceGraphQLType(
+export function propertyToSourceGraphQLType<TContext>(
+  schemaComposer: SchemaComposer<TContext>,
   prop: ElasticPropertyT,
   typeName?: string,
   opts?: ConvertOptsT
-): ComposeOutputType<any> {
+): ComposeOutputType<any, TContext> {
   if (!prop || (typeof prop.type !== 'string' && !prop.properties)) {
     throw new Error('You provide incorrect Elastic property config.');
   }
 
   if (prop.properties) {
     // object type with subfields
-    return convertToSourceTC(prop, typeName || '', opts);
+    return convertToSourceTC(schemaComposer, prop, typeName || '', opts);
   }
 
   if (prop.type && typeMap[prop.type]) {

@@ -1,10 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAllFields } from '../../Commons/FieldNames';
 
-export function getSignificantTermsITC(opts: mixed = {}): InputTypeComposer {
+export function getSignificantTermsITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsSignificantTerms', opts);
   const description = desc(
     `
@@ -14,16 +16,14 @@ export function getSignificantTermsITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getAllFields(opts),
-        min_doc_count: 'Int',
-        background_filter: 'JSON',
-        execution_hint: 'String',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getAllFields(opts),
+      min_doc_count: 'Int',
+      background_filter: 'JSON',
+      execution_hint: 'String',
+    },
+  }));
 }

@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getSerialDifferencingITC(opts: mixed = {}): InputTypeComposer {
+export function getSerialDifferencingITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsSerialDifferencing', opts);
   const description = desc(
     `
@@ -13,16 +15,14 @@ export function getSerialDifferencingITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        buckets_path: 'String!',
-        lag: 'String',
-        gap_policy: 'String',
-        format: 'String',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      buckets_path: 'String!',
+      lag: 'String',
+      gap_policy: 'String',
+      format: 'String',
+    },
+  }));
 }

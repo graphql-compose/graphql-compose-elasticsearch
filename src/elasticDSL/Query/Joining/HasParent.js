@@ -2,9 +2,9 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC } from '../Query';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getHasParentITC(opts: mixed = {}): InputTypeComposer {
+export function getHasParentITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('QueryHasParent', opts);
   const description = desc(
     `
@@ -14,16 +14,14 @@ export function getHasParentITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        parent_type: 'String',
-        query: () => getQueryITC(opts),
-        score: 'Boolean',
-        ignore_unmapped: 'Boolean',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      parent_type: 'String',
+      query: () => getQueryITC(opts),
+      score: 'Boolean',
+      ignore_unmapped: 'Boolean',
+    },
+  }));
 }

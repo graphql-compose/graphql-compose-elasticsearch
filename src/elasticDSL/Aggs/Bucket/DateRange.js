@@ -1,11 +1,13 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getDateFormatFC, getDateTimeZoneFC, getDateRangeITC } from '../../Commons/Date';
 import { getDateFields } from '../../Commons/FieldNames';
 
-export function getAggsDateRangeITC(opts: mixed = {}): InputTypeComposer {
+export function getAggsDateRangeITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsDateRange', opts);
   const description = desc(
     `
@@ -19,16 +21,14 @@ export function getAggsDateRangeITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getDateFields(opts),
-        format: getDateFormatFC(opts),
-        ranges: () => [getDateRangeITC(opts)],
-        time_zone: getDateTimeZoneFC(opts),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getDateFields(opts),
+      format: getDateFormatFC(opts),
+      ranges: () => [getDateRangeITC(opts)],
+      time_zone: getDateTimeZoneFC(opts),
+    },
+  }));
 }

@@ -1,9 +1,9 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getSamplerITC(opts: mixed = {}): InputTypeComposer {
+export function getSamplerITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsSampler', opts);
   const description = desc(
     `
@@ -16,13 +16,11 @@ export function getSamplerITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        shard_size: 'Int',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      shard_size: 'Int',
+    },
+  }));
 }

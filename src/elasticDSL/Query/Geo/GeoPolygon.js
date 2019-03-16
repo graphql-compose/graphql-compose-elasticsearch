@@ -1,11 +1,13 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getGeoPointAsFieldConfigMap } from '../../Commons/FieldNames';
 import { getGeoPointFC } from '../../Commons/Geo';
 
-export function getGeoPolygonITC(opts: mixed = {}): InputTypeComposer {
+export function getGeoPolygonITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QueryGeoPolygon', opts);
   const description = desc(
     `
@@ -18,25 +20,21 @@ export function getGeoPolygonITC(opts: mixed = {}): InputTypeComposer {
   const subName = getTypeName('QueryGeoPolygonSettings', opts);
   const fields = getGeoPointAsFieldConfigMap(
     opts,
-    getOrSetType(subName, () =>
-      InputTypeComposer.create({
-        name: subName,
-        fields: {
-          points: ([getGeoPointFC(opts)]: $FlowFixMe),
-          validation_method: 'String',
-        },
-      })
-    )
+    opts.getOrCreateITC(subName, () => ({
+      name: subName,
+      fields: {
+        points: ([getGeoPointFC(opts)]: $FlowFixMe),
+        validation_method: 'String',
+      },
+    }))
   );
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   // $FlowFixMe

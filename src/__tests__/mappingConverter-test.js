@@ -1,6 +1,6 @@
 /* @flow */
 
-import { TypeComposer, schemaComposer, graphql } from 'graphql-compose';
+import { ObjectTypeComposer, schemaComposer, graphql } from 'graphql-compose';
 import {
   convertToSourceTC,
   propertyToSourceGraphQLType,
@@ -48,35 +48,39 @@ const mapping = {
   },
 };
 
+beforeEach(() => {
+  schemaComposer.clear();
+});
+
 describe('PropertiesConverter', () => {
-  describe('convertToSourceTC()', () => {
+  describe('convertToSourceTC(schemaComposer, )', () => {
     it('should throw error on empty mapping', () => {
       expect(() => {
         // $FlowFixMe
-        convertToSourceTC();
+        convertToSourceTC(schemaComposer);
       }).toThrowError('incorrect mapping');
     });
 
     it('should throw error on empty typeName', () => {
       expect(() => {
         // $FlowFixMe
-        convertToSourceTC(mapping);
+        convertToSourceTC(schemaComposer, mapping);
       }).toThrowError('empty name');
     });
 
-    it('should return TypeComposer', () => {
-      const tc = convertToSourceTC(mapping, 'TestMapping');
-      expect(tc).toBeInstanceOf(TypeComposer);
+    it('should return ObjectTypeComposer', () => {
+      const tc = convertToSourceTC(schemaComposer, mapping, 'TestMapping');
+      expect(tc).toBeInstanceOf(ObjectTypeComposer);
       expect(tc.getTypeName()).toBe('TestMapping');
       expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['name', 'avatarUrl']));
     });
 
     it('should make singular and plural fields', () => {
-      const tc1 = convertToSourceTC(mapping, 'TestMapping');
+      const tc1 = convertToSourceTC(schemaComposer, mapping, 'TestMapping');
       const singular: any = tc1.getField('name');
       expect(singular.type).toBe('String');
 
-      const tc2 = convertToSourceTC(mapping, 'TestMapping', {
+      const tc2 = convertToSourceTC(schemaComposer, mapping, 'TestMapping', {
         pluralFields: ['name'],
       });
       const plural: any = tc2.getField('name');
@@ -84,42 +88,43 @@ describe('PropertiesConverter', () => {
     });
   });
 
-  describe('propertyToSourceGraphQLType()', () => {
+  describe('propertyToSourceGraphQLType(schemaComposer, )', () => {
     it('should throw error on wrong property config', () => {
       expect(() => {
         // $FlowFixMe
-        propertyToSourceGraphQLType();
+        propertyToSourceGraphQLType(schemaComposer);
       }).toThrowError('incorrect Elastic property config');
       expect(() => {
-        propertyToSourceGraphQLType({});
+        propertyToSourceGraphQLType(schemaComposer, {});
       }).toThrowError('incorrect Elastic property config');
     });
 
     it('should return GraphQLJSON as fallback for unknown Elastic type', () => {
-      expect(propertyToSourceGraphQLType({ type: 'strange' })).toEqual('JSON');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'strange' })).toEqual('JSON');
     });
 
     it('should return GraphQLInt for int types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'integer' })).toEqual('Int');
-      expect(propertyToSourceGraphQLType({ type: 'long' })).toEqual('Int');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'integer' })).toEqual('Int');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'long' })).toEqual('Int');
     });
 
     it('should return String for string types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'text' })).toEqual('String');
-      expect(propertyToSourceGraphQLType({ type: 'keyword' })).toEqual('String');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'text' })).toEqual('String');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'keyword' })).toEqual('String');
     });
 
     it('should return Float for float types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'float' })).toEqual('Float');
-      expect(propertyToSourceGraphQLType({ type: 'double' })).toEqual('Float');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'float' })).toEqual('Float');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'double' })).toEqual('Float');
     });
 
     it('should return Boolean for float types', () => {
-      expect(propertyToSourceGraphQLType({ type: 'boolean' })).toEqual('Boolean');
+      expect(propertyToSourceGraphQLType(schemaComposer, { type: 'boolean' })).toEqual('Boolean');
     });
 
     it('should return GraphQLObjectType for object with subfields', () => {
       const tc: any = propertyToSourceGraphQLType(
+        schemaComposer,
         {
           properties: {
             big: {
@@ -132,7 +137,7 @@ describe('PropertiesConverter', () => {
         },
         'ComplexType'
       );
-      expect(tc).toBeInstanceOf(TypeComposer);
+      expect(tc).toBeInstanceOf(ObjectTypeComposer);
       expect(tc.getTypeName()).toEqual('ComplexType');
       expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
       expect(tc.getField('big').type).toEqual('String');
@@ -234,10 +239,10 @@ describe('PropertiesConverter', () => {
         },
       },
     };
-    const tc9 = convertToSourceTC(mapping9, 'Type9');
+    const tc9 = convertToSourceTC(schemaComposer, mapping9, 'Type9');
 
     it('should replace unacceptable characters in GraphQL fieldnames', () => {
-      expect(tc9).toBeInstanceOf(TypeComposer);
+      expect(tc9).toBeInstanceOf(ObjectTypeComposer);
       expect(tc9.getFieldNames()).toEqual(
         expect.arrayContaining(['_id', 'lastName', 'email', '_passwordHash'])
       );

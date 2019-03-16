@@ -1,12 +1,14 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getCommonsHdrITC } from '../../Commons/HDR';
 import { getNumericFields } from '../../Commons/FieldNames';
 
-export function getPercentilesITC(opts: mixed = {}): InputTypeComposer {
+export function getPercentilesITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsPercentiles', opts);
   const description = desc(
     `
@@ -18,20 +20,18 @@ export function getPercentilesITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getNumericFields(opts),
-        percents: '[Float]',
-        tdigest: `input ${getTypeName('AggsPercentilesTDigest', opts)} {
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getNumericFields(opts),
+      percents: '[Float]',
+      tdigest: `input ${getTypeName('AggsPercentilesTDigest', opts)} {
           compression: Int,
         }`,
-        hdr: () => getCommonsHdrITC(opts),
-        missing: 'Float',
-        script: () => getCommonsScriptITC(opts),
-      },
-    })
-  );
+      hdr: () => getCommonsHdrITC(opts),
+      missing: 'Float',
+      script: () => getCommonsScriptITC(opts),
+    },
+  }));
 }

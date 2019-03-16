@@ -1,16 +1,21 @@
 /* @flow */
 
-import { TypeComposer } from 'graphql-compose';
+import {
+  ObjectTypeComposer,
+  SchemaComposer,
+  schemaComposer as globalSchemaComposer,
+} from 'graphql-compose';
 import { convertToSourceTC, inputPropertiesToGraphQLTypes } from './mappingConverter';
 import createSearchResolver from './resolvers/search';
 import createSearchConnectionResolver from './resolvers/searchConnection';
 import createSearchPaginationResolver from './resolvers/searchPagination';
 import createFindByIdResolver from './resolvers/findById';
 import createUpdateByIdResolver from './resolvers/updateById';
+import { prepareCommonOpts } from './utils';
 
 import type { ElasticMappingT } from './mappingConverter';
 
-export type composeWithElasticOptsT = {
+export type composeWithElasticOptsT<TContext> = {
   graphqlTypeName: string,
   elasticIndex: string,
   elasticType: string,
@@ -19,9 +24,12 @@ export type composeWithElasticOptsT = {
   pluralFields?: string[],
   prefix?: ?string,
   postfix?: ?string,
+  schemaComposer?: SchemaComposer<TContext>,
 };
 
-export function composeWithElastic(opts: composeWithElasticOptsT): TypeComposer {
+export function composeWithElastic<TContext>(
+  opts: composeWithElasticOptsT<TContext>
+): ObjectTypeComposer<any, TContext> {
   if (!opts) {
     throw new Error('Opts is required argument for composeWithElastic()');
   }
@@ -61,14 +69,34 @@ export function composeWithElastic(opts: composeWithElasticOptsT): TypeComposer 
     );
   }
 
-  const fieldMap = inputPropertiesToGraphQLTypes(opts.elasticMapping);
-  const sourceTC = convertToSourceTC(opts.elasticMapping, opts.graphqlTypeName, opts);
+  if (opts.schemaComposer && !(opts.schemaComposer instanceof SchemaComposer)) {
+    throw new Error(
+      'Opts.schemaComposer should be an SchemaComposer instance from graphql-compose package.'
+    );
+  }
 
-  const searchR = createSearchResolver(fieldMap, sourceTC, opts);
-  const searchConnectionR = createSearchConnectionResolver(searchR, opts);
-  const searchPaginationR = createSearchPaginationResolver(searchR, opts);
-  const findByIdR = createFindByIdResolver(fieldMap, sourceTC, opts);
-  const updateByIdR = createUpdateByIdResolver(fieldMap, sourceTC, opts);
+  const schemaComposer = opts.schemaComposer || globalSchemaComposer;
+
+  const fieldMap = inputPropertiesToGraphQLTypes(opts.elasticMapping);
+  const sourceTC = convertToSourceTC(
+    schemaComposer,
+    opts.elasticMapping,
+    opts.graphqlTypeName,
+    opts
+  );
+  const commonOpts = prepareCommonOpts(schemaComposer, {
+    ...opts,
+    prefix: opts.prefix || 'Es',
+    fieldMap,
+    sourceTC,
+    schemaComposer,
+  });
+
+  const searchR = createSearchResolver(commonOpts);
+  const searchConnectionR = createSearchConnectionResolver(commonOpts, searchR);
+  const searchPaginationR = createSearchPaginationResolver(commonOpts, searchR);
+  const findByIdR = createFindByIdResolver(commonOpts);
+  const updateByIdR = createUpdateByIdResolver(commonOpts);
 
   sourceTC.addResolver(searchR);
   sourceTC.addResolver(searchConnectionR);

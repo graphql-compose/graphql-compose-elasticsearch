@@ -1,19 +1,19 @@
 /* @flow */
 
-import { TypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType } from '../utils';
+import { ObjectTypeComposer } from 'graphql-compose';
+import { getTypeName, type CommonOpts } from '../utils';
 
-export default function getShardsTC(opts: mixed = {}): TypeComposer {
+export default function getShardsTC<TContext>(
+  opts: CommonOpts<TContext>
+): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('MetaShards', opts);
 
-  return getOrSetType(name, () =>
-    TypeComposer.create({
-      name,
-      fields: {
-        total: 'Int',
-        successful: 'Int',
-        failed: 'Int',
-      },
-    })
-  );
+  return opts.getOrCreateOTC(name, () => ({
+    name,
+    fields: {
+      total: 'Int',
+      successful: 'Int',
+      failed: 'Int',
+    },
+  }));
 }

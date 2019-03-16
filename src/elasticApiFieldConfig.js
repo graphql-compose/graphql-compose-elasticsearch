@@ -1,7 +1,7 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { TypeComposer, graphql } from 'graphql-compose';
+import { ObjectTypeComposer, graphql } from 'graphql-compose';
 import type { GraphQLFieldConfig } from 'graphql';
 import elasticsearch from 'elasticsearch';
 import ElasticApiParser from './ElasticApiParser';
@@ -34,7 +34,7 @@ function instanceElasticClient(elasticClient: Object): GraphQLFieldConfig<any, a
 
   return {
     description: `Elastic API v${apiVersion}`,
-    type: TypeComposer.create({
+    type: ObjectTypeComposer.createTemp({
       name: prefix,
       fields: apiParser.generateFieldMap(),
     }).getType(),
@@ -56,7 +56,7 @@ function contextElasticClient(elasticConfig: Object): GraphQLFieldConfig<any, an
 
   return {
     description: `Elastic API v${apiVersion}`,
-    type: TypeComposer.create({
+    type: ObjectTypeComposer.createTemp({
       name: prefix,
       fields: apiParser.generateFieldMap(),
     }).getType(),

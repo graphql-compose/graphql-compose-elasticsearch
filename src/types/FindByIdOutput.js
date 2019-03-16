@@ -1,29 +1,21 @@
 /* @flow */
 
-import { TypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType } from '../utils';
-import type { FieldsMapByElasticType } from '../mappingConverter';
+import { ObjectTypeComposer } from 'graphql-compose';
+import { getTypeName, type CommonOpts } from '../utils';
 
-export type FindByIdOptsT = {
-  prefix?: string,
-  postfix?: string,
-  fieldMap?: FieldsMapByElasticType,
-  sourceTC: TypeComposer,
-};
-
-export function getFindByIdOutputTC(opts: FindByIdOptsT): TypeComposer {
+export function getFindByIdOutputTC<TContext>(
+  opts: CommonOpts<TContext>
+): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('FindByIdOutput', opts);
-  const { sourceTC } = opts || {};
-  return getOrSetType(name, () =>
-    TypeComposer.create({
-      name,
-      fields: {
-        _id: 'String',
-        _index: 'String',
-        _type: 'String',
-        _version: 'Int',
-        ...sourceTC.getFields(),
-      },
-    })
-  );
+  const { sourceTC } = opts;
+  return opts.getOrCreateOTC(name, () => ({
+    name,
+    fields: {
+      _id: 'String',
+      _index: 'String',
+      _type: 'String',
+      _version: 'Int',
+      ...sourceTC.getFields(),
+    },
+  }));
 }

@@ -3,7 +3,7 @@
 // import fs from 'fs';
 import dox from 'dox';
 import path from 'path';
-import { TypeComposer, EnumTypeComposer } from 'graphql-compose';
+import { ObjectTypeComposer, EnumTypeComposer } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 
 const apiPartialPath = path.resolve(__dirname, '../__mocks__/apiPartial.js');
@@ -481,14 +481,14 @@ describe('ElasticApiParser', () => {
       });
       expect(Object.keys(reFields).length).toEqual(2);
       expect(reFields.cat).toBeDefined();
-      expect(reFields.cat.type).toBeInstanceOf(TypeComposer);
+      expect(reFields.cat.type).toBeInstanceOf(ObjectTypeComposer);
       const tc = reFields.cat.type;
       expect(tc.getFieldNames()).toEqual(['field1', 'field2']);
       expect(tc.getField('field1').type).toEqual('String');
       expect(tc.getField('field2').type).toEqual('String');
 
       expect(reFields.index).toBeDefined();
-      expect(reFields.index.type).toBeInstanceOf(TypeComposer);
+      expect(reFields.index.type).toBeInstanceOf(ObjectTypeComposer);
       const tc2 = reFields.index.type;
       expect(tc2.getFieldNames()).toEqual(['exists']);
       expect(tc2.getField('exists').type).toEqual('Boolean');

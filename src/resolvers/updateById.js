@@ -1,38 +1,30 @@
 /* @flow */
 
-import { Resolver, TypeComposer, InputTypeComposer, type ResolveParams } from 'graphql-compose';
-import type { FieldsMapByElasticType } from '../mappingConverter';
+import { Resolver, InputTypeComposer, type ResolveParams } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 import { getUpdateByIdOutputTC } from '../types/UpdateByIdOutput';
-import { getTypeName, getOrSetType, desc } from '../utils';
+import { getTypeName, type CommonOpts, desc } from '../utils';
 
-export type ElasticResolverOpts = {
-  prefix?: ?string,
-  elasticIndex: string,
-  elasticType: string,
-  elasticClient: Object,
-};
+export default function createUpdateByIdResolver<TSource, TContext>(
+  opts: CommonOpts<TContext>
+): Resolver<TSource, TContext> {
+  const { fieldMap, sourceTC, schemaComposer } = opts;
 
-export default function createUpdateByIdResolver(
-  fieldMap: FieldsMapByElasticType,
-  sourceTC: TypeComposer,
-  opts: ElasticResolverOpts
-): Resolver {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
-      'First arg for Resolver updateById() should be fieldMap of FieldsMapByElasticType type.'
+      'opts.fieldMap for Resolver updateById() should be fieldMap of FieldsMapByElasticType type.'
     );
   }
 
-  if (!sourceTC || sourceTC.constructor.name !== 'TypeComposer') {
-    throw new Error('Second arg for Resolver updateById() should be instance of TypeComposer.');
+  if (!sourceTC || sourceTC.constructor.name !== 'ObjectTypeComposer') {
+    throw new Error(
+      'opts.sourceTC for Resolver updateById() should be instance of ObjectTypeComposer.'
+    );
   }
-
-  const prefix = opts.prefix || 'Es';
 
   const parser = new ElasticApiParser({
     elasticClient: opts.elasticClient,
-    prefix,
+    prefix: opts.prefix,
   });
 
   const updateByIdFC = parser.generateFieldConfig('update', {
@@ -43,12 +35,12 @@ export default function createUpdateByIdResolver(
 
   const argsConfigMap = {
     id: 'String!',
-    record: getRecordITC(fieldMap).getTypeNonNull(),
+    record: getRecordITC(opts).getTypeNonNull(),
   };
 
-  const type = getUpdateByIdOutputTC({ prefix, fieldMap, sourceTC });
+  const type = getUpdateByIdOutputTC(opts);
 
-  return new Resolver({
+  return schemaComposer.createResolver({
     type,
     name: 'updateById',
     kind: 'mutation',
@@ -80,14 +72,12 @@ export default function createUpdateByIdResolver(
   });
 }
 
-export function getRecordITC(fieldMap: FieldsMapByElasticType): InputTypeComposer {
+export function getRecordITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('Record', {});
   const description = desc(`The record from Elastic Search`);
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: { ...fieldMap._all },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: { ...opts.fieldMap._all },
+  }));
 }

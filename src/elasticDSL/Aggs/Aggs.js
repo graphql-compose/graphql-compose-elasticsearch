@@ -1,8 +1,12 @@
 /* @flow */
 
+import type { InputTypeComposer } from 'graphql-compose';
 import { getAggBlockITC } from './AggBlock';
+import { type CommonOpts } from '../../utils';
 
-export function getAggsITC(opts: mixed) {
+export function getAggsITC<TContext>(
+  opts: CommonOpts<TContext>
+): Array<InputTypeComposer<TContext>> {
   return [getAggBlockITC(opts)];
 }
 

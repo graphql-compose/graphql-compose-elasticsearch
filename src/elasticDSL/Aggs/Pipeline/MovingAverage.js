@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getMovingAverageITC(opts: mixed = {}): InputTypeComposer {
+export function getMovingAverageITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsMovingAverage', opts);
   const description = desc(
     `
@@ -13,18 +15,16 @@ export function getMovingAverageITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        buckets_path: 'String!',
-        format: 'String',
-        window: 'Int',
-        gap_policy: 'String',
-        model: 'String',
-        settings: 'JSON',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      buckets_path: 'String!',
+      format: 'String',
+      window: 'Int',
+      gap_policy: 'String',
+      model: 'String',
+      settings: 'JSON',
+    },
+  }));
 }

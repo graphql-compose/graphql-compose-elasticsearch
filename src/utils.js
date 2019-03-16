@@ -1,17 +1,62 @@
 /* @flow */
 
-import { TypeStorage } from 'graphql-compose';
-import type { ElasticMappingT } from './mappingConverter';
+import type {
+  SchemaComposer,
+  ObjectTypeComposer,
+  InputTypeComposer,
+  EnumTypeComposer,
+  ComposeInputObjectTypeConfig,
+  ComposeEnumTypeConfig,
+  ObjectTypeComposeDefinition,
+} from 'graphql-compose';
+import { isFunction } from 'graphql-compose';
+import type { ElasticMappingT, FieldsMapByElasticType } from './mappingConverter';
 
-const typeStorage = new TypeStorage();
+export type CommonOpts<TContext = {}> = {
+  prefix?: string,
+  postfix?: string,
+  pluralFields?: string[],
+  elasticIndex: string,
+  elasticType: string,
+  elasticClient: Object,
+  fieldMap: FieldsMapByElasticType,
+  sourceTC: ObjectTypeComposer<any, TContext>,
+  schemaComposer: SchemaComposer<TContext>,
+  getOrCreateOTC: (
+    name: string,
+    () => ObjectTypeComposeDefinition<any, TContext>
+  ) => ObjectTypeComposer<any, TContext>,
+  getOrCreateITC: (name: string, () => ComposeInputObjectTypeConfig) => InputTypeComposer<TContext>,
+  getOrCreateETC: (name: string, () => ComposeEnumTypeConfig) => EnumTypeComposer<TContext>,
+};
+
+export function prepareCommonOpts<TContext>(
+  schemaComposer: SchemaComposer<TContext>,
+  opts: mixed = {}
+): CommonOpts<TContext> {
+  return {
+    schemaComposer,
+    getOrCreateOTC: (typeName, cfgOrThunk) => {
+      return schemaComposer.getOrSet(typeName, () =>
+        schemaComposer.createObjectTC(isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk)
+      );
+    },
+    getOrCreateITC: (typeName, cfgOrThunk) => {
+      return schemaComposer.getOrSet(typeName, () =>
+        schemaComposer.createInputTC(isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk)
+      );
+    },
+    getOrCreateETC: (typeName, cfgOrThunk) => {
+      return schemaComposer.getOrSet(typeName, () =>
+        schemaComposer.createEnumTC(isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk)
+      );
+    },
+    ...opts,
+  };
+}
 
 export function getTypeName(name: string, opts: any): string {
   return `${(opts && opts.prefix) || 'Elastic'}${name}${(opts && opts.postfix) || ''}`;
-}
-
-export function getOrSetType<T>(typeName: string, typeOrThunk: (() => T) | T): T {
-  const type: any = typeStorage.getOrSet(typeName, (typeOrThunk: any));
-  return type;
 }
 
 // Remove newline multiline in descriptions

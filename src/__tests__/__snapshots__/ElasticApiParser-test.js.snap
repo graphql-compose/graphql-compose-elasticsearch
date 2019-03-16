@@ -34,6 +34,7 @@ Object {
       "defaultValue": "OR",
       "type": EnumTypeComposer {
         "gqType": "ElasticEnum_DefaultOperator",
+        "schemaComposer": "SchemaComposer",
       },
     },
     "df": Object {
@@ -48,6 +49,7 @@ Object {
       "defaultValue": "open",
       "type": EnumTypeComposer {
         "gqType": "ElasticEnum_ExpandWildcards",
+        "schemaComposer": "SchemaComposer",
       },
     },
     "explain": Object {
@@ -98,6 +100,7 @@ Object {
       "description": "Search operation type",
       "type": EnumTypeComposer {
         "gqType": "ElasticEnum_SearchType",
+        "schemaComposer": "SchemaComposer",
       },
     },
     "size": Object {
@@ -124,6 +127,7 @@ Object {
       "defaultValue": "missing",
       "type": EnumTypeComposer {
         "gqType": "ElasticEnum_SuggestMode",
+        "schemaComposer": "SchemaComposer",
       },
     },
     "suggestSize": Object {
@@ -168,6 +172,7 @@ Object {
       "description": "The unit in which to display byte values",
       "type": EnumTypeComposer {
         "gqType": "ElasticEnum_Bytes",
+        "schemaComposer": "SchemaComposer",
       },
     },
     "format": Object {
@@ -214,14 +219,16 @@ exports[`ElasticApiParser generateFieldMap() should generate fieldMap 1`] = `
 Object {
   "cat": Object {
     "resolve": [Function],
-    "type": TypeComposer {
+    "type": ObjectTypeComposer {
       "gqType": "Elastic_Cat",
+      "schemaComposer": "SchemaComposer",
     },
   },
   "indices": Object {
     "resolve": [Function],
-    "type": TypeComposer {
+    "type": ObjectTypeComposer {
       "gqType": "Elastic_Indices",
+      "schemaComposer": "SchemaComposer",
     },
   },
   "search": Object {
@@ -257,6 +264,7 @@ Object {
         "defaultValue": "OR",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_DefaultOperator",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "df": Object {
@@ -271,6 +279,7 @@ Object {
         "defaultValue": "open",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_ExpandWildcards",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "explain": Object {
@@ -321,6 +330,7 @@ Object {
         "description": "Search operation type",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_SearchType",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "size": Object {
@@ -347,6 +357,7 @@ Object {
         "defaultValue": "missing",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_SuggestMode",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "suggestSize": Object {
@@ -415,12 +426,14 @@ Object {
         "defaultValue": "abort",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_Conflicts",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "defaultOperator": Object {
         "defaultValue": "OR",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_DefaultOperator",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "df": Object {
@@ -431,6 +444,7 @@ Object {
         "defaultValue": "open",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_ExpandWildcards",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "from": Object {
@@ -493,6 +507,7 @@ Object {
         "description": "Search operation type",
         "type": EnumTypeComposer {
           "gqType": "ElasticEnum_SearchType",
+          "schemaComposer": "SchemaComposer",
         },
       },
       "size": Object {

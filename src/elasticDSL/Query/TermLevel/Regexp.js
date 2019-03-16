@@ -1,12 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getStringAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getRegexpITC(
-  opts: mixed = {}
-): InputTypeComposer | ComposeInputFieldConfigAsObject {
+export function getRegexpITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryRegexp', opts);
   const description = desc(
     `
@@ -18,27 +18,23 @@ export function getRegexpITC(
   const subName = getTypeName('QueryRegexpSettings', opts);
   const fields = getStringAsFieldConfigMap(
     opts,
-    getOrSetType(subName, () =>
-      InputTypeComposer.create({
-        name: subName,
-        fields: {
-          value: 'String!',
-          boost: 'Float',
-          flags: 'String',
-          max_determinized_states: 'Int',
-        },
-      })
-    )
+    opts.getOrCreateITC(subName, () => ({
+      name: subName,
+      fields: {
+        value: 'String!',
+        boost: 'Float',
+        flags: 'String',
+        max_determinized_states: 'Int',
+      },
+    }))
   );
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   return {

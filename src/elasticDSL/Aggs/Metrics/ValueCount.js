@@ -1,11 +1,13 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getAllFields } from '../../Commons/FieldNames';
 
-export function getValueCountITC(opts: mixed = {}): InputTypeComposer {
+export function getValueCountITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsValueCount', opts);
   const description = desc(
     `
@@ -15,14 +17,12 @@ export function getValueCountITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getAllFields(opts),
-        script: () => getCommonsScriptITC(opts),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getAllFields(opts),
+      script: () => getCommonsScriptITC(opts),
+    },
+  }));
 }

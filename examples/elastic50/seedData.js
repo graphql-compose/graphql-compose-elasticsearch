@@ -11,10 +11,7 @@ const client = new elasticsearch.Client({
 const body = [];
 seedData.forEach(row => {
   const { id, ...restData } = row;
-  body.push(
-    { index: { _index: 'demo_user', _type: 'demo_user', _id: id } },
-    restData
-  );
+  body.push({ index: { _index: 'demo_user', _type: 'demo_user', _id: id } }, restData);
 });
 
 client

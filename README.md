@@ -50,11 +50,11 @@ Live demo of [Introspection of Elasticsearch API via Graphiql](https://graphql-c
 
 ---
 
-## TypeComposer from Elastic mapping
+## ObjectTypeComposer from Elastic mapping
 
 In other side this module is a plugin for [graphql-compose](https://github.com/graphql-compose/graphql-compose), which derives GraphQLType from your [elastic mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) generates tons of types, provides all available methods in QueryDSL, Aggregations, Sorting with field autocompletion according to types in your mapping (like Dev Tools Console in Kibana).
 
-Generated TypeComposer model has several awesome resolvers:
+Generated ObjectTypeComposer model has several awesome resolvers:
 
 - `search` - greatly simplified elastic `search` method. According to GraphQL adaptation and its projection bunch of params setup automatically due your graphql query (eg `_source`, `explain`, `version`, `trackScores`), other rare fine tuning params moved to `opts` input field.  
 - `searchConnection` - elastic `search` method that implements Relay Cursor Connection [spec](https://facebook.github.io/relay/graphql/connections.htm) for infinite lists. Internally it uses cheap [search_after](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-search-after.html) API. One downside, Elastic does not support backward scrolling, so `before` argument will not work.

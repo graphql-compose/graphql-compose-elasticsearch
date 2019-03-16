@@ -1,12 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getKeywordAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getPrefixITC(
-  opts: mixed = {}
-): InputTypeComposer | ComposeInputFieldConfigAsObject {
+export function getPrefixITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryPrefix', opts);
   const description = desc(
     `
@@ -18,25 +18,21 @@ export function getPrefixITC(
   const subName = getTypeName('QueryPrefixSettings', opts);
   const fields = getKeywordAsFieldConfigMap(
     opts,
-    getOrSetType(subName, () =>
-      InputTypeComposer.create({
-        name: subName,
-        fields: {
-          value: 'String!',
-          boost: 'Float',
-        },
-      })
-    )
+    opts.getOrCreateITC(subName, () => ({
+      name: subName,
+      fields: {
+        value: 'String!',
+        boost: 'Float',
+      },
+    }))
   );
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   return {

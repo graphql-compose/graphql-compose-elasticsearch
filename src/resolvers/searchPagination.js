@@ -1,12 +1,12 @@
 /* @flow */
 
-import { Resolver, TypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType } from '../utils';
+import type { Resolver, ObjectTypeComposer } from 'graphql-compose';
+import { getTypeName, type CommonOpts } from '../utils';
 
-export default function createSearchPaginationResolver(
-  searchResolver: Resolver,
-  opts: mixed = {}
-): Resolver {
+export default function createSearchPaginationResolver<TSource, TContext>(
+  opts: CommonOpts<TContext>,
+  searchResolver: Resolver<TSource, TContext>
+): Resolver<TSource, TContext> {
   const resolver = searchResolver.clone({
     name: `searchPagination`,
   });
@@ -24,7 +24,7 @@ export default function createSearchPaginationResolver(
 
   const searchTC = searchResolver.getTypeComposer();
   if (!searchTC) {
-    throw new Error('Cannot get TypeComposer from resolver. Maybe resolver return Scalar?!');
+    throw new Error('Cannot get ObjectTypeComposer from resolver. Maybe resolver return Scalar?!');
   }
 
   const typeName = searchTC.getTypeName();
@@ -84,11 +84,12 @@ export default function createSearchPaginationResolver(
   return resolver;
 }
 
-function getPageInfoTC(opts: mixed = {}): TypeComposer {
+function getPageInfoTC<TContext>(opts: CommonOpts<TContext>): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('PaginationInfo', opts);
 
-  return getOrSetType(name, () =>
-    TypeComposer.create(
+  return opts.getOrCreateOTC(
+    name,
+    () =>
       `
       # Information about pagination.
       type ${name} {
@@ -111,6 +112,5 @@ function getPageInfoTC(opts: mixed = {}): TypeComposer {
         hasPreviousPage: Boolean
       }
     `
-    )
   );
 }

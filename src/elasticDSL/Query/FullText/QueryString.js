@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getQueryStringITC(opts: mixed = {}): InputTypeComposer {
+export function getQueryStringITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QueryQueryString', opts);
   const description = desc(
     `
@@ -13,37 +15,35 @@ export function getQueryStringITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        query: 'String!',
-        fields: '[String]',
-        default_field: 'String',
-        default_operator: `enum ${getTypeName('QueryQueryStringOperatorEnum', opts)} {
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      query: 'String!',
+      fields: '[String]',
+      default_field: 'String',
+      default_operator: `enum ${getTypeName('QueryQueryStringOperatorEnum', opts)} {
           and
           or
         }`,
-        analyzer: 'String',
-        allow_leading_wildcard: 'Boolean',
-        enable_position_increments: 'Boolean',
-        fuzzy_max_expansions: 'Int',
-        fuzziness: 'String',
-        fuzzy_prefix_length: 'Int',
-        phrase_slop: 'Int',
-        boost: 'Float',
-        auto_generate_phrase_queries: 'Boolean',
-        analyze_wildcard: 'Boolean',
-        max_determinized_states: 'Int',
-        minimum_should_match: 'String',
-        lenient: 'Boolean',
-        time_zone: 'String',
-        quote_field_suffix: 'String',
-        split_on_whitespace: 'Boolean',
-        use_dis_max: 'Boolean',
-        tie_breaker: 'Int',
-      },
-    })
-  );
+      analyzer: 'String',
+      allow_leading_wildcard: 'Boolean',
+      enable_position_increments: 'Boolean',
+      fuzzy_max_expansions: 'Int',
+      fuzziness: 'String',
+      fuzzy_prefix_length: 'Int',
+      phrase_slop: 'Int',
+      boost: 'Float',
+      auto_generate_phrase_queries: 'Boolean',
+      analyze_wildcard: 'Boolean',
+      max_determinized_states: 'Int',
+      minimum_should_match: 'String',
+      lenient: 'Boolean',
+      time_zone: 'String',
+      quote_field_suffix: 'String',
+      split_on_whitespace: 'Boolean',
+      use_dis_max: 'Boolean',
+      tie_breaker: 'Int',
+    },
+  }));
 }

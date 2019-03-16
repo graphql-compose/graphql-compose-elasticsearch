@@ -2,25 +2,27 @@
 /* eslint-disable no-unused-vars */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../utils';
 
-export function getFloatRangeITC(opts: mixed = {}): InputTypeComposer {
+export function getFloatRangeITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('FloatRange', opts);
   const description = desc(`Float range where \`from\` value includes and \`to\` value excludes.`);
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        from: 'Float',
-        to: 'Float',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      from: 'Float',
+      to: 'Float',
+    },
+  }));
 }
 
-export function getFloatRangeKeyedITC(opts: mixed = {}): InputTypeComposer {
+export function getFloatRangeKeyedITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('FloatRangeKeyed', opts);
   const description = desc(
     `
@@ -29,15 +31,13 @@ export function getFloatRangeKeyedITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        from: 'Float',
-        to: 'Float',
-        key: 'String',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      from: 'Float',
+      to: 'Float',
+      key: 'String',
+    },
+  }));
 }

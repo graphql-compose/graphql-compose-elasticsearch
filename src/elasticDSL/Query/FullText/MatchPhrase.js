@@ -1,12 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAnalyzedAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getMatchPhraseITC(
-  opts: mixed = {}
-): InputTypeComposer | ComposeInputFieldConfigAsObject {
+export function getMatchPhraseITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryMatchPhrase', opts);
   const description = desc(
     `
@@ -19,26 +19,22 @@ export function getMatchPhraseITC(
   const subName = getTypeName('QueryMatchPhraseSettings', opts);
   const fields = getAnalyzedAsFieldConfigMap(
     opts,
-    getOrSetType(subName, () =>
-      InputTypeComposer.create({
-        name: subName,
-        fields: {
-          query: 'String',
-          analyzer: 'String',
-          boost: 'Float',
-        },
-      })
-    )
+    opts.getOrCreateITC(subName, () => ({
+      name: subName,
+      fields: {
+        query: 'String',
+        analyzer: 'String',
+        boost: 'Float',
+      },
+    }))
   );
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   return {

@@ -1,11 +1,13 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getAllFields } from '../../Commons/FieldNames';
 
-export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
+export function getDiversifiedSamplerITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsDiversifiedSampler', opts);
   const description = desc(
     `
@@ -16,20 +18,18 @@ export function getDiversifiedSamplerITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        shard_size: {
-          type: 'String',
-          defaultValue: 100,
-        },
-        field: getAllFields(opts),
-        max_docs_per_value: 'Int',
-        script: () => getCommonsScriptITC(opts),
-        execution_hint: 'String',
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      shard_size: {
+        type: 'String',
+        defaultValue: 100,
       },
-    })
-  );
+      field: getAllFields(opts),
+      max_docs_per_value: 'Int',
+      script: () => getCommonsScriptITC(opts),
+      execution_hint: 'String',
+    },
+  }));
 }

@@ -1,12 +1,14 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getDateIntervalFC, getDateFormatFC, getDateTimeZoneFC } from '../../Commons/Date';
 import { getDateFields } from '../../Commons/FieldNames';
 
-export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
+export function getDateHistogramITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsDateHistogram', opts);
   const description = desc(
     `
@@ -16,19 +18,17 @@ export function getDateHistogramITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getDateFields(opts),
-        interval: getDateIntervalFC(opts),
-        time_zone: getDateTimeZoneFC(opts),
-        offset: getDateIntervalFC(opts),
-        format: getDateFormatFC(opts),
-        missing: 'String',
-        script: () => getCommonsScriptITC(opts),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getDateFields(opts),
+      interval: getDateIntervalFC(opts),
+      time_zone: getDateTimeZoneFC(opts),
+      offset: getDateIntervalFC(opts),
+      format: getDateFormatFC(opts),
+      missing: 'String',
+      script: () => getCommonsScriptITC(opts),
+    },
+  }));
 }

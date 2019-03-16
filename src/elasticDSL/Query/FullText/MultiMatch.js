@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
+export function getMultiMatchITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QueryMultiMatch', opts);
   const description = desc(
     `
@@ -12,44 +14,42 @@ export function getMultiMatchITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      query: 'String!',
       fields: {
-        query: 'String!',
-        fields: {
-          type: '[String]!',
-          description: desc(
-            `
+        type: '[String]!',
+        description: desc(
+          `
             Array of fields [ "title", "*_name", "subject^3" ].
             You may use wildcards and boosting field.
           `
-          ),
-        },
-        type: `enum ${getTypeName('QueryMultiMatchTypeEnum', opts)} {
+        ),
+      },
+      type: `enum ${getTypeName('QueryMultiMatchTypeEnum', opts)} {
           best_fields
           most_fields
           cross_fields
           phrase
           phrase_prefix
         }`,
-        operator: `enum ${getTypeName('QueryMultiMatchOperatorEnum', opts)} {
+      operator: `enum ${getTypeName('QueryMultiMatchOperatorEnum', opts)} {
           and
           or
         }`,
-        minimum_should_match: 'String',
-        analyzer: 'String',
-        slop: 'Int',
-        boost: 'Float',
-        fuzziness: 'JSON',
-        prefix_length: 'Int',
-        max_expansions: 'Int',
-        rewrite: 'String',
-        zero_terms_query: 'JSON',
-        cutoff_frequency: 'Float',
-        // lenient: 'JSON', // depricated from ES 5.3
-      },
-    })
-  );
+      minimum_should_match: 'String',
+      analyzer: 'String',
+      slop: 'Int',
+      boost: 'Float',
+      fuzziness: 'JSON',
+      prefix_length: 'Int',
+      max_expansions: 'Int',
+      rewrite: 'String',
+      zero_terms_query: 'JSON',
+      cutoff_frequency: 'Float',
+      // lenient: 'JSON', // depricated from ES 5.3
+    },
+  }));
 }

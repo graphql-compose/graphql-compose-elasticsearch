@@ -1,10 +1,10 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../utils';
 import { getAggRulesITC } from './AggRules';
 
-export function getAggBlockITC(opts: mixed = {}): InputTypeComposer {
+export function getAggBlockITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggBlock', opts);
   const description = desc(
     `
@@ -15,20 +15,18 @@ export function getAggBlockITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        key: {
-          type: 'String',
-          description: 'FieldName in response for aggregation result',
-        },
-        value: {
-          type: () => getAggRulesITC(opts),
-          description: 'Aggregation rules',
-        },
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      key: {
+        type: 'String',
+        description: 'FieldName in response for aggregation result',
       },
-    })
-  );
+      value: {
+        type: () => getAggRulesITC(opts),
+        description: 'Aggregation rules',
+      },
+    },
+  }));
 }

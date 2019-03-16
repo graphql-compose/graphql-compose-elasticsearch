@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import {
   upperFirst,
-  TypeComposer,
+  ObjectTypeComposer,
   EnumTypeComposer,
   type ComposeFieldConfigMap,
   type ComposeFieldConfigArgumentMap,
@@ -61,7 +61,7 @@ export type ElasticApiParserOptsT = {
 
 export default class ElasticApiParser {
   cachedEnums: {
-    [fieldName: string]: { [valsStringified: string]: EnumTypeComposer },
+    [fieldName: string]: { [valsStringified: string]: EnumTypeComposer<any> },
   };
 
   apiVersion: string;
@@ -344,7 +344,10 @@ export default class ElasticApiParser {
     return (result: any);
   }
 
-  paramTypeToGraphQL(paramCfg: ElasticParamConfigT, fieldName: string): EnumTypeComposer | string {
+  paramTypeToGraphQL(
+    paramCfg: ElasticParamConfigT,
+    fieldName: string
+  ): EnumTypeComposer<any> | string {
     switch (paramCfg.type) {
       case 'string':
         return 'String';
@@ -374,7 +377,7 @@ export default class ElasticApiParser {
     }
   }
 
-  getEnumType(fieldName: string, vals: mixed[]): EnumTypeComposer {
+  getEnumType(fieldName: string, vals: mixed[]): EnumTypeComposer<any> {
     const key = fieldName;
     const subKey = JSON.stringify(vals);
 
@@ -408,7 +411,7 @@ export default class ElasticApiParser {
       if (postfix === 0) postfix = '';
       else postfix = `_${postfix}`;
 
-      this.cachedEnums[key][subKey] = EnumTypeComposer.create({
+      this.cachedEnums[key][subKey] = EnumTypeComposer.createTemp({
         name: `${this.prefix}Enum_${upperFirst(fieldName)}${postfix}`,
         values,
       });
@@ -420,7 +423,7 @@ export default class ElasticApiParser {
   settingsToArgMap(
     settings: ?ElasticCaSettingsT,
     descriptions: ElasticParsedArgsDescriptionsT = {}
-  ): ComposeFieldConfigArgumentMap {
+  ): ComposeFieldConfigArgumentMap<any> {
     const result = {};
     const { params, urls, url, method, needBody } = settings || {};
 
@@ -466,7 +469,7 @@ export default class ElasticApiParser {
       } else {
         if (!result[names[0]]) {
           result[names[0]] = {
-            type: TypeComposer.create({
+            type: ObjectTypeComposer.createTemp({
               name: `${this.prefix}_${upperFirst(names[0])}`,
               fields: (() => {}: any),
             }),

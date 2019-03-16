@@ -1,10 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getGeoPointFields } from '../../Commons/FieldNames';
 
-export function getGeohashGridITC(opts: mixed = {}): InputTypeComposer {
+export function getGeohashGridITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsGeohashGrid', opts);
   const description = desc(
     `
@@ -16,19 +18,17 @@ export function getGeohashGridITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getGeoPointFields(opts),
-        precision: 'Int',
-        size: {
-          type: 'Int',
-          defaultValue: 10000,
-        },
-        shard_size: 'Int',
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getGeoPointFields(opts),
+      precision: 'Int',
+      size: {
+        type: 'Int',
+        defaultValue: 10000,
       },
-    })
-  );
+      shard_size: 'Int',
+    },
+  }));
 }

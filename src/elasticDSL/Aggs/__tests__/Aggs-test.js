@@ -2,6 +2,7 @@
 
 import { schemaComposer, graphql } from 'graphql-compose';
 import { getAggsITC, prepareAggsInResolve, convertAggsBlocks, convertAggsRules } from '../Aggs';
+import { prepareCommonOpts } from '../../../utils';
 
 const { printSchema } = graphql;
 
@@ -15,10 +16,12 @@ describe('AGGS args converter', () => {
       search: {
         args: {
           body: {
-            type: getAggsITC({
-              prefix: 'Elastic_',
-              postfix: '_50',
-            }),
+            type: getAggsITC(
+              prepareCommonOpts(schemaComposer, {
+                prefix: 'Elastic_',
+                postfix: '_50',
+              })
+            ),
           },
         },
         type: 'Int',

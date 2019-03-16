@@ -2,10 +2,10 @@
 /* eslint-disable no-unused-vars */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getQueryITC } from '../../Query/Query';
 
-export function getFilterITC(opts: mixed = {}): InputTypeComposer {
+export function getFilterITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsFilter', opts);
   const description = desc(
     `

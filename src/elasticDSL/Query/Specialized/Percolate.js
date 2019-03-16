@@ -1,10 +1,10 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getPercolatorFields } from '../../Commons/FieldNames';
 
-export function getPercolateITC(opts: mixed = {}): InputTypeComposer {
+export function getPercolateITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('QueryPercolate', opts);
   const description = desc(
     `
@@ -15,15 +15,13 @@ export function getPercolateITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getPercolatorFields(opts),
-        document_type: 'String!',
-        document: 'JSON!',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getPercolatorFields(opts),
+      document_type: 'String!',
+      document: 'JSON!',
+    },
+  }));
 }

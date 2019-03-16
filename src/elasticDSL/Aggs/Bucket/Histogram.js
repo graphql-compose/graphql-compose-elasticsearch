@@ -1,10 +1,10 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getNumericFields } from '../../Commons/FieldNames';
 
-export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
+export function getHistogramITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsHistogram', opts);
   const description = desc(
     `
@@ -15,23 +15,21 @@ export function getHistogramITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getNumericFields(opts),
-        interval: 'Float',
-        missing: 'Float',
-        min_doc_count: 'Int',
-        extended_bounds: `input ${getTypeName('AggsHistogramBounds', opts)} {
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getNumericFields(opts),
+      interval: 'Float',
+      missing: 'Float',
+      min_doc_count: 'Int',
+      extended_bounds: `input ${getTypeName('AggsHistogramBounds', opts)} {
           min: Float
           max: Float
         }`,
-        order: 'JSON',
-        offset: 'Int',
-        keyed: 'Boolean',
-      },
-    })
-  );
+      order: 'JSON',
+      offset: 'Int',
+      keyed: 'Boolean',
+    },
+  }));
 }

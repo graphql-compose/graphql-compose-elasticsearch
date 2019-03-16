@@ -2,25 +2,23 @@
 /* eslint-disable no-unused-vars */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../utils';
 
-export function getDateRangeITC(opts: mixed = {}): InputTypeComposer {
+export function getDateRangeITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('DateRange', opts);
   const description = desc(`Date range where \`from\` value includes and \`to\` value excludes.`);
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        from: getDateMathFC(),
-        to: getDateMathFC(),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      from: getDateMathFC(opts),
+      to: getDateMathFC(opts),
+    },
+  }));
 }
 
-export function getDateFormatFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
+export function getDateFormatFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -32,7 +30,7 @@ export function getDateFormatFC(opts: mixed = {}): ComposeInputFieldConfigAsObje
   };
 }
 
-export function getDateIntervalFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
+export function getDateIntervalFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -45,7 +43,7 @@ export function getDateIntervalFC(opts: mixed = {}): ComposeInputFieldConfigAsOb
   };
 }
 
-export function getDateMathFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
+export function getDateMathFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(
@@ -59,7 +57,7 @@ export function getDateMathFC(opts: mixed = {}): ComposeInputFieldConfigAsObject
   };
 }
 
-export function getDateTimeZoneFC(opts: mixed = {}): ComposeInputFieldConfigAsObject {
+export function getDateTimeZoneFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
   return {
     type: 'String',
     description: desc(

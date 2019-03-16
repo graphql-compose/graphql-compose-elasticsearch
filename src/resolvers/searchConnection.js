@@ -1,12 +1,12 @@
 /* @flow */
 
-import { Resolver, TypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType } from '../utils';
+import type { Resolver, ObjectTypeComposer } from 'graphql-compose';
+import { getTypeName, type CommonOpts } from '../utils';
 
-export default function createSearchConnectionResolver(
-  searchResolver: Resolver,
-  opts: mixed = {}
-): Resolver {
+export default function createSearchConnectionResolver<TSource, TContext>(
+  opts: CommonOpts<TContext>,
+  searchResolver: Resolver<TSource, TContext>
+): Resolver<TSource, TContext> {
   const resolver = searchResolver.clone({
     name: `searchConnection`,
   });
@@ -23,7 +23,7 @@ export default function createSearchConnectionResolver(
 
   const searchTC = searchResolver.getTypeComposer();
   if (!searchTC) {
-    throw new Error('Cannot get TypeComposer from resolver. Maybe resolver return Scalar?!');
+    throw new Error('Cannot get ObjectTypeComposer from resolver. Maybe resolver return Scalar?!');
   }
 
   const typeName = searchTC.getTypeName();
@@ -33,7 +33,7 @@ export default function createSearchConnectionResolver(
       .addFields({
         pageInfo: getPageInfoTC(opts),
         edges: [
-          TypeComposer.create({
+          opts.schemaComposer.createObjectTC({
             name: `${typeName}Edge`,
             fields: {
               node: searchTC.get('hits'),
@@ -132,11 +132,12 @@ export default function createSearchConnectionResolver(
   return resolver;
 }
 
-function getPageInfoTC(opts: mixed = {}): TypeComposer {
+function getPageInfoTC<TContext>(opts: CommonOpts<TContext>): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('PageInfo', opts);
 
-  return getOrSetType(name, () =>
-    TypeComposer.create(
+  return opts.getOrCreateOTC(
+    name,
+    () =>
       `
       # Information about pagination in a connection.
       type ${name} {
@@ -153,7 +154,6 @@ function getPageInfoTC(opts: mixed = {}): TypeComposer {
         endCursor: String
       }
     `
-    )
   );
 }
 
@@ -176,7 +176,7 @@ export function cursorToData(cursor: string): mixed {
   return null;
 }
 
-export function dataToCursor(data: mixed): string {
+export function dataToCursor(data: any): string {
   if (!data) return '';
   return base64(JSON.stringify(data));
 }

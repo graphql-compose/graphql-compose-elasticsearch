@@ -1,11 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getTermFields } from '../../Commons/FieldNames';
 
-export function getTermsITC(opts: mixed = {}): InputTypeComposer {
+export function getTermsITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsTerms', opts);
   const description = desc(
     `
@@ -15,24 +15,22 @@ export function getTermsITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: () => getTermFields(opts),
-        size: {
-          type: 'Int',
-          defaultValue: 10,
-        },
-        shard_size: 'Int',
-        order: 'JSON',
-        include: 'JSON',
-        exclude: 'JSON',
-        script: () => getCommonsScriptITC(opts),
-        execution_hint: 'String',
-        missing: 'JSON',
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: () => getTermFields(opts),
+      size: {
+        type: 'Int',
+        defaultValue: 10,
       },
-    })
-  );
+      shard_size: 'Int',
+      order: 'JSON',
+      include: 'JSON',
+      exclude: 'JSON',
+      script: () => getCommonsScriptITC(opts),
+      execution_hint: 'String',
+      missing: 'JSON',
+    },
+  }));
 }

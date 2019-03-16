@@ -1,7 +1,7 @@
 /* @flow */
 
 import elasticsearch from 'elasticsearch';
-import { graphql, TypeComposer } from 'graphql-compose';
+import { graphql, ObjectTypeComposer } from 'graphql-compose';
 import { composeWithElastic, elasticApiFieldConfig } from '../../src'; // from 'graphql-compose-elasticsearch';
 
 const { GraphQLSchema, GraphQLObjectType } = graphql;
@@ -94,7 +94,7 @@ const UserEsTC = composeWithElastic({
   elasticMapping: demoUserMapping,
   elasticClient: new elasticsearch.Client({
     host: 'http://localhost:9200',
-    apiVersion: '5.0',
+    apiVersion: '5.6',
     log: 'trace',
   }),
   // elastic mapping does not contain information about is fields are arrays or not
@@ -102,7 +102,7 @@ const UserEsTC = composeWithElastic({
   pluralFields: ['skills', 'languages'],
 });
 
-const ProxyTC = TypeComposer.create(`type ProxyDebugType { source: JSON }`);
+const ProxyTC = ObjectTypeComposer.createTemp(`type ProxyDebugType { source: JSON }`);
 ProxyTC.addResolver({
   name: 'showArgs',
   kind: 'query',
@@ -132,7 +132,7 @@ const schema = new GraphQLSchema({
       userSearchConnection: UserEsTC.getResolver('searchConnection').getFieldConfig(),
       elastic50: elasticApiFieldConfig({
         host: 'http://user:pass@localhost:9200',
-        apiVersion: '5.0',
+        apiVersion: '5.6',
         log: 'trace',
       }),
     },

@@ -3,31 +3,31 @@
 
 import { upperFirst, EnumTypeComposer, type ComposeInputFieldConfigMap } from 'graphql-compose';
 import type { GraphQLEnumValueConfigMap } from 'graphql-compose/lib/graphql';
-import { getTypeName, getOrSetType, desc } from '../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../utils';
 
 export type ElasticDataType = string;
 
-export function getStringFields(opts: mixed) {
+export function getStringFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['text', 'keyword', 'string'], 'String');
 }
 
-export function getStringAsFieldConfigMap(opts: mixed, fc: mixed) {
+export function getStringAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
   return getFieldConfigMap(opts, ['text', 'keyword', 'string'], fc);
 }
 
-export function getAnalyzedFields(opts: mixed) {
+export function getAnalyzedFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['text', 'string'], 'String', true);
 }
 
-export function getAnalyzedAsFieldConfigMap(opts: mixed, fc: mixed) {
+export function getAnalyzedAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
   return getFieldConfigMap(opts, ['text', 'string'], fc, true);
 }
 
-export function getKeywordAsFieldConfigMap(opts: mixed, fc: mixed) {
+export function getKeywordAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
   return getFieldConfigMap(opts, ['keyword'], fc);
 }
 
-export function getNumericFields(opts: mixed) {
+export function getNumericFields(opts: CommonOpts<any>) {
   return getFieldNamesType(
     opts,
     [
@@ -45,39 +45,39 @@ export function getNumericFields(opts: mixed) {
   );
 }
 
-export function getDateFields(opts: mixed) {
+export function getDateFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['date'], 'Date');
 }
 
-export function getBooleanFields(opts: mixed) {
+export function getBooleanFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['boolean'], 'Boolean');
 }
 
-export function getGeoPointFields(opts: mixed) {
+export function getGeoPointFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['geo_point'], 'GeoPoint');
 }
 
-export function getGeoPointAsFieldConfigMap(opts: mixed, fc: mixed) {
+export function getGeoPointAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
   return getFieldConfigMap(opts, ['geo_point'], fc);
 }
 
-export function getGeoShapeAsFieldConfigMap(opts: mixed, fc: mixed) {
+export function getGeoShapeAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
   return getFieldConfigMap(opts, ['geo_shape'], fc);
 }
 
-export function getNestedFields(opts: mixed) {
+export function getNestedFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['nested'], 'Nested');
 }
 
-export function getIpFields(opts: mixed) {
+export function getIpFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['ip'], 'Ip');
 }
 
-export function getPercolatorFields(opts: mixed) {
+export function getPercolatorFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['percolator'], 'Percolator');
 }
 
-export function getTermFields(opts: mixed) {
+export function getTermFields(opts: CommonOpts<any>) {
   return getFieldNamesType(
     opts,
     [
@@ -99,11 +99,11 @@ export function getTermFields(opts: mixed) {
   );
 }
 
-export function getAllFields(opts: mixed) {
+export function getAllFields(opts: CommonOpts<any>) {
   return getFieldNamesType(opts, ['_all'], 'All');
 }
 
-export function getAllAsFieldConfigMap(opts: mixed, fc: mixed) {
+export function getAllAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
   return getFieldConfigMap(opts, ['_all'], fc);
 }
 
@@ -120,11 +120,11 @@ export function getFieldNamesByElasticType(fieldMap: any, types: ElasticDataType
 }
 
 export function getFieldNamesType(
-  opts: mixed,
+  opts: CommonOpts<any>,
   types: ElasticDataType[],
   typePrefix: string,
   addAll: boolean = false
-): EnumTypeComposer | string {
+): EnumTypeComposer<any> | string {
   if (!opts || !opts.fieldMap) {
     return 'String';
   }
@@ -140,7 +140,7 @@ export function getFieldNamesType(
   const name = getTypeName(`${typePrefix}Fields`, opts);
   const description = desc(`Avaliable fields from mapping.`);
 
-  return getOrSetType(name, () => {
+  return opts.schemaComposer.getOrSet(name, () => {
     if (!opts || !opts.fieldMap) {
       return 'String';
     }
@@ -150,7 +150,7 @@ export function getFieldNamesType(
       return 'String';
     }
 
-    return EnumTypeComposer.create({
+    return opts.schemaComposer.createEnumTC({
       name,
       description,
       values,

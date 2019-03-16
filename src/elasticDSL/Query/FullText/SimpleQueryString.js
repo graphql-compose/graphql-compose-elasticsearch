@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getSimpleQueryStringITC(opts: mixed = {}): InputTypeComposer {
+export function getSimpleQueryStringITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QuerySimpleQueryString', opts);
   const description = desc(
     `
@@ -15,34 +17,32 @@ export function getSimpleQueryStringITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        query: 'String!',
-        fields: '[String]',
-        default_operator: `enum ${getTypeName('QuerySimpleQueryStringOperatorEnum', opts)} {
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      query: 'String!',
+      fields: '[String]',
+      default_operator: `enum ${getTypeName('QuerySimpleQueryStringOperatorEnum', opts)} {
           and
           or
         }`,
-        analyzer: 'String',
-        flags: {
-          type: 'String',
-          description: desc(
-            `
+      analyzer: 'String',
+      flags: {
+        type: 'String',
+        description: desc(
+          `
             Can provided several flags, eg "OR|AND|PREFIX".
             The available flags are: ALL, NONE, AND, OR, NOT, PREFIX, PHRASE,
             PRECEDENCE, ESCAPE, WHITESPACE, FUZZY, NEAR, and SLOP.
           `
-          ),
-        },
-        analyze_wildcard: 'Boolean',
-        lenient: 'Boolean',
-        minimum_should_match: 'String',
-        quote_field_suffix: 'String',
-        boost: 'Float',
+        ),
       },
-    })
-  );
+      analyze_wildcard: 'Boolean',
+      lenient: 'Boolean',
+      minimum_should_match: 'String',
+      quote_field_suffix: 'String',
+      boost: 'Float',
+    },
+  }));
 }

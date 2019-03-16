@@ -1,43 +1,36 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { Resolver, TypeComposer, InputTypeComposer, isObject } from 'graphql-compose';
+import { Resolver, isObject } from 'graphql-compose';
 import type { ResolveParams, ProjectionType } from 'graphql-compose';
-import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
 import { getSearchBodyITC, prepareBodyInResolve } from '../elasticDSL/SearchBody';
 import { getSearchOutputTC } from '../types/SearchOutput';
+import type { CommonOpts } from '../utils';
 
-export type ElasticResolverOpts = {
-  prefix?: ?string,
-  elasticIndex: string,
-  elasticType: string,
-  elasticClient: Object,
-};
+export default function createSearchResolver<TSource, TContext>(
+  opts: CommonOpts<TContext>
+): Resolver<TSource, TContext> {
+  const { fieldMap, sourceTC, schemaComposer } = opts;
 
-export default function createSearchResolver(
-  fieldMap: FieldsMapByElasticType,
-  sourceTC: TypeComposer,
-  opts: ElasticResolverOpts
-): Resolver {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
-      'First arg for Resolver search() should be fieldMap of FieldsMapByElasticType type.'
+      'opts.fieldMap for Resolver search() should be fieldMap of FieldsMapByElasticType type.'
     );
   }
 
-  if (!sourceTC || sourceTC.constructor.name !== 'TypeComposer') {
-    throw new Error('Second arg for Resolver search() should be instance of TypeComposer.');
+  if (!sourceTC || sourceTC.constructor.name !== 'ObjectTypeComposer') {
+    throw new Error(
+      'opts.sourceTC for Resolver search() should be instance of ObjectTypeComposer.'
+    );
   }
-
-  const prefix = opts.prefix || 'Es';
 
   const parser = new ElasticApiParser({
     elasticClient: opts.elasticClient,
-    prefix,
+    prefix: opts.prefix,
   });
 
-  const searchITC = getSearchBodyITC({ prefix, fieldMap }).removeField([
+  const searchITC = getSearchBodyITC(opts).removeField([
     'size',
     'from',
     '_source',
@@ -70,24 +63,26 @@ export default function createSearchResolver(
   argsConfigMap.limit = 'Int';
   argsConfigMap.skip = 'Int';
 
-  const bodyITC = InputTypeComposer.create(argsConfigMap.body.type);
+  const bodyITC = schemaComposer.createInputTC(argsConfigMap.body.type);
   argsConfigMap.query = bodyITC.getField('query');
   argsConfigMap.aggs = bodyITC.getField('aggs');
   argsConfigMap.sort = bodyITC.getField('sort');
   argsConfigMap.highlight = bodyITC.getField('highlight');
 
   const topLevelArgs = ['q', 'query', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
-  argsConfigMap.opts = InputTypeComposer.create({
-    name: `${sourceTC.getTypeName()}Opts`,
-    fields: Object.assign({}, argsConfigMap),
-  }).removeField(topLevelArgs);
+  argsConfigMap.opts = schemaComposer
+    .createInputTC({
+      name: `${sourceTC.getTypeName()}Opts`,
+      fields: Object.assign({}, argsConfigMap),
+    })
+    .removeField(topLevelArgs);
   Object.keys(argsConfigMap).forEach(argKey => {
     if (topLevelArgs.indexOf(argKey) === -1) {
       delete argsConfigMap[argKey];
     }
   });
 
-  const type = getSearchOutputTC({ prefix, fieldMap, sourceTC });
+  const type = getSearchOutputTC(opts);
   let hitsType;
   try {
     hitsType = type.get('hits.hits');
@@ -102,91 +97,93 @@ export default function createSearchResolver(
     })
     .reorderFields(['hits', 'count', 'aggregations', 'max_score', 'took', 'timed_out', '_shards']);
 
-  return new Resolver({
-    type,
-    name: 'search',
-    kind: 'query',
-    args: argsConfigMap,
-    resolve: async (rp: ResolveParams<*, *>) => {
-      let args: Object = rp.args || {};
-      const projection = rp.projection || {};
-      if (!args.body) args.body = {};
+  return schemaComposer
+    .createResolver({
+      type,
+      name: 'search',
+      kind: 'query',
+      args: argsConfigMap,
+      resolve: async (rp: ResolveParams<*, *>) => {
+        let args: Object = rp.args || {};
+        const projection = rp.projection || {};
+        if (!args.body) args.body = {};
 
-      if ({}.hasOwnProperty.call(args, 'limit')) {
-        args.size = args.limit;
-        delete args.limit;
-      }
-
-      if ({}.hasOwnProperty.call(args, 'skip')) {
-        args.from = args.skip;
-        delete args.skip;
-      }
-
-      const { hits = {} } = projection;
-
-      if (hits && typeof hits === 'object') {
-        // Turn on explain if in projection requested this fields:
-        if (hits._shard || hits._node || hits._explanation) {
-          args.body.explain = true;
+        if ({}.hasOwnProperty.call(args, 'limit')) {
+          args.size = args.limit;
+          delete args.limit;
         }
 
-        if (hits._version) {
-          args.body.version = true;
+        if ({}.hasOwnProperty.call(args, 'skip')) {
+          args.from = args.skip;
+          delete args.skip;
         }
 
-        if (!hits._source) {
-          args.body._source = false;
-        } else {
-          args.body._source = toDottedList(hits._source);
+        const { hits = {} } = projection;
+
+        if (hits && typeof hits === 'object') {
+          // Turn on explain if in projection requested this fields:
+          if (hits._shard || hits._node || hits._explanation) {
+            args.body.explain = true;
+          }
+
+          if (hits._version) {
+            args.body.version = true;
+          }
+
+          if (!hits._source) {
+            args.body._source = false;
+          } else {
+            args.body._source = toDottedList(hits._source);
+          }
+
+          if (hits._score) {
+            args.body.track_scores = true;
+          }
         }
 
-        if (hits._score) {
-          args.body.track_scores = true;
+        if (args.query) {
+          args.body.query = args.query;
+          delete args.query;
         }
-      }
 
-      if (args.query) {
-        args.body.query = args.query;
-        delete args.query;
-      }
+        if (args.aggs) {
+          args.body.aggs = args.aggs;
+          delete args.aggs;
+        }
 
-      if (args.aggs) {
-        args.body.aggs = args.aggs;
-        delete args.aggs;
-      }
+        if (args.highlight) {
+          args.body.highlight = args.highlight;
+          delete args.highlight;
+        }
 
-      if (args.highlight) {
-        args.body.highlight = args.highlight;
-        delete args.highlight;
-      }
+        if (args.sort) {
+          args.body.sort = args.sort;
+          delete args.sort;
+        }
 
-      if (args.sort) {
-        args.body.sort = args.sort;
-        delete args.sort;
-      }
+        if (args.opts) {
+          args = {
+            ...args.opts,
+            ...args,
+            body: { ...args.opts.body, ...args.body },
+          };
+          delete args.opts;
+        }
 
-      if (args.opts) {
-        args = {
-          ...args.opts,
-          ...args,
-          body: { ...args.opts.body, ...args.body },
-        };
-        delete args.opts;
-      }
+        if (args.body) {
+          args.body = prepareBodyInResolve(args.body, fieldMap);
+        }
 
-      if (args.body) {
-        args.body = prepareBodyInResolve(args.body, fieldMap);
-      }
+        const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
 
-      const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
+        res.count = res.hits.total;
+        res.max_score = res.hits.max_score;
+        res.hits = res.hits.hits;
 
-      res.count = res.hits.total;
-      res.max_score = res.hits.max_score;
-      res.hits = res.hits.hits;
-
-      return res;
-    },
-  }).reorderArgs(['q', 'query', 'sort', 'limit', 'skip', 'aggs']);
+        return res;
+      },
+    })
+    .reorderArgs(['q', 'query', 'sort', 'limit', 'skip', 'aggs']);
 }
 
 export function toDottedList(projection: ProjectionType, prev?: string[]): string[] | boolean {

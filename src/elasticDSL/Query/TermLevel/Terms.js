@@ -1,10 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAllAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getTermsITC(opts: mixed = {}): InputTypeComposer | ComposeInputFieldConfigAsObject {
+export function getTermsITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryTerms', opts);
   const description = desc(
     `
@@ -17,13 +19,11 @@ export function getTermsITC(opts: mixed = {}): InputTypeComposer | ComposeInputF
   const fields = getAllAsFieldConfigMap(opts, '[JSON]');
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   return {

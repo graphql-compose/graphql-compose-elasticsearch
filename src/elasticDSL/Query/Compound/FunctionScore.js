@@ -2,9 +2,11 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC, prepareQueryInResolve } from '../Query';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
+export function getFunctionScoreITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QueryFunctionScore', opts);
   const description = desc(
     `
@@ -16,49 +18,47 @@ export function getFunctionScoreITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  const RandomScoreType = InputTypeComposer.create({
+  const RandomScoreType = opts.schemaComposer.createInputTC({
     name: getTypeName('QueryFunctionScoreRandom', opts),
     fields: {
       seed: 'Float',
     },
   });
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        query: () => getQueryITC(opts),
-        boost: 'String',
-        boost_mode: {
-          type: 'String',
-          description: 'Can be: `multiply`, `replace`, `sum`, `avg`, `max`, `min`.',
-        },
-        random_score: RandomScoreType,
-        functions: [
-          InputTypeComposer.create({
-            name: getTypeName('QueryFunctionScoreFunction', opts),
-            fields: {
-              filter: () => getQueryITC(opts),
-              random_score: RandomScoreType,
-              weight: 'Float',
-              script_score: 'JSON',
-              field_value_factor: 'JSON',
-              gauss: 'JSON',
-              linear: 'JSON',
-              exp: 'JSON',
-            },
-          }),
-        ],
-        max_boost: 'Float',
-        score_mode: {
-          type: 'String',
-          description: 'Can be: `multiply`, `sum`, `avg`, `first`, `max`, `min`.',
-        },
-        min_score: 'Float',
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      query: () => getQueryITC(opts),
+      boost: 'String',
+      boost_mode: {
+        type: 'String',
+        description: 'Can be: `multiply`, `replace`, `sum`, `avg`, `max`, `min`.',
       },
-    })
-  );
+      random_score: RandomScoreType,
+      functions: [
+        opts.schemaComposer.createInputTC({
+          name: getTypeName('QueryFunctionScoreFunction', opts),
+          fields: {
+            filter: () => getQueryITC(opts),
+            random_score: RandomScoreType,
+            weight: 'Float',
+            script_score: 'JSON',
+            field_value_factor: 'JSON',
+            gauss: 'JSON',
+            linear: 'JSON',
+            exp: 'JSON',
+          },
+        }),
+      ],
+      max_boost: 'Float',
+      score_mode: {
+        type: 'String',
+        description: 'Can be: `multiply`, `sum`, `avg`, `first`, `max`, `min`.',
+      },
+      min_score: 'Float',
+    },
+  }));
 }
 
 /* eslint-disable no-param-reassign, camelcase */

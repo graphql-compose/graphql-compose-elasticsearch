@@ -1,19 +1,14 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import type { FieldsMapByElasticType } from '../mappingConverter';
 import { getQueryITC, prepareQueryInResolve } from './Query/Query';
 import { getAggsITC, prepareAggsInResolve } from './Aggs/Aggs';
 import { getSortITC } from './Sort';
-import { getTypeName, getOrSetType, desc } from '../utils';
+import { getTypeName, type CommonOpts, desc } from '../utils';
 
-export type SearchOptsT = {
-  prefix?: string,
-  postfix?: string,
-  fieldMap?: FieldsMapByElasticType,
-};
-
-export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
+export function getSearchBodyITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('SearchBody', opts);
   const description = desc(
     `
@@ -22,34 +17,32 @@ export function getSearchBodyITC(opts: SearchOptsT = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        query: () => getQueryITC(opts),
-        aggs: () => getAggsITC(opts),
-        size: 'Int',
-        from: 'Int',
-        sort: () => [getSortITC(opts)],
-        _source: 'JSON',
-        script_fields: 'JSON',
-        post_filter: () => getQueryITC(opts),
-        highlight: 'JSON',
-        search_after: 'JSON',
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      query: () => getQueryITC(opts),
+      aggs: () => getAggsITC(opts),
+      size: 'Int',
+      from: 'Int',
+      sort: () => [getSortITC(opts)],
+      _source: 'JSON',
+      script_fields: 'JSON',
+      post_filter: () => getQueryITC(opts),
+      highlight: 'JSON',
+      search_after: 'JSON',
 
-        explain: 'Boolean',
-        version: 'Boolean',
-        indices_boost: 'JSON',
-        min_score: 'Float',
+      explain: 'Boolean',
+      version: 'Boolean',
+      indices_boost: 'JSON',
+      min_score: 'Float',
 
-        search_type: 'String',
-        rescore: 'JSON',
-        docvalue_fields: '[String]',
-        stored_fields: '[String]',
-      },
-    })
-  );
+      search_type: 'String',
+      rescore: 'JSON',
+      docvalue_fields: '[String]',
+      stored_fields: '[String]',
+    },
+  }));
 }
 
 export function prepareBodyInResolve(body: any, fieldMap: mixed): { [argName: string]: any } {

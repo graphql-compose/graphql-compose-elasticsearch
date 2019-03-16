@@ -1,7 +1,12 @@
 /* @flow */
 
-import { EnumTypeComposer } from 'graphql-compose';
+import { schemaComposer, EnumTypeComposer } from 'graphql-compose';
 import * as FieldNames from '../FieldNames';
+import { prepareCommonOpts } from '../../../utils';
+
+beforeEach(() => {
+  schemaComposer.clear();
+});
 
 const fieldMap = {
   _all: {
@@ -53,7 +58,9 @@ const opts = { fieldMap };
 
 describe('FieldNames', () => {
   it('getStringFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getStringFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getStringFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticStringFields');
@@ -65,7 +72,9 @@ describe('FieldNames', () => {
   });
 
   it('getNumericFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getNumericFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getNumericFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticNumericFields');
@@ -77,7 +86,9 @@ describe('FieldNames', () => {
   });
 
   it('getDateFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getDateFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getDateFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticDateFields');
@@ -87,7 +98,9 @@ describe('FieldNames', () => {
   });
 
   it('getBooleanFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getBooleanFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getBooleanFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticBooleanFields');
@@ -97,7 +110,9 @@ describe('FieldNames', () => {
   });
 
   it('getGeoPointFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getGeoPointFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getGeoPointFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticGeoPointFields');
@@ -107,7 +122,9 @@ describe('FieldNames', () => {
   });
 
   it('getNestedFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getNestedFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getNestedFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticNestedFields');
@@ -117,7 +134,9 @@ describe('FieldNames', () => {
   });
 
   it('getIpFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getIpFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getIpFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticIpFields');
@@ -127,7 +146,9 @@ describe('FieldNames', () => {
   });
 
   it('getAllFields()', () => {
-    const type: EnumTypeComposer = (FieldNames.getAllFields(opts): any);
+    const type: EnumTypeComposer<any> = (FieldNames.getAllFields(
+      prepareCommonOpts(schemaComposer, opts)
+    ): any);
     expect(type).toBeInstanceOf(EnumTypeComposer);
     expect(type.getDescription()).toBe('Avaliable fields from mapping.');
     expect(type.getTypeName()).toBe('ElasticAllFields');
@@ -147,13 +168,13 @@ describe('FieldNames', () => {
   });
 
   it('should return string if mapping not provided', () => {
-    expect(FieldNames.getStringFields()).toEqual('String');
-    expect(FieldNames.getNumericFields()).toEqual('String');
-    expect(FieldNames.getDateFields()).toEqual('String');
-    expect(FieldNames.getBooleanFields()).toEqual('String');
-    expect(FieldNames.getGeoPointFields()).toEqual('String');
-    expect(FieldNames.getNestedFields()).toEqual('String');
-    expect(FieldNames.getIpFields()).toEqual('String');
-    expect(FieldNames.getAllFields()).toEqual('String');
+    expect(FieldNames.getStringFields(({}: any))).toEqual('String');
+    expect(FieldNames.getNumericFields(({}: any))).toEqual('String');
+    expect(FieldNames.getDateFields(({}: any))).toEqual('String');
+    expect(FieldNames.getBooleanFields(({}: any))).toEqual('String');
+    expect(FieldNames.getGeoPointFields(({}: any))).toEqual('String');
+    expect(FieldNames.getNestedFields(({}: any))).toEqual('String');
+    expect(FieldNames.getIpFields(({}: any))).toEqual('String');
+    expect(FieldNames.getAllFields(({}: any))).toEqual('String');
   });
 });

@@ -1,10 +1,10 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getGeoPointFields } from '../../Commons/FieldNames';
 
-export function getGeoBoundsITC(opts: mixed = {}): InputTypeComposer {
+export function getGeoBoundsITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsGeoBounds', opts);
   const description = desc(
     `
@@ -14,14 +14,12 @@ export function getGeoBoundsITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getGeoPointFields(opts),
-        wrap_longitude: 'Boolean',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getGeoPointFields(opts),
+      wrap_longitude: 'Boolean',
+    },
+  }));
 }

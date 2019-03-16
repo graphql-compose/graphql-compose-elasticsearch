@@ -1,10 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAnalyzedFields } from '../../Commons/FieldNames';
 
-export function getMoreLikeThisITC(opts: mixed = {}): InputTypeComposer {
+export function getMoreLikeThisITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QueryMoreLikeThis', opts);
   const description = desc(
     `
@@ -13,18 +15,16 @@ export function getMoreLikeThisITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        fields: [getAnalyzedFields(opts)],
-        like: 'JSON',
-        unlike: 'JSON',
-        min_term_freq: 'Int',
-        max_query_terms: 'Int',
-        boost: 'Float',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      fields: [getAnalyzedFields(opts)],
+      like: 'JSON',
+      unlike: 'JSON',
+      min_term_freq: 'Int',
+      max_query_terms: 'Int',
+      boost: 'Float',
+    },
+  }));
 }

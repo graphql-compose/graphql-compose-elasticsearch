@@ -1,11 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getNumericFields } from '../../Commons/FieldNames';
 
-export function getMaxITC(opts: mixed = {}): InputTypeComposer {
+export function getMaxITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsMax', opts);
   const description = desc(
     `
@@ -17,15 +17,13 @@ export function getMaxITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getNumericFields(opts),
-        missing: 'Float',
-        script: () => getCommonsScriptITC(opts),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getNumericFields(opts),
+      missing: 'Float',
+      script: () => getCommonsScriptITC(opts),
+    },
+  }));
 }

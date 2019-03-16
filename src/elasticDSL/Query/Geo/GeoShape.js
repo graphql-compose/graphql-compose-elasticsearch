@@ -1,12 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getGeoShapeAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getGeoShapeITC(
-  opts: mixed = {}
-): InputTypeComposer | ComposeInputFieldConfigAsObject {
+export function getGeoShapeITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryGeoShape', opts);
   const description = desc(
     `
@@ -19,26 +19,22 @@ export function getGeoShapeITC(
   const subName = getTypeName('QueryGeoShapeSettings', opts);
   const fields = getGeoShapeAsFieldConfigMap(
     opts,
-    getOrSetType(subName, () =>
-      InputTypeComposer.create({
-        name: subName,
-        fields: {
-          shape: 'JSON',
-          relation: 'JSON',
-          indexed_shape: 'JSON',
-        },
-      })
-    )
+    opts.getOrCreateITC(subName, () => ({
+      name: subName,
+      fields: {
+        shape: 'JSON',
+        relation: 'JSON',
+        indexed_shape: 'JSON',
+      },
+    }))
   );
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   return {

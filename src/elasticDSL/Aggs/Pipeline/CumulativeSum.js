@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getCumulativeSumITC(opts: mixed = {}): InputTypeComposer {
+export function getCumulativeSumITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsCumulativeSum', opts);
   const description = desc(
     `
@@ -15,14 +17,12 @@ export function getCumulativeSumITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        buckets_path: 'String!',
-        format: 'String',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      buckets_path: 'String!',
+      format: 'String',
+    },
+  }));
 }

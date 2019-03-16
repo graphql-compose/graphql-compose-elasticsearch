@@ -2,9 +2,11 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC, prepareQueryInResolve } from '../Query';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
+export function getConstantScoreITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('QueryConstantScore', opts);
   const description = desc(
     `
@@ -14,16 +16,14 @@ export function getConstantScoreITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        filter: (() => getQueryITC(opts).getTypeNonNull(): $FlowFixMe),
-        boost: 'Float!',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      filter: (() => getQueryITC(opts).getTypeNonNull(): $FlowFixMe),
+      boost: 'Float!',
+    },
+  }));
 }
 
 /* eslint-disable no-param-reassign, camelcase */

@@ -2,9 +2,9 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC } from '../Query';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getNestedITC(opts: mixed = {}): InputTypeComposer {
+export function getNestedITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('QueryNested', opts);
   const description = desc(
     `
@@ -14,18 +14,16 @@ export function getNestedITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        path: 'String',
-        score_mode: {
-          type: 'String',
-          description: 'Can be: `avg`, `sum`, `max`, `min`, `none`.',
-        },
-        query: () => getQueryITC(opts),
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      path: 'String',
+      score_mode: {
+        type: 'String',
+        description: 'Can be: `avg`, `sum`, `max`, `min`, `none`.',
       },
-    })
-  );
+      query: () => getQueryITC(opts),
+    },
+  }));
 }

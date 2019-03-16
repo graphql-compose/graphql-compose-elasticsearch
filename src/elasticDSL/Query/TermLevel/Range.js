@@ -1,10 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAllAsFieldConfigMap } from '../../Commons/FieldNames';
 
-export function getRangeITC(opts: mixed = {}): InputTypeComposer | ComposeInputFieldConfigAsObject {
+export function getRangeITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
   const name = getTypeName('QueryRange', opts);
   const description = desc(
     `
@@ -16,28 +18,24 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer | ComposeInputF
   const subName = getTypeName('QueryRangeSettings', opts);
   const fields = getAllAsFieldConfigMap(
     opts,
-    getOrSetType(subName, () =>
-      InputTypeComposer.create({
-        name: subName,
-        fields: {
-          gt: 'JSON',
-          gte: 'JSON',
-          lt: 'JSON',
-          lte: 'JSON',
-          boost: 'Float',
-        },
-      })
-    )
+    opts.getOrCreateITC(subName, () => ({
+      name: subName,
+      fields: {
+        gt: 'JSON',
+        gte: 'JSON',
+        lt: 'JSON',
+        lte: 'JSON',
+        boost: 'Float',
+      },
+    }))
   );
 
   if (typeof fields === 'object') {
-    return getOrSetType(name, () =>
-      InputTypeComposer.create({
-        name,
-        description,
-        fields,
-      })
-    );
+    return opts.getOrCreateITC(name, () => ({
+      name,
+      description,
+      fields,
+    }));
   }
 
   return {

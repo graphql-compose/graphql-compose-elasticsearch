@@ -1,12 +1,12 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getFloatRangeKeyedITC } from '../../Commons/Float';
 import { getCommonsScriptITC } from '../../Commons/Script';
 import { getNumericFields } from '../../Commons/FieldNames';
 
-export function getRangeITC(opts: mixed = {}): InputTypeComposer {
+export function getRangeITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsRange', opts);
   const description = desc(
     `
@@ -18,16 +18,14 @@ export function getRangeITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getNumericFields(opts),
-        ranges: () => [getFloatRangeKeyedITC(opts)],
-        keyed: 'Boolean',
-        script: () => getCommonsScriptITC(opts),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getNumericFields(opts),
+      ranges: () => [getFloatRangeKeyedITC(opts)],
+      keyed: 'Boolean',
+      script: () => getCommonsScriptITC(opts),
+    },
+  }));
 }

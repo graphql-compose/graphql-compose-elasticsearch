@@ -1,38 +1,31 @@
 /* @flow */
 
-import { Resolver, TypeComposer } from 'graphql-compose';
+import { Resolver } from 'graphql-compose';
 import type { ResolveParams } from 'graphql-compose';
-import type { FieldsMapByElasticType } from '../mappingConverter';
 import ElasticApiParser from '../ElasticApiParser';
 import { getFindByIdOutputTC } from '../types/FindByIdOutput';
+import type { CommonOpts } from '../utils';
 
-export type ElasticResolverOpts = {
-  prefix?: ?string,
-  elasticIndex: string,
-  elasticType: string,
-  elasticClient: Object,
-};
+export default function createFindByIdResolver<TSource, TContext>(
+  opts: CommonOpts<TContext>
+): Resolver<TSource, TContext> {
+  const { fieldMap, sourceTC, schemaComposer } = opts;
 
-export default function createFindByIdResolver(
-  fieldMap: FieldsMapByElasticType,
-  sourceTC: TypeComposer,
-  opts: ElasticResolverOpts
-): Resolver {
   if (!fieldMap || !fieldMap._all) {
     throw new Error(
-      'First arg for Resolver findById() should be fieldMap of FieldsMapByElasticType type.'
+      'opts.fieldMap for Resolver findById() should be fieldMap of FieldsMapByElasticType type.'
     );
   }
 
-  if (!sourceTC || sourceTC.constructor.name !== 'TypeComposer') {
-    throw new Error('Second arg for Resolver findById() should be instance of TypeComposer.');
+  if (!sourceTC || sourceTC.constructor.name !== 'ObjectTypeComposer') {
+    throw new Error(
+      'opts.sourceTC for Resolver findById() should be instance of ObjectTypeComposer.'
+    );
   }
-
-  const prefix = opts.prefix || 'Es';
 
   const parser = new ElasticApiParser({
     elasticClient: opts.elasticClient,
-    prefix,
+    prefix: opts.prefix,
   });
 
   const findByIdFC = parser.generateFieldConfig('get', {
@@ -40,17 +33,15 @@ export default function createFindByIdResolver(
     type: opts.elasticType,
   });
 
-  const argsConfigMap = {
-    id: 'String!',
-  };
+  const type = getFindByIdOutputTC(opts);
 
-  const type = getFindByIdOutputTC({ prefix, fieldMap, sourceTC });
-
-  return new Resolver({
+  return schemaComposer.createResolver({
     type,
     name: 'findById',
     kind: 'query',
-    args: argsConfigMap,
+    args: {
+      id: 'String!',
+    },
     resolve: async (rp: ResolveParams<*, *>) => {
       const { source, args, context, info } = rp;
 

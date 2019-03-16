@@ -1,17 +1,30 @@
 /* @flow */
 
-import { Resolver } from 'graphql-compose';
+import { Resolver, schemaComposer } from 'graphql-compose';
 import createSearchResolver, * as Search from '../search';
 import elasticClient from '../../__mocks__/elasticClient';
 import { CvTC, CvFieldMap } from '../../__mocks__/cv';
+import { prepareCommonOpts } from '../../utils';
+
+const opts = prepareCommonOpts(schemaComposer, {
+  sourceTC: CvTC,
+  fieldMap: CvFieldMap,
+  elasticClient,
+  elasticIndex: 'cv',
+  elasticType: 'cv',
+});
+
+beforeEach(() => {
+  schemaComposer.clear();
+});
 
 describe('search resolver', () => {
   it('should return Resolver', () => {
-    expect(createSearchResolver(CvFieldMap, CvTC, elasticClient)).toBeInstanceOf(Resolver);
+    expect(createSearchResolver(opts)).toBeInstanceOf(Resolver);
   });
 
   describe('Resolver.resolve', () => {
-    const SearchResolver = createSearchResolver(CvFieldMap, CvTC, elasticClient);
+    const SearchResolver = createSearchResolver(opts);
 
     it.skip('should return result', () => {
       return SearchResolver.resolve({}).then(res => {

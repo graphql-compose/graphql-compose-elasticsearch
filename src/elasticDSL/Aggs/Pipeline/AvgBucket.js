@@ -1,9 +1,9 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getAvgBucketITC(opts: mixed = {}): InputTypeComposer {
+export function getAvgBucketITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('AggsAvgBucket', opts);
   const description = desc(
     `
@@ -14,15 +14,13 @@ export function getAvgBucketITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        buckets_path: 'String!',
-        gap_policy: 'String',
-        format: 'String',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      buckets_path: 'String!',
+      gap_policy: 'String',
+      format: 'String',
+    },
+  }));
 }

@@ -1,10 +1,10 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAllFields } from '../../Commons/FieldNames';
 
-export function getExistsITC(opts: mixed = {}): InputTypeComposer {
+export function getExistsITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('QueryExists', opts);
   const description = desc(
     `
@@ -13,13 +13,11 @@ export function getExistsITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        field: getAllFields(opts),
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      field: getAllFields(opts),
+    },
+  }));
 }

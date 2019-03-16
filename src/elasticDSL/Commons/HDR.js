@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../utils';
 
-export function getCommonsHdrITC(opts: mixed = {}): InputTypeComposer {
+export function getCommonsHdrITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('CommonsHDR', opts);
   const description = desc(
     `
@@ -12,13 +14,11 @@ export function getCommonsHdrITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        number_of_significant_value_digits: 'Int',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      number_of_significant_value_digits: 'Int',
+    },
+  }));
 }

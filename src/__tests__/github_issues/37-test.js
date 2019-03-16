@@ -7,7 +7,7 @@
 // -------------------------------------------------------------------
 
 import elasticsearch from 'elasticsearch';
-import { TypeComposer, schemaComposer } from 'graphql-compose';
+import { ObjectTypeComposer, schemaComposer } from 'graphql-compose';
 import { graphql } from 'graphql';
 import { composeWithElastic } from '../..';
 
@@ -64,7 +64,7 @@ describe.skip('github issue #37 - Mutations via updateById overwrite arrays inst
   });
 
   it('create custom resolver', async () => {
-    expect(ActivitiesEsTC).toBeInstanceOf(TypeComposer);
+    expect(ActivitiesEsTC).toBeInstanceOf(ObjectTypeComposer);
 
     ActivitiesEsTC.addResolver({
       name: 'addTag',

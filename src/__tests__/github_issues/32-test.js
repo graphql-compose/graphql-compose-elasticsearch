@@ -1,7 +1,7 @@
 /* @flow */
 
 import elasticsearch from 'elasticsearch';
-import { TypeComposer, Resolver } from 'graphql-compose';
+import { schemaComposer, ObjectTypeComposer, Resolver } from 'graphql-compose';
 import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 import { composeWithElastic } from '../..';
 
@@ -33,15 +33,19 @@ const ActivitiesEsTC = composeWithElastic({
   }),
 });
 
+beforeEach(() => {
+  schemaComposer.clear();
+});
+
 describe('github issue #32 - hits returns me the found id, score, type...', () => {
   it('test `search` resolver', () => {
-    expect(ActivitiesEsTC).toBeInstanceOf(TypeComposer);
+    expect(ActivitiesEsTC).toBeInstanceOf(ObjectTypeComposer);
 
     const resolver = ActivitiesEsTC.getResolver('search');
     expect(resolver).toBeInstanceOf(Resolver);
 
     const OutputType: any = resolver.getType();
-    const OutputTC = TypeComposer.create(OutputType);
+    const OutputTC = schemaComposer.createObjectTC(OutputType);
     expect(OutputTC.getFieldNames()).toEqual([
       'hits',
       'count',
@@ -53,7 +57,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
     ]);
 
     const HitsTC = OutputTC.getFieldTC('hits');
-    expect(HitsTC).toBeInstanceOf(TypeComposer);
+    expect(HitsTC).toBeInstanceOf(ObjectTypeComposer);
     expect(HitsTC.getFieldNames()).toEqual([
       '_index',
       '_type',
@@ -71,7 +75,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
 
     const SourceTC = HitsTC.getFieldTC('_source');
     expect(SourceTC.getTypeName()).toBe('SearchActivitiesSearchActivities');
-    expect(SourceTC).toBeInstanceOf(TypeComposer);
+    expect(SourceTC).toBeInstanceOf(ObjectTypeComposer);
     expect(SourceTC.getFieldNames()).toEqual(['id', 'title', 'description']);
   });
 
@@ -87,7 +91,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
 
     const fc: any = schema._queryType.getFields().searchActivities;
 
-    const OutputTC = TypeComposer.create(fc.type);
+    const OutputTC = schemaComposer.createObjectTC(fc.type);
     expect(OutputTC.getFieldNames()).toEqual([
       'hits',
       'count',
@@ -99,7 +103,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
     ]);
 
     const HitsTC = OutputTC.getFieldTC('hits');
-    expect(HitsTC).toBeInstanceOf(TypeComposer);
+    expect(HitsTC).toBeInstanceOf(ObjectTypeComposer);
     expect(HitsTC.getFieldNames()).toEqual([
       '_index',
       '_type',
@@ -117,7 +121,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
 
     const SourceTC = HitsTC.getFieldTC('_source');
     expect(SourceTC.getTypeName()).toBe('SearchActivitiesSearchActivities');
-    expect(SourceTC).toBeInstanceOf(TypeComposer);
+    expect(SourceTC).toBeInstanceOf(ObjectTypeComposer);
     expect(SourceTC.getFieldNames()).toEqual(['id', 'title', 'description']);
   });
 });

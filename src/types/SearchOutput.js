@@ -1,41 +1,31 @@
 /* @flow */
 
-import { TypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType } from '../utils';
-import type { FieldsMapByElasticType } from '../mappingConverter';
+import { ObjectTypeComposer } from 'graphql-compose';
+import { getTypeName, type CommonOpts } from '../utils';
 import getShardsTC from './Shards';
 import { getSearchHitItemTC } from './SearchHitItem';
 
-export type SearchOptsT = {
-  prefix?: string,
-  postfix?: string,
-  fieldMap?: FieldsMapByElasticType,
-  sourceTC?: TypeComposer,
-};
-
-export function getSearchOutputTC(opts: SearchOptsT = {}): TypeComposer {
+export function getSearchOutputTC<TContext>(
+  opts: CommonOpts<TContext>
+): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('SearchOutput', opts);
   const nameHits = getTypeName('SearchHits', opts);
 
-  return getOrSetType(name, () =>
-    TypeComposer.create({
-      name,
-      fields: {
-        took: 'Int',
-        timed_out: 'Boolean',
-        _shards: getShardsTC(opts),
-        hits: getOrSetType(nameHits, () =>
-          TypeComposer.create({
-            name: nameHits,
-            fields: {
-              total: 'Int',
-              max_score: 'Float',
-              hits: [getSearchHitItemTC(opts)],
-            },
-          })
-        ),
-        aggregations: 'JSON',
-      },
-    })
-  );
+  return opts.getOrCreateOTC(name, () => ({
+    name,
+    fields: {
+      took: 'Int',
+      timed_out: 'Boolean',
+      _shards: getShardsTC(opts),
+      hits: opts.getOrCreateOTC(nameHits, () => ({
+        name: nameHits,
+        fields: {
+          total: 'Int',
+          max_score: 'Float',
+          hits: [getSearchHitItemTC(opts)],
+        },
+      })),
+      aggregations: 'JSON',
+    },
+  }));
 }

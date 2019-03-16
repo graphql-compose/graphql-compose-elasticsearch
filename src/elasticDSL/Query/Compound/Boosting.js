@@ -2,9 +2,9 @@
 
 import { InputTypeComposer } from 'graphql-compose';
 import { getQueryITC, prepareQueryInResolve } from '../Query';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getBoostingITC(opts: mixed = {}): InputTypeComposer {
+export function getBoostingITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
   const name = getTypeName('QueryBoosting', opts);
   const description = desc(
     `
@@ -13,17 +13,15 @@ export function getBoostingITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        positive: () => getQueryITC(opts),
-        negative: () => getQueryITC(opts),
-        negative_boost: 'Float',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      positive: () => getQueryITC(opts),
+      negative: () => getQueryITC(opts),
+      negative_boost: 'Float',
+    },
+  }));
 }
 
 export function prepareBoostingInResolve(

@@ -1,9 +1,11 @@
 /* @flow */
 
 import { InputTypeComposer } from 'graphql-compose';
-import { getTypeName, getOrSetType, desc } from '../../../utils';
+import { getTypeName, type CommonOpts, desc } from '../../../utils';
 
-export function getDerivativeITC(opts: mixed = {}): InputTypeComposer {
+export function getDerivativeITC<TContext>(
+  opts: CommonOpts<TContext>
+): InputTypeComposer<TContext> {
   const name = getTypeName('AggsDerivative', opts);
   const description = desc(
     `
@@ -15,16 +17,14 @@ export function getDerivativeITC(opts: mixed = {}): InputTypeComposer {
   `
   );
 
-  return getOrSetType(name, () =>
-    InputTypeComposer.create({
-      name,
-      description,
-      fields: {
-        buckets_path: 'String!',
-        gap_policy: 'String',
-        format: 'String',
-        unit: 'String',
-      },
-    })
-  );
+  return opts.getOrCreateITC(name, () => ({
+    name,
+    description,
+    fields: {
+      buckets_path: 'String!',
+      gap_policy: 'String',
+      format: 'String',
+      unit: 'String',
+    },
+  }));
 }
