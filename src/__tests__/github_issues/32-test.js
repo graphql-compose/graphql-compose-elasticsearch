@@ -2,7 +2,7 @@
 
 import elasticsearch from 'elasticsearch';
 import { schemaComposer, ObjectTypeComposer, Resolver } from 'graphql-compose';
-import { GraphQLSchema, GraphQLObjectType } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType } from 'graphql-compose/lib/graphql';
 import { composeWithElastic } from '../..';
 
 const ELASTICSEARCH_HOST = '';
@@ -33,11 +33,11 @@ const ActivitiesEsTC = composeWithElastic({
   }),
 });
 
-beforeEach(() => {
-  schemaComposer.clear();
-});
-
 describe('github issue #32 - hits returns me the found id, score, type...', () => {
+  beforeEach(() => {
+    schemaComposer.clear();
+  });
+
   it('test `search` resolver', () => {
     expect(ActivitiesEsTC).toBeInstanceOf(ObjectTypeComposer);
 
@@ -56,7 +56,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
       '_shards',
     ]);
 
-    const HitsTC = OutputTC.getFieldTC('hits');
+    const HitsTC = OutputTC.getFieldOTC('hits');
     expect(HitsTC).toBeInstanceOf(ObjectTypeComposer);
     expect(HitsTC.getFieldNames()).toEqual([
       '_index',
@@ -73,7 +73,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
       'fields',
     ]);
 
-    const SourceTC = HitsTC.getFieldTC('_source');
+    const SourceTC = HitsTC.getFieldOTC('_source');
     expect(SourceTC.getTypeName()).toBe('SearchActivitiesSearchActivities');
     expect(SourceTC).toBeInstanceOf(ObjectTypeComposer);
     expect(SourceTC.getFieldNames()).toEqual(['id', 'title', 'description']);
@@ -102,7 +102,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
       '_shards',
     ]);
 
-    const HitsTC = OutputTC.getFieldTC('hits');
+    const HitsTC = OutputTC.getFieldOTC('hits');
     expect(HitsTC).toBeInstanceOf(ObjectTypeComposer);
     expect(HitsTC.getFieldNames()).toEqual([
       '_index',
@@ -119,7 +119,7 @@ describe('github issue #32 - hits returns me the found id, score, type...', () =
       'fields',
     ]);
 
-    const SourceTC = HitsTC.getFieldTC('_source');
+    const SourceTC = HitsTC.getFieldOTC('_source');
     expect(SourceTC.getTypeName()).toBe('SearchActivitiesSearchActivities');
     expect(SourceTC).toBeInstanceOf(ObjectTypeComposer);
     expect(SourceTC.getFieldNames()).toEqual(['id', 'title', 'description']);

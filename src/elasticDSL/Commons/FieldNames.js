@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 
 import { upperFirst, EnumTypeComposer, type ComposeInputFieldConfigMap } from 'graphql-compose';
-import type { GraphQLEnumValueConfigMap } from 'graphql-compose/lib/graphql';
+import type { ComposeEnumValueConfigMap } from 'graphql-compose/lib/EnumTypeComposer';
 import { getTypeName, type CommonOpts, desc } from '../../utils';
 
 export type ElasticDataType = string;
@@ -162,7 +162,7 @@ function getEnumValues(
   fieldMap: any,
   types: ElasticDataType[],
   addAll: boolean = false
-): GraphQLEnumValueConfigMap {
+): ComposeEnumValueConfigMap {
   const values = {};
   if (addAll) {
     values._all = {

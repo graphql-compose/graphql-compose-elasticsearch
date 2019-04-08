@@ -23,16 +23,6 @@ describe('search resolver', () => {
     expect(createSearchResolver(opts)).toBeInstanceOf(Resolver);
   });
 
-  describe('Resolver.resolve', () => {
-    const SearchResolver = createSearchResolver(opts);
-
-    it.skip('should return result', () => {
-      return SearchResolver.resolve({}).then(res => {
-        console.log(res); // eslint-disable-line
-      });
-    });
-  });
-
   describe('helper methods', () => {
     it('toDottedList()', () => {
       expect(Search.toDottedList({ a: { b: true, c: { e: true } }, d: true })).toEqual([

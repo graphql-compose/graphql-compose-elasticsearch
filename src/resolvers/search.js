@@ -43,11 +43,12 @@ export default function createSearchResolver<TSource, TContext>(
     type: opts.elasticType,
   });
 
-  const argsConfigMap = Object.assign({}, searchFC.args, {
+  const argsConfigMap = {
+    ...searchFC.args,
     body: {
-      type: searchITC.getType(),
+      type: searchITC,
     },
-  });
+  };
 
   delete argsConfigMap.index; // index can not be changed, it hardcoded in searchFC
   delete argsConfigMap.type; // type can not be changed, it hardcoded in searchFC
@@ -63,17 +64,16 @@ export default function createSearchResolver<TSource, TContext>(
   argsConfigMap.limit = 'Int';
   argsConfigMap.skip = 'Int';
 
-  const bodyITC = schemaComposer.createInputTC(argsConfigMap.body.type);
-  argsConfigMap.query = bodyITC.getField('query');
-  argsConfigMap.aggs = bodyITC.getField('aggs');
-  argsConfigMap.sort = bodyITC.getField('sort');
-  argsConfigMap.highlight = bodyITC.getField('highlight');
+  argsConfigMap.query = searchITC.getField('query');
+  argsConfigMap.aggs = searchITC.getField('aggs');
+  argsConfigMap.sort = searchITC.getField('sort');
+  argsConfigMap.highlight = searchITC.getField('highlight');
 
   const topLevelArgs = ['q', 'query', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
   argsConfigMap.opts = schemaComposer
     .createInputTC({
       name: `${sourceTC.getTypeName()}Opts`,
-      fields: Object.assign({}, argsConfigMap),
+      fields: { ...argsConfigMap },
     })
     .removeField(topLevelArgs);
   Object.keys(argsConfigMap).forEach(argKey => {

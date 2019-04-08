@@ -37,19 +37,31 @@ export function prepareCommonOpts<TContext>(
   return {
     schemaComposer,
     getOrCreateOTC: (typeName, cfgOrThunk) => {
-      return schemaComposer.getOrSet(typeName, () =>
-        schemaComposer.createObjectTC(isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk)
-      );
+      return schemaComposer.getOrSet(typeName, () => {
+        const tc = schemaComposer.createObjectTC(typeName);
+        const cfg = isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk;
+        tc.setFields(cfg.fields);
+        tc.setDescription(cfg.description);
+        return tc;
+      });
     },
     getOrCreateITC: (typeName, cfgOrThunk) => {
-      return schemaComposer.getOrSet(typeName, () =>
-        schemaComposer.createInputTC(isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk)
-      );
+      return schemaComposer.getOrSet(typeName, () => {
+        const tc = schemaComposer.createInputTC(typeName);
+        const cfg = isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk;
+        tc.setFields(cfg.fields);
+        tc.setDescription(cfg.description);
+        return tc;
+      });
     },
     getOrCreateETC: (typeName, cfgOrThunk) => {
-      return schemaComposer.getOrSet(typeName, () =>
-        schemaComposer.createEnumTC(isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk)
-      );
+      return schemaComposer.getOrSet(typeName, () => {
+        const tc = schemaComposer.createEnumTC(typeName);
+        const cfg = isFunction(cfgOrThunk) ? (cfgOrThunk: any)() : cfgOrThunk;
+        tc.setFields(cfg.values);
+        tc.setDescription(cfg.description);
+        return tc;
+      });
     },
     ...opts,
   };

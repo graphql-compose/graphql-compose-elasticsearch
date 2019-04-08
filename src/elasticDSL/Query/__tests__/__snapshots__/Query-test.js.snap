@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AGGS args converter Query DSL 1`] = `
-"\\"\\"\\"
+"\\"\\"\\"Provides default value for input field.\\"\\"\\"
+directive @default(value: JSON!) on INPUT_FIELD_DEFINITION
+
+\\"\\"\\"
 The scripting module enables you to use scripts to evaluate custom expressions. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) 
 \\"\\"\\"
 input Elastic_CommonsScript_50 {
