@@ -118,6 +118,9 @@ export function prepareQueryInResolve(
   if (query.bool) {
     query.bool = prepareBoolInResolve(query.bool, fieldMap);
   }
+  if (query.nested && query.nested.query) {
+    query.nested.query = prepareQueryInResolve(query.nested.query, fieldMap);
+  }
   if (query.constant_score) {
     query.constant_score = prepareConstantScoreInResolve(query.constant_score, fieldMap);
   }
