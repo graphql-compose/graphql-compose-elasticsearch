@@ -118,7 +118,8 @@ export function prepareQueryInResolve(
   if (query.bool) {
     query.bool = prepareBoolInResolve(query.bool, fieldMap);
   }
-  if (query.nested && query.nested.query) {
+  if (query.nested && query.nested.query && query.nested.path) {
+    query.nested.path = query.nested.path.replace(/__/g, '.');
     query.nested.query = prepareQueryInResolve(query.nested.query, fieldMap);
   }
   if (query.constant_score) {
