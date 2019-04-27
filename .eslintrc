@@ -16,22 +16,18 @@
       "objects": "always-multiline",
       "imports": "always-multiline",
       "exports": "always-multiline",
-      "functions": "ignore",
+      "functions": "ignore"
     }],
     "no-plusplus": 0,
     "import/no-extraneous-dependencies": 0,
     "import/prefer-default-export": 0,
     "import/no-cycle": 0,
-    "prettier/prettier": ["error", {
-      "printWidth": 100,
-      "singleQuote": true,
-      "trailingComma": "es5",
-    }],
-    "lines-between-class-members": ["error", "always", { exceptAfterSingleLine: true }]
+    "prettier/prettier": ["error"],
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
   },
   "env": {
     "jasmine": true,
-    "jest": true,
+    "jest": true
   },
   "plugins": [
     "flowtype",
@@ -40,5 +36,6 @@
   "globals": {
     "$Shape": true,
     "$FlowFixMe": true,
+    "$ReadOnlyArray": true
   }
 }
