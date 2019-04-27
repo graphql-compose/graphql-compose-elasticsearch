@@ -5,9 +5,9 @@ import type {
   ObjectTypeComposer,
   InputTypeComposer,
   EnumTypeComposer,
-  ComposeInputObjectTypeConfig,
-  ComposeEnumTypeConfig,
-  ObjectTypeComposeDefinition,
+  InputTypeComposerDefinition,
+  EnumTypeComposerDefinition,
+  ObjectTypeComposerDefinition,
 } from 'graphql-compose';
 import { isFunction } from 'graphql-compose';
 import type { ElasticMappingT, FieldsMapByElasticType } from './mappingConverter';
@@ -24,10 +24,10 @@ export type CommonOpts<TContext = {}> = {
   schemaComposer: SchemaComposer<TContext>,
   getOrCreateOTC: (
     name: string,
-    () => ObjectTypeComposeDefinition<any, TContext>
+    () => ObjectTypeComposerDefinition<any, TContext>
   ) => ObjectTypeComposer<any, TContext>,
-  getOrCreateITC: (name: string, () => ComposeInputObjectTypeConfig) => InputTypeComposer<TContext>,
-  getOrCreateETC: (name: string, () => ComposeEnumTypeConfig) => EnumTypeComposer<TContext>,
+  getOrCreateITC: (name: string, () => InputTypeComposerDefinition) => InputTypeComposer<TContext>,
+  getOrCreateETC: (name: string, () => EnumTypeComposerDefinition) => EnumTypeComposer<TContext>,
 };
 
 export function prepareCommonOpts<TContext>(

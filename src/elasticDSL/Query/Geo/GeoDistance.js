@@ -1,13 +1,16 @@
 /* @flow */
 
-import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
+import {
+  InputTypeComposer,
+  type ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getGeoPointAsFieldConfigMap } from '../../Commons/FieldNames';
 import { getGeoPointFC, getDistanceCalculationModeFC } from '../../Commons/Geo';
 
 export function getGeoDistanceITC<TContext>(
   opts: CommonOpts<TContext>
-): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
+): InputTypeComposer<TContext> | ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   const name = getTypeName('QueryGeoDistance', opts);
   const description = desc(
     `

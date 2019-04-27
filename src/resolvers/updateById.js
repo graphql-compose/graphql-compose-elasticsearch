@@ -1,6 +1,6 @@
 /* @flow */
 
-import { Resolver, InputTypeComposer, type ResolveParams } from 'graphql-compose';
+import { Resolver, InputTypeComposer, type ResolverResolveParams } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 import { getUpdateByIdOutputTC } from '../types/UpdateByIdOutput';
 import { getTypeName, type CommonOpts, desc } from '../utils';
@@ -45,7 +45,7 @@ export default function createUpdateByIdResolver<TSource, TContext>(
     name: 'updateById',
     kind: 'mutation',
     args: argsConfigMap,
-    resolve: async (rp: ResolveParams<*, *>) => {
+    resolve: async (rp: ResolverResolveParams<*, *>) => {
       const { source, args, context, info } = rp;
 
       args.body = {

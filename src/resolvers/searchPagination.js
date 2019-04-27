@@ -22,7 +22,7 @@ export default function createSearchPaginationResolver<TSource, TContext>(
     .removeArg(['limit', 'skip'])
     .reorderArgs(['q', 'query', 'sort', 'aggs', 'page', 'perPage']);
 
-  const searchTC = searchResolver.getTypeComposer();
+  const searchTC = searchResolver.getOTC();
   if (!searchTC) {
     throw new Error('Cannot get ObjectTypeComposer from resolver. Maybe resolver return Scalar?!');
   }
@@ -33,7 +33,7 @@ export default function createSearchPaginationResolver<TSource, TContext>(
       .clone(`${typeName}Pagination`)
       .addFields({
         pageInfo: getPageInfoTC(opts),
-        items: [searchTC.get('hits')],
+        items: [(searchTC.get('hits'): any)],
       })
       .removeField('hits')
       .reorderFields(['items', 'count', 'pageInfo', 'aggregations'])
@@ -87,30 +87,30 @@ export default function createSearchPaginationResolver<TSource, TContext>(
 function getPageInfoTC<TContext>(opts: CommonOpts<TContext>): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('PaginationInfo', opts);
 
-  return opts.getOrCreateOTC(
-    name,
-    () =>
-      `
-      # Information about pagination.
-      type ${name} {
-        # Current page number
-        currentPage: Int!
+  if (opts.schemaComposer.has(name)) {
+    return opts.schemaComposer.getOTC(name);
+  }
 
-        # Number of items per page
-        perPage: Int!
+  return opts.schemaComposer.createObjectTC(`
+    # Information about pagination.
+    type ${name} {
+      # Current page number
+      currentPage: Int!
 
-        # Total number of pages
-        pageCount: Int
+      # Number of items per page
+      perPage: Int!
 
-        # Total number of items
-        itemCount: Int
+      # Total number of pages
+      pageCount: Int
 
-        # When paginating forwards, are there more items?
-        hasNextPage: Boolean
+      # Total number of items
+      itemCount: Int
 
-        # When paginating backwards, are there more items?
-        hasPreviousPage: Boolean
-      }
-    `
-  );
+      # When paginating forwards, are there more items?
+      hasNextPage: Boolean
+
+      # When paginating backwards, are there more items?
+      hasPreviousPage: Boolean
+    }
+  `);
 }

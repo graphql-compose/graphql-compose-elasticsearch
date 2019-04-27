@@ -1,6 +1,6 @@
 /* @flow */
 
-import { EnumTypeComposer } from 'graphql-compose';
+import type { ComposeInputType } from 'graphql-compose';
 import { getTypeName, type CommonOpts } from '../utils';
 import { getFieldNamesByElasticType } from './Commons/FieldNames';
 
@@ -20,20 +20,18 @@ const sortableTypes = [
   'keyword',
 ];
 
-export function getSortITC<TContext>(
-  opts: CommonOpts<TContext>
-): EnumTypeComposer<TContext> | string {
+export function getSortITC<TContext>(opts: CommonOpts<TContext>): ComposeInputType {
   const name = getTypeName('SortEnum', opts);
   const description = 'Sortable fields from mapping';
 
   if (!opts.fieldMap) {
-    return 'JSON';
+    return opts.schemaComposer.getSTC('JSON');
   }
 
-  return opts.schemaComposer.getOrSet(name, () => {
+  return (opts.schemaComposer.getOrSet(name, () => {
     const sortableFields = getFieldNamesByElasticType(opts.fieldMap, sortableTypes);
     if (sortableFields.length === 0) {
-      return 'JSON';
+      return opts.schemaComposer.getSTC('JSON');
     }
 
     const values = {
@@ -56,5 +54,5 @@ export function getSortITC<TContext>(
       description,
       values,
     });
-  });
+  }): any);
 }

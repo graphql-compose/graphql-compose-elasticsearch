@@ -21,7 +21,7 @@ export default function createSearchConnectionResolver<TSource, TContext>(
     .removeArg(['limit', 'skip'])
     .reorderArgs(['q', 'query', 'sort', 'aggs', 'first', 'after', 'last', 'before']);
 
-  const searchTC = searchResolver.getTypeComposer();
+  const searchTC = searchResolver.getOTC();
   if (!searchTC) {
     throw new Error('Cannot get ObjectTypeComposer from resolver. Maybe resolver return Scalar?!');
   }
@@ -36,7 +36,7 @@ export default function createSearchConnectionResolver<TSource, TContext>(
           opts.schemaComposer.createObjectTC({
             name: `${typeName}Edge`,
             fields: {
-              node: searchTC.get('hits'),
+              node: (searchTC.get('hits'): any),
               cursor: 'String!',
             },
           }),
@@ -135,26 +135,26 @@ export default function createSearchConnectionResolver<TSource, TContext>(
 function getPageInfoTC<TContext>(opts: CommonOpts<TContext>): ObjectTypeComposer<any, TContext> {
   const name = getTypeName('PageInfo', opts);
 
-  return opts.getOrCreateOTC(
-    name,
-    () =>
-      `
-      # Information about pagination in a connection.
-      type ${name} {
-        # When paginating forwards, are there more items?
-        hasNextPage: Boolean!
+  if (opts.schemaComposer.has(name)) {
+    return opts.schemaComposer.getOTC(name);
+  }
 
-        # When paginating backwards, are there more items?
-        hasPreviousPage: Boolean!
+  return opts.schemaComposer.createObjectTC(`
+    # Information about pagination in a connection.
+    type ${name} {
+      # When paginating forwards, are there more items?
+      hasNextPage: Boolean!
 
-        # When paginating backwards, the cursor to continue.
-        startCursor: String
+      # When paginating backwards, are there more items?
+      hasPreviousPage: Boolean!
 
-        # When paginating forwards, the cursor to continue.
-        endCursor: String
-      }
-    `
-  );
+      # When paginating backwards, the cursor to continue.
+      startCursor: String
+
+      # When paginating forwards, the cursor to continue.
+      endCursor: String
+    }
+  `);
 }
 
 export function base64(i: string): string {

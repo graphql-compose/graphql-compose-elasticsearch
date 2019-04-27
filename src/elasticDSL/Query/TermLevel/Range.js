@@ -1,12 +1,15 @@
 /* @flow */
 
-import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
+import {
+  InputTypeComposer,
+  type ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import { getTypeName, type CommonOpts, desc } from '../../../utils';
 import { getAllAsFieldConfigMap } from '../../Commons/FieldNames';
 
 export function getRangeITC<TContext>(
   opts: CommonOpts<TContext>
-): InputTypeComposer<TContext> | ComposeInputFieldConfigAsObject {
+): InputTypeComposer<TContext> | ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   const name = getTypeName('QueryRange', opts);
   const description = desc(
     `

@@ -8,10 +8,10 @@ import {
   upperFirst,
   ObjectTypeComposer,
   EnumTypeComposer,
-  type ComposeFieldConfigMap,
-  type ComposeFieldConfigArgumentMap,
-  type ComposeArgumentConfig,
-  type ComposeArgumentConfigAsObject,
+  type ObjectTypeComposerFieldConfigMapDefinition,
+  type ObjectTypeComposerArgumentConfigMapDefinition,
+  type ObjectTypeComposerArgumentConfigDefinition,
+  type ObjectTypeComposerArgumentConfigAsObjectDefinition,
 } from 'graphql-compose';
 import { reorderKeys } from './utils';
 
@@ -252,7 +252,7 @@ export default class ElasticApiParser {
     return result;
   }
 
-  generateFieldMap(): ComposeFieldConfigMap<any, any> {
+  generateFieldMap(): ObjectTypeComposerFieldConfigMapDefinition<any, any> {
     const result = {};
     Object.keys(this.parsedSource).forEach(methodName => {
       result[methodName] = this.generateFieldConfig(methodName);
@@ -316,8 +316,8 @@ export default class ElasticApiParser {
     paramCfg: ElasticParamConfigT,
     fieldName: string,
     description?: ?string
-  ): ComposeArgumentConfig {
-    const result: { ...ComposeArgumentConfigAsObject } = {
+  ): ObjectTypeComposerArgumentConfigDefinition {
+    const result: { ...ObjectTypeComposerArgumentConfigAsObjectDefinition } = {
       type: this.paramTypeToGraphQL(paramCfg, fieldName),
     };
 
@@ -377,7 +377,7 @@ export default class ElasticApiParser {
     }
   }
 
-  getEnumType(fieldName: string, vals: mixed[]): EnumTypeComposer<any> {
+  getEnumType(fieldName: string, vals: $ReadOnlyArray<any>): EnumTypeComposer<any> {
     const key = fieldName;
     const subKey = JSON.stringify(vals);
 
@@ -423,7 +423,7 @@ export default class ElasticApiParser {
   settingsToArgMap(
     settings: ?ElasticCaSettingsT,
     descriptions: ElasticParsedArgsDescriptionsT = {}
-  ): ComposeFieldConfigArgumentMap<any> {
+  ): ObjectTypeComposerArgumentConfigMapDefinition<any> {
     const result = {};
     const { params, urls, url, method, needBody } = settings || {};
 
@@ -460,7 +460,9 @@ export default class ElasticApiParser {
     return result;
   }
 
-  reassembleNestedFields(fields: ComposeFieldConfigMap<any, any>): ComposeFieldConfigMap<any, any> {
+  reassembleNestedFields(
+    fields: ObjectTypeComposerFieldConfigMapDefinition<any, any>
+  ): ObjectTypeComposerFieldConfigMapDefinition<any, any> {
     const result = {};
     Object.keys(fields).forEach(k => {
       const names = k.split('.');

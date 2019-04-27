@@ -1,8 +1,8 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { Resolver, isObject } from 'graphql-compose';
-import type { ResolveParams, ProjectionType } from 'graphql-compose';
+import { Resolver, isObject, ObjectTypeComposer } from 'graphql-compose';
+import type { ResolverResolveParams, ProjectionType } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 import { getSearchBodyITC, prepareBodyInResolve } from '../elasticDSL/SearchBody';
 import { getSearchOutputTC } from '../types/SearchOutput';
@@ -19,7 +19,7 @@ export default function createSearchResolver<TSource, TContext>(
     );
   }
 
-  if (!sourceTC || sourceTC.constructor.name !== 'ObjectTypeComposer') {
+  if (!(sourceTC instanceof ObjectTypeComposer)) {
     throw new Error(
       'opts.sourceTC for Resolver search() should be instance of ObjectTypeComposer.'
     );
@@ -93,7 +93,7 @@ export default function createSearchResolver<TSource, TContext>(
     .addFields({
       count: 'Int',
       max_score: 'Float',
-      hits: hitsType ? [hitsType] : 'JSON',
+      hits: hitsType ? [(hitsType: any)] : 'JSON',
     })
     .reorderFields(['hits', 'count', 'aggregations', 'max_score', 'took', 'timed_out', '_shards']);
 
@@ -103,7 +103,7 @@ export default function createSearchResolver<TSource, TContext>(
       name: 'search',
       kind: 'query',
       args: argsConfigMap,
-      resolve: async (rp: ResolveParams<*, *>) => {
+      resolve: async (rp: ResolverResolveParams<*, *>) => {
         let args: Object = rp.args || {};
         const projection = rp.projection || {};
         if (!args.body) args.body = {};
