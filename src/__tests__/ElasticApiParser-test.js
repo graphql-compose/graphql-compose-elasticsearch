@@ -484,14 +484,14 @@ describe('ElasticApiParser', () => {
       expect(reFields.cat.type).toBeInstanceOf(ObjectTypeComposer);
       const tc = reFields.cat.type;
       expect(tc.getFieldNames()).toEqual(['field1', 'field2']);
-      expect(tc.getField('field1').type).toEqual('String');
-      expect(tc.getField('field2').type).toEqual('String');
+      expect(tc.getFieldTC('field1').getTypeName()).toEqual('String');
+      expect(tc.getFieldTC('field2').getTypeName()).toEqual('String');
 
       expect(reFields.index).toBeDefined();
       expect(reFields.index.type).toBeInstanceOf(ObjectTypeComposer);
       const tc2 = reFields.index.type;
       expect(tc2.getFieldNames()).toEqual(['exists']);
-      expect(tc2.getField('exists').type).toEqual('Boolean');
+      expect(tc2.getFieldTC('exists').getTypeName()).toEqual('Boolean');
     });
   });
 

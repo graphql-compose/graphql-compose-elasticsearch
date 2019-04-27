@@ -77,14 +77,14 @@ describe('PropertiesConverter', () => {
 
     it('should make singular and plural fields', () => {
       const tc1 = convertToSourceTC(schemaComposer, mapping, 'TestMapping');
-      const singular: any = tc1.getField('name');
-      expect(singular.type).toBe('String');
+      const singular: any = tc1.getFieldTC('name');
+      expect(singular.getTypeName()).toBe('String');
 
       const tc2 = convertToSourceTC(schemaComposer, mapping, 'TestMapping', {
         pluralFields: ['name'],
       });
       const plural: any = tc2.getField('name');
-      expect(plural.type).toEqual(['String']);
+      expect(plural.type.getTypeName()).toEqual('[String]');
     });
   });
 
@@ -140,7 +140,7 @@ describe('PropertiesConverter', () => {
       expect(tc).toBeInstanceOf(ObjectTypeComposer);
       expect(tc.getTypeName()).toEqual('ComplexType');
       expect(tc.getFieldNames()).toEqual(expect.arrayContaining(['big', 'thumb']));
-      expect(tc.getField('big').type).toEqual('String');
+      expect(tc.getFieldTC('big').getTypeName()).toEqual('String');
     });
   });
 

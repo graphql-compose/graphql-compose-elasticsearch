@@ -18,42 +18,11 @@ input Elastic_CommonsScript_50 {
 Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
 \\"\\"\\"
 input Elastic_Query_50 {
-  \\"\\"\\"
-  The most simple query, which matches all documents, giving them all a _score of 1.0. 
-  \\"\\"\\"
   match_all: Elastic_QueryMatchAll_50
-
-  \\"\\"\\"
-  A query that matches documents matching boolean combinations of other queries.
-  The bool query maps to Lucene BooleanQuery. It is built using one or more
-  boolean clauses, each clause with a typed occurrence. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) 
-  \\"\\"\\"
   bool: Elastic_QueryBool_50
-
-  \\"\\"\\"
-  A query that wraps another query and simply returns a constant score equal to
-  the query boost for every document in the filter. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html) 
-  \\"\\"\\"
   constant_score: Elastic_QueryConstantScore_50
-
-  \\"\\"\\"
-  A query that generates the union of documents produced by its subqueries, and
-  that scores each document with the maximum score for that document as produced
-  by any subquery, plus a tie breaking increment for any additional matching subqueries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-dis-max-query.html) 
-  \\"\\"\\"
   dis_max: Elastic_QueryDisMax_50
-
-  \\"\\"\\"
-  The boosting query can be used to effectively demote results that match a given query. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html) 
-  \\"\\"\\"
   boosting: Elastic_QueryBoosting_50
-
-  \\"\\"\\"
-  The function_score allows you to modify the score of documents that are
-  retrieved by a query. This can be useful if, for example, a score function is
-  computationally expensive and it is sufficient to compute the score on a
-  filtered set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html) 
-  \\"\\"\\"
   function_score: Elastic_QueryFunctionScore_50
 
   \\"\\"\\"
@@ -71,10 +40,6 @@ input Elastic_Query_50 {
   prefix matches on the last term in the text. Eg \\"quick brown f\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html) 
   \\"\\"\\"
   match_phrase_prefix: JSON
-
-  \\"\\"\\"
-  The multi_match query builds on the match query to allow multi-field queries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html) 
-  \\"\\"\\"
   multi_match: Elastic_QueryMultiMatch_50
 
   \\"\\"\\"
@@ -83,34 +48,14 @@ input Elastic_Query_50 {
   without sacrificing performance. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-common-terms-query.html) 
   \\"\\"\\"
   common: JSON
-
-  \\"\\"\\"
-  A query that uses a query parser in order to parse its content. Eg. \\"this AND
-  that OR thus\\" or \\"(content:this OR name:this) AND (content:that OR name:that)\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html) 
-  \\"\\"\\"
   query_string: Elastic_QueryQueryString_50
-
-  \\"\\"\\"
-  A query that uses the SimpleQueryParser to parse its context. Unlike the
-  regular query_string query, the simple_query_string query will never throw an
-  exception, and discards invalid parts of the query. Eg. \\"this AND that OR
-  thus\\" or \\"(content:this OR name:this) AND (content:that OR name:that)\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html) 
-  \\"\\"\\"
   simple_query_string: Elastic_QuerySimpleQueryString_50
-
-  \\"\\"\\"
-  Returns documents that have at least one non-null value in the original field. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html) 
-  \\"\\"\\"
   exists: Elastic_QueryExists_50
 
   \\"\\"\\"
   The fuzzy query uses similarity based on Levenshtein edit distance. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-fuzzy-query.html) 
   \\"\\"\\"
   fuzzy: JSON
-
-  \\"\\"\\"
-  Filters documents that only have the provided ids. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html) 
-  \\"\\"\\"
   ids: Elastic_QueryIds_50
 
   \\"\\"\\"
@@ -128,10 +73,6 @@ input Elastic_Query_50 {
   The regexp query allows you to use regular expression term queries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html) 
   \\"\\"\\"
   regexp: JSON
-
-  \\"\\"\\"
-  Filters documents matching the provided document / mapping type. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-type-query.html) 
-  \\"\\"\\"
   type: Elastic_QueryType_50
 
   \\"\\"\\"
@@ -175,48 +116,12 @@ input Elastic_Query_50 {
   Filter documents indexed using the geo_shape type. Requires the geo_shape Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-shape-query.html) 
   \\"\\"\\"
   geo_shape: JSON
-
-  \\"\\"\\"
-  The More Like This Query (MLT Query) finds documents that are \\"like\\" a given
-  set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-mlt-query.html) 
-  \\"\\"\\"
   more_like_this: Elastic_QueryMoreLikeThis_50
-
-  \\"\\"\\"
-  The percolate query can be used to match queries stored in an index. The
-  percolate query itself contains the document that will be used as query to
-  match with the stored queries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-percolate-query.html) 
-  \\"\\"\\"
   percolate: Elastic_QueryPercolate_50
-
-  \\"\\"\\"
-  A query allowing to define scripts as queries. They are typically used in a
-  filter context. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-query.html) 
-  \\"\\"\\"
   script: Elastic_QueryScript_50
-
-  \\"\\"\\"
-  The has_child filter accepts a query and the child type to run against, and
-  results in parent documents that have child docs matching the query. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-child-query.html) 
-  \\"\\"\\"
   has_child: Elastic_QueryHasChild_50
-
-  \\"\\"\\"
-  The has_parent query accepts a query and a parent type. The query is executed
-  in the parent document space, which is specified by the parent type [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-parent-query.html) 
-  \\"\\"\\"
   has_parent: Elastic_QueryHasParent_50
-
-  \\"\\"\\"
-  Nested query allows to query nested objects / docs. The query is executed
-  against the nested objects / docs as if they were indexed as separate docs. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html) 
-  \\"\\"\\"
   nested: Elastic_QueryNested_50
-
-  \\"\\"\\"
-  The parent_id query can be used to find child documents which belong to a
-  particular parent. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-parent-id-query.html) 
-  \\"\\"\\"
   parent_id: Elastic_QueryParentId_50
 }
 
@@ -263,14 +168,7 @@ input Elastic_QueryBool_50 {
 The boosting query can be used to effectively demote results that match a given query. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html) 
 \\"\\"\\"
 input Elastic_QueryBoosting_50 {
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   positive: Elastic_Query_50
-
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   negative: Elastic_Query_50
   negative_boost: Float
 }
@@ -309,9 +207,6 @@ computationally expensive and it is sufficient to compute the score on a
 filtered set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html) 
 \\"\\"\\"
 input Elastic_QueryFunctionScore_50 {
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   query: Elastic_Query_50
   boost: String
 
@@ -327,9 +222,6 @@ input Elastic_QueryFunctionScore_50 {
 }
 
 input Elastic_QueryFunctionScoreFunction_50 {
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   filter: Elastic_Query_50
   random_score: Elastic_QueryFunctionScoreRandom_50
   weight: Float
@@ -350,10 +242,6 @@ results in parent documents that have child docs matching the query. [Documentat
 \\"\\"\\"
 input Elastic_QueryHasChild_50 {
   type: String
-
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   query: Elastic_Query_50
 
   \\"\\"\\"Can be: \`avg\`, \`sum\`, \`max\`, \`min\`, \`none\`.\\"\\"\\"
@@ -368,10 +256,6 @@ the parent document space, which is specified by the parent type [Documentation]
 \\"\\"\\"
 input Elastic_QueryHasParent_50 {
   parent_type: String
-
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   query: Elastic_Query_50
   score: Boolean
   ignore_unmapped: Boolean
@@ -450,10 +334,6 @@ input Elastic_QueryNested_50 {
 
   \\"\\"\\"Can be: \`avg\`, \`sum\`, \`max\`, \`min\`, \`none\`.\\"\\"\\"
   score_mode: String
-
-  \\"\\"\\"
-  Elasticsearch provides a full Query DSL based on JSON to define queries. [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html) 
-  \\"\\"\\"
   query: Elastic_Query_50
 }
 
@@ -517,9 +397,6 @@ A query allowing to define scripts as queries. They are typically used in a
 filter context. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-query.html) 
 \\"\\"\\"
 input Elastic_QueryScript_50 {
-  \\"\\"\\"
-  The scripting module enables you to use scripts to evaluate custom expressions. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) 
-  \\"\\"\\"
   script: Elastic_CommonsScript_50
 }
 
