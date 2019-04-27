@@ -1,7 +1,10 @@
 /* @flow */
 /* eslint-disable no-unused-vars */
 
-import { InputTypeComposer, type ComposeInputFieldConfigAsObject } from 'graphql-compose';
+import {
+  InputTypeComposer,
+  type ObjectTypeComposerFieldConfigAsObjectDefinition,
+} from 'graphql-compose';
 import { getTypeName, type CommonOpts, desc } from '../../utils';
 
 export function getDateRangeITC<TContext>(opts: CommonOpts<TContext>): InputTypeComposer<TContext> {
@@ -18,7 +21,9 @@ export function getDateRangeITC<TContext>(opts: CommonOpts<TContext>): InputType
   }));
 }
 
-export function getDateFormatFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
+export function getDateFormatFC(
+  opts: CommonOpts<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: 'String',
     description: desc(
@@ -30,7 +35,9 @@ export function getDateFormatFC(opts: CommonOpts<any>): ComposeInputFieldConfigA
   };
 }
 
-export function getDateIntervalFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
+export function getDateIntervalFC(
+  opts: CommonOpts<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: 'String',
     description: desc(
@@ -43,7 +50,9 @@ export function getDateIntervalFC(opts: CommonOpts<any>): ComposeInputFieldConfi
   };
 }
 
-export function getDateMathFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
+export function getDateMathFC(
+  opts: CommonOpts<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: 'String',
     description: desc(
@@ -57,7 +66,9 @@ export function getDateMathFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsO
   };
 }
 
-export function getDateTimeZoneFC(opts: CommonOpts<any>): ComposeInputFieldConfigAsObject {
+export function getDateTimeZoneFC(
+  opts: CommonOpts<any>
+): ObjectTypeComposerFieldConfigAsObjectDefinition<any, any> {
   return {
     type: 'String',
     description: desc(

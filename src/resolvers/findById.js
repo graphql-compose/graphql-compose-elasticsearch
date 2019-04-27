@@ -1,7 +1,7 @@
 /* @flow */
 
 import { Resolver } from 'graphql-compose';
-import type { ResolveParams } from 'graphql-compose';
+import type { ResolverResolveParams } from 'graphql-compose';
 import ElasticApiParser from '../ElasticApiParser';
 import { getFindByIdOutputTC } from '../types/FindByIdOutput';
 import type { CommonOpts } from '../utils';
@@ -42,7 +42,7 @@ export default function createFindByIdResolver<TSource, TContext>(
     args: {
       id: 'String!',
     },
-    resolve: async (rp: ResolveParams<*, *>) => {
+    resolve: async (rp: ResolverResolveParams<*, *>) => {
       const { source, args, context, info } = rp;
 
       if (!args.id) {

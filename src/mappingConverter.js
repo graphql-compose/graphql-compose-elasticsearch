@@ -6,8 +6,8 @@ import {
   SchemaComposer,
   upperFirst,
   isObject,
-  type ComposeInputType,
-  type ComposeOutputType,
+  type ComposeInputTypeDefinition,
+  type ComposeOutputTypeDefinition,
 } from 'graphql-compose';
 import { ElasticGeoPointType } from './elasticDSL/Commons/Geo';
 
@@ -27,7 +27,7 @@ export type ElasticPropertyT = {
 };
 
 export type InputFieldsMap = {
-  [field: string]: ComposeInputType,
+  [field: string]: ComposeInputTypeDefinition,
 };
 
 export type FieldsMapByElasticType = {
@@ -140,7 +140,7 @@ export function propertyToSourceGraphQLType<TContext>(
   prop: ElasticPropertyT,
   typeName?: string,
   opts?: ConvertOptsT
-): ComposeOutputType<any, TContext> {
+): ComposeOutputTypeDefinition<TContext> {
   if (!prop || (typeof prop.type !== 'string' && !prop.properties)) {
     throw new Error('You provide incorrect Elastic property config.');
   }

@@ -1,8 +1,12 @@
 /* @flow */
 /* eslint-disable no-param-reassign */
 
-import { upperFirst, EnumTypeComposer, type ComposeInputFieldConfigMap } from 'graphql-compose';
-import type { ComposeEnumValueConfigMap } from 'graphql-compose/lib/EnumTypeComposer';
+import {
+  upperFirst,
+  EnumTypeComposer,
+  type InputTypeComposerFieldConfigMapDefinition,
+} from 'graphql-compose';
+import type { EnumTypeComposerValueConfigMapDefinition } from 'graphql-compose/lib/EnumTypeComposer';
 import { getTypeName, type CommonOpts, desc } from '../../utils';
 
 export type ElasticDataType = string;
@@ -140,14 +144,14 @@ export function getFieldNamesType(
   const name = getTypeName(`${typePrefix}Fields`, opts);
   const description = desc(`Avaliable fields from mapping.`);
 
-  return opts.schemaComposer.getOrSet(name, () => {
+  return (opts.schemaComposer.getOrSet(name, () => {
     if (!opts || !opts.fieldMap) {
-      return 'String';
+      return opts.schemaComposer.get('String');
     }
     const values = getEnumValues(opts.fieldMap, types, addAll);
 
     if (Object.keys(values).length === 0) {
-      return 'String';
+      return opts.schemaComposer.get('String');
     }
 
     return opts.schemaComposer.createEnumTC({
@@ -155,14 +159,14 @@ export function getFieldNamesType(
       description,
       values,
     });
-  });
+  }): any);
 }
 
 function getEnumValues(
   fieldMap: any,
   types: ElasticDataType[],
   addAll: boolean = false
-): ComposeEnumValueConfigMap {
+): EnumTypeComposerValueConfigMapDefinition {
   const values = {};
   if (addAll) {
     values._all = {
@@ -186,7 +190,7 @@ export function getFieldConfigMap(
   types: ElasticDataType[],
   fc: any,
   addAll: boolean = false
-): ComposeInputFieldConfigMap | string {
+): InputTypeComposerFieldConfigMapDefinition | string {
   if (!fc) fc = 'JSON';
   if (!opts || !opts.fieldMap) {
     return 'JSON';
