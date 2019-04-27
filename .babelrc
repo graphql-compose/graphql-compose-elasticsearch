@@ -15,7 +15,7 @@
           "@babel/preset-env",
           {
             "targets": {
-              "node": 6
+              "node": 8
             }
           }
         ]
@@ -32,7 +32,7 @@
           "@babel/preset-env",
           {
             "targets": {
-              "node": "8.0.0"
+              "node": 8
             },
             "loose": true,
             "modules": false
