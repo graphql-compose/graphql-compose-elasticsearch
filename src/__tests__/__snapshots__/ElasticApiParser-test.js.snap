@@ -33,7 +33,24 @@ Object {
     "defaultOperator": Object {
       "defaultValue": "OR",
       "type": EnumTypeComposer {
-        "gqType": "ElasticEnum_DefaultOperator",
+        "_gqType": "ElasticEnum_DefaultOperator",
+        "_gqcExtensions": Object {},
+        "_gqcFields": Object {
+          "AND": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "AND",
+          },
+          "OR": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "OR",
+          },
+        },
         "schemaComposer": "SchemaComposer",
       },
     },
@@ -48,7 +65,38 @@ Object {
     "expandWildcards": Object {
       "defaultValue": "open",
       "type": EnumTypeComposer {
-        "gqType": "ElasticEnum_ExpandWildcards",
+        "_gqType": "ElasticEnum_ExpandWildcards",
+        "_gqcExtensions": Object {},
+        "_gqcFields": Object {
+          "all": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "all",
+          },
+          "closed": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "closed",
+          },
+          "none": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "none",
+          },
+          "open": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "open",
+          },
+        },
         "schemaComposer": "SchemaComposer",
       },
     },
@@ -99,7 +147,24 @@ Object {
     "searchType": Object {
       "description": "Search operation type",
       "type": EnumTypeComposer {
-        "gqType": "ElasticEnum_SearchType",
+        "_gqType": "ElasticEnum_SearchType",
+        "_gqcExtensions": Object {},
+        "_gqcFields": Object {
+          "dfs_query_then_fetch": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "dfs_query_then_fetch",
+          },
+          "query_then_fetch": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "query_then_fetch",
+          },
+        },
         "schemaComposer": "SchemaComposer",
       },
     },
@@ -126,7 +191,31 @@ Object {
     "suggestMode": Object {
       "defaultValue": "missing",
       "type": EnumTypeComposer {
-        "gqType": "ElasticEnum_SuggestMode",
+        "_gqType": "ElasticEnum_SuggestMode",
+        "_gqcExtensions": Object {},
+        "_gqcFields": Object {
+          "always": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "always",
+          },
+          "missing": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "missing",
+          },
+          "popular": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "popular",
+          },
+        },
         "schemaComposer": "SchemaComposer",
       },
     },
@@ -171,7 +260,87 @@ Object {
     "bytes": Object {
       "description": "The unit in which to display byte values",
       "type": EnumTypeComposer {
-        "gqType": "ElasticEnum_Bytes",
+        "_gqType": "ElasticEnum_Bytes",
+        "_gqcExtensions": Object {},
+        "_gqcFields": Object {
+          "b": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "b",
+          },
+          "g": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "g",
+          },
+          "gb": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "gb",
+          },
+          "k": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "k",
+          },
+          "kb": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "kb",
+          },
+          "m": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "m",
+          },
+          "mb": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "mb",
+          },
+          "p": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "p",
+          },
+          "pb": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "pb",
+          },
+          "t": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "t",
+          },
+          "tb": Object {
+            "astNode": undefined,
+            "deprecationReason": undefined,
+            "description": undefined,
+            "extensions": Object {},
+            "value": "tb",
+          },
+        },
         "schemaComposer": "SchemaComposer",
       },
     },
@@ -220,14 +389,246 @@ Object {
   "cat": Object {
     "resolve": [Function],
     "type": ObjectTypeComposer {
-      "gqType": "Elastic_Cat",
+      "_gqType": "Elastic_Cat",
+      "_gqcExtensions": Object {},
+      "_gqcFields": Object {
+        "allocation": Object {
+          "args": Object {
+            "bytes": Object {
+              "description": "The unit in which to display byte values",
+              "type": EnumTypeComposer {
+                "_gqType": "ElasticEnum_Bytes",
+                "_gqcExtensions": Object {},
+                "_gqcFields": Object {
+                  "b": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "b",
+                  },
+                  "g": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "g",
+                  },
+                  "gb": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "gb",
+                  },
+                  "k": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "k",
+                  },
+                  "kb": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "kb",
+                  },
+                  "m": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "m",
+                  },
+                  "mb": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "mb",
+                  },
+                  "p": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "p",
+                  },
+                  "pb": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "pb",
+                  },
+                  "t": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "t",
+                  },
+                  "tb": Object {
+                    "astNode": undefined,
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "extensions": Object {},
+                    "value": "tb",
+                  },
+                },
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "format": Object {
+              "defaultValue": "json",
+              "description": "a short version of the Accept header, e.g. json, yaml",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "h": Object {
+              "description": "Comma-separated list of column names to display",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "help": Object {
+              "description": "Return help information",
+              "type": ScalarTypeComposer {
+                "_gqType": "Boolean",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "local": Object {
+              "description": "Return local information, do not retrieve the state from master node (default: false)",
+              "type": ScalarTypeComposer {
+                "_gqType": "Boolean",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "masterTimeout": Object {
+              "description": "Explicit operation timeout for connection to master node",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "nodeId": Object {
+              "description": "A comma-separated list of node IDs or names to limit the returned information",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "s": Object {
+              "description": "Comma-separated list of column names or column aliases to sort by",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "v": Object {
+              "description": "Verbose mode. Display column headers",
+              "type": ScalarTypeComposer {
+                "_gqType": "Boolean",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+          },
+          "description": "Perform a [cat.allocation](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/cat-allocation.html) request",
+          "resolve": [Function],
+          "type": ScalarTypeComposer {
+            "_gqType": "JSON",
+            "_gqcParseLiteral": [Function],
+            "_gqcParseValue": [Function],
+            "_gqcSerialize": [Function],
+            "schemaComposer": "SchemaComposer",
+          },
+        },
+      },
+      "_gqcInterfaces": Array [],
       "schemaComposer": "SchemaComposer",
     },
   },
   "indices": Object {
     "resolve": [Function],
     "type": ObjectTypeComposer {
-      "gqType": "Elastic_Indices",
+      "_gqType": "Elastic_Indices",
+      "_gqcExtensions": Object {},
+      "_gqcFields": Object {
+        "delete": Object {
+          "args": Object {
+            "index": Object {
+              "description": "A comma-separated list of indices to delete; use \`_all\` or \`*\` string to delete all indices",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "masterTimeout": Object {
+              "description": "Specify timeout for connection to master",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "timeout": Object {
+              "description": "Explicit operation timeout",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+          },
+          "description": "Perform a [indices.delete](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/indices-delete-index.html) request",
+          "resolve": [Function],
+          "type": ScalarTypeComposer {
+            "_gqType": "JSON",
+            "_gqcParseLiteral": [Function],
+            "_gqcParseValue": [Function],
+            "_gqcSerialize": [Function],
+            "schemaComposer": "SchemaComposer",
+          },
+        },
+      },
+      "_gqcInterfaces": Array [],
       "schemaComposer": "SchemaComposer",
     },
   },
@@ -263,7 +664,24 @@ Object {
       "defaultOperator": Object {
         "defaultValue": "OR",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_DefaultOperator",
+          "_gqType": "ElasticEnum_DefaultOperator",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "AND": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "AND",
+            },
+            "OR": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "OR",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
@@ -278,7 +696,38 @@ Object {
       "expandWildcards": Object {
         "defaultValue": "open",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_ExpandWildcards",
+          "_gqType": "ElasticEnum_ExpandWildcards",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "all": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "all",
+            },
+            "closed": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "closed",
+            },
+            "none": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "none",
+            },
+            "open": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "open",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
@@ -329,7 +778,24 @@ Object {
       "searchType": Object {
         "description": "Search operation type",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_SearchType",
+          "_gqType": "ElasticEnum_SearchType",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "dfs_query_then_fetch": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "dfs_query_then_fetch",
+            },
+            "query_then_fetch": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "query_then_fetch",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
@@ -356,7 +822,31 @@ Object {
       "suggestMode": Object {
         "defaultValue": "missing",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_SuggestMode",
+          "_gqType": "ElasticEnum_SuggestMode",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "always": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "always",
+            },
+            "missing": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "missing",
+            },
+            "popular": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "popular",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
@@ -425,14 +915,48 @@ Object {
       "conflicts": Object {
         "defaultValue": "abort",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_Conflicts",
+          "_gqType": "ElasticEnum_Conflicts",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "abort": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "abort",
+            },
+            "proceed": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "proceed",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
       "defaultOperator": Object {
         "defaultValue": "OR",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_DefaultOperator",
+          "_gqType": "ElasticEnum_DefaultOperator",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "AND": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "AND",
+            },
+            "OR": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "OR",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
@@ -443,7 +967,38 @@ Object {
       "expandWildcards": Object {
         "defaultValue": "open",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_ExpandWildcards",
+          "_gqType": "ElasticEnum_ExpandWildcards",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "all": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "all",
+            },
+            "closed": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "closed",
+            },
+            "none": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "none",
+            },
+            "open": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "open",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
@@ -506,7 +1061,24 @@ Object {
       "searchType": Object {
         "description": "Search operation type",
         "type": EnumTypeComposer {
-          "gqType": "ElasticEnum_SearchType",
+          "_gqType": "ElasticEnum_SearchType",
+          "_gqcExtensions": Object {},
+          "_gqcFields": Object {
+            "dfs_query_then_fetch": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "dfs_query_then_fetch",
+            },
+            "query_then_fetch": Object {
+              "astNode": undefined,
+              "deprecationReason": undefined,
+              "description": undefined,
+              "extensions": Object {},
+              "value": "query_then_fetch",
+            },
+          },
           "schemaComposer": "SchemaComposer",
         },
       },
