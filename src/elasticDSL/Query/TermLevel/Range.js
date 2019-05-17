@@ -29,6 +29,7 @@ export function getRangeITC<TContext>(
         lt: 'JSON',
         lte: 'JSON',
         boost: 'Float',
+        relation: 'String',
       },
     }))
   );
