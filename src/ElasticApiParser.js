@@ -323,7 +323,7 @@ export default class ElasticApiParser {
 
     if (paramCfg.default) {
       result.defaultValue = paramCfg.default;
-      if (result.type === 'Float') {
+      if (result.type === 'Float' || result.type === 'Int') {
         const defaultNumber = Number(result.defaultValue);
         if (Number.isNaN(defaultNumber)) {
           // Handle broken data where default is not valid for the given type
@@ -332,6 +332,9 @@ export default class ElasticApiParser {
         } else {
           result.defaultValue = defaultNumber;
         }
+      } else if (result.type === 'Boolean') {
+        const t = result.defaultValue;
+        result.defaultValue = t === 'true' || t === '1' || t === true;
       }
     } else if (fieldName === 'format') {
       result.defaultValue = 'json';
