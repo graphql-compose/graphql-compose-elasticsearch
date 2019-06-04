@@ -26,9 +26,9 @@ export function getPercentileRanksITC<TContext>(
     fields: {
       field: getNumericFields(opts),
       values: '[Float]',
-      hdr: () => getCommonsHdrITC(opts),
+      hdr: (): InputTypeComposer<TContext> => getCommonsHdrITC(opts),
       missing: 'Float',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

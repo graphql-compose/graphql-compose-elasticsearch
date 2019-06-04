@@ -18,6 +18,7 @@ export function getScriptedMetricITC<TContext>(
   return opts.getOrCreateITC(name, () => ({
     name,
     description,
+    // $FlowFixMe
     fields: {
       init_script: () => getCommonsScriptITC(opts),
       map_script: () => getCommonsScriptITC(opts),

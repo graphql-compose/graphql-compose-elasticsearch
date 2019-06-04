@@ -19,7 +19,7 @@ export function getTermsITC<TContext>(opts: CommonOpts<TContext>): InputTypeComp
     name,
     description,
     fields: {
-      field: () => getTermFields(opts),
+      field: (): any => getTermFields(opts),
       size: {
         type: 'Int',
         defaultValue: 10,
@@ -28,7 +28,7 @@ export function getTermsITC<TContext>(opts: CommonOpts<TContext>): InputTypeComp
       order: 'JSON',
       include: 'JSON',
       exclude: 'JSON',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
       execution_hint: 'String',
       missing: 'JSON',
     },

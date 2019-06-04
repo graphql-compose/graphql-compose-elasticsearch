@@ -17,7 +17,7 @@ export function getScriptITC<TContext>(opts: CommonOpts<TContext>): InputTypeCom
     name,
     description,
     fields: {
-      script: () => getCommonsScriptITC(opts),
+      script: { type: () => getCommonsScriptITC(opts) },
     },
   }));
 }

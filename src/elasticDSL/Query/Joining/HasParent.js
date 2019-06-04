@@ -19,7 +19,7 @@ export function getHasParentITC<TContext>(opts: CommonOpts<TContext>): InputType
     description,
     fields: {
       parent_type: 'String',
-      query: () => getQueryITC(opts),
+      query: (): InputTypeComposer<TContext> => getQueryITC(opts),
       score: 'Boolean',
       ignore_unmapped: 'Boolean',
     },

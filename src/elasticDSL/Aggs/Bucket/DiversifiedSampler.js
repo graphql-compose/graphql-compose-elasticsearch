@@ -28,7 +28,7 @@ export function getDiversifiedSamplerITC<TContext>(
       },
       field: getAllFields(opts),
       max_docs_per_value: 'Int',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
       execution_hint: 'String',
     },
   }));

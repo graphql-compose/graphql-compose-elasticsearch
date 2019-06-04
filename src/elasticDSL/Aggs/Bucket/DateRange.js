@@ -27,7 +27,7 @@ export function getAggsDateRangeITC<TContext>(
     fields: {
       field: getDateFields(opts),
       format: getDateFormatFC(opts),
-      ranges: () => [getDateRangeITC(opts)],
+      ranges: (): InputTypeComposer<TContext>[] => [getDateRangeITC(opts)],
       time_zone: getDateTimeZoneFC(opts),
     },
   }));

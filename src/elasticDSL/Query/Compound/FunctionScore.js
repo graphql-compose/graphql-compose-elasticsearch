@@ -29,7 +29,7 @@ export function getFunctionScoreITC<TContext>(
     name,
     description,
     fields: {
-      query: () => getQueryITC(opts),
+      query: (): InputTypeComposer<TContext> => getQueryITC(opts),
       boost: 'String',
       boost_mode: {
         type: 'String',
@@ -40,7 +40,7 @@ export function getFunctionScoreITC<TContext>(
         opts.schemaComposer.createInputTC({
           name: getTypeName('QueryFunctionScoreFunction', opts),
           fields: {
-            filter: () => getQueryITC(opts),
+            filter: (): InputTypeComposer<TContext> => getQueryITC(opts),
             random_score: RandomScoreType,
             weight: 'Float',
             script_score: 'JSON',

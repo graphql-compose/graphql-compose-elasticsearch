@@ -28,7 +28,7 @@ export function getSearchBodyITC<TContext>(
       sort: { type: () => [getSortITC(opts)] },
       _source: 'JSON',
       script_fields: 'JSON',
-      post_filter: () => getQueryITC(opts),
+      post_filter: { type: () => getQueryITC(opts) },
       highlight: 'JSON',
       search_after: 'JSON',
 

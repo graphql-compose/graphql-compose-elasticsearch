@@ -21,7 +21,7 @@ export function getIpRangeITC<TContext>(opts: CommonOpts<TContext>): InputTypeCo
     description,
     fields: {
       field: getIpFields(opts),
-      ranges: () => [getIpRangeTypeITC(opts)],
+      ranges: (): InputTypeComposer<TContext>[] => [getIpRangeTypeITC(opts)],
     },
   }));
 }

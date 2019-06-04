@@ -66,6 +66,7 @@ export function getAggRulesITC<TContext>(opts: CommonOpts<TContext>): InputTypeC
   return opts.getOrCreateITC(name, () => ({
     name,
     description,
+    // $FlowFixMe
     fields: {
       avg: () => getAvgITC(opts),
       cardinality: () => getCardinalityITC(opts),

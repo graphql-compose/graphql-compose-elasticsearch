@@ -23,9 +23,9 @@ export function getRangeITC<TContext>(opts: CommonOpts<TContext>): InputTypeComp
     description,
     fields: {
       field: getNumericFields(opts),
-      ranges: () => [getFloatRangeKeyedITC(opts)],
+      ranges: (): InputTypeComposer<TContext>[] => [getFloatRangeKeyedITC(opts)],
       keyed: 'Boolean',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

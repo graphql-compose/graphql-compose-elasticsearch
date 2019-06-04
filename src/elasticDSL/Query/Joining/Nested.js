@@ -23,7 +23,7 @@ export function getNestedITC<TContext>(opts: CommonOpts<TContext>): InputTypeCom
         type: 'String',
         description: 'Can be: `avg`, `sum`, `max`, `min`, `none`.',
       },
-      query: () => getQueryITC(opts),
+      query: (): InputTypeComposer<TContext> => getQueryITC(opts),
     },
   }));
 }

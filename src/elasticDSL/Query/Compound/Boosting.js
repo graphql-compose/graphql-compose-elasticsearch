@@ -17,8 +17,8 @@ export function getBoostingITC<TContext>(opts: CommonOpts<TContext>): InputTypeC
     name,
     description,
     fields: {
-      positive: () => getQueryITC(opts),
-      negative: () => getQueryITC(opts),
+      positive: (): InputTypeComposer<TContext> => getQueryITC(opts),
+      negative: (): InputTypeComposer<TContext> => getQueryITC(opts),
       negative_boost: 'Float',
     },
   }));

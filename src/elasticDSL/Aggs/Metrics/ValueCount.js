@@ -22,7 +22,7 @@ export function getValueCountITC<TContext>(
     description,
     fields: {
       field: getAllFields(opts),
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

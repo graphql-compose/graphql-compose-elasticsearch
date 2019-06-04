@@ -20,7 +20,7 @@ export function getDisMaxITC<TContext>(opts: CommonOpts<TContext>): InputTypeCom
     name,
     description,
     fields: {
-      queries: () => [getQueryITC(opts)],
+      queries: (): InputTypeComposer<TContext>[] => [getQueryITC(opts)],
       boost: 'Float',
       tie_breaker: 'Float',
     },

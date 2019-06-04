@@ -23,7 +23,7 @@ export function getStatsITC<TContext>(opts: CommonOpts<TContext>): InputTypeComp
     fields: {
       field: getNumericFields(opts),
       missing: 'Float',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

@@ -26,7 +26,7 @@ export function getExtendedStatsITC<TContext>(
       field: getNumericFields(opts),
       sigma: 'Float',
       missing: 'Float',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

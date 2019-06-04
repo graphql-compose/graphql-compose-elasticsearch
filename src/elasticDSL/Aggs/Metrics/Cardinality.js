@@ -34,7 +34,7 @@ export function getCardinalityITC<TContext>(
         ),
       },
       missing: 'String',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

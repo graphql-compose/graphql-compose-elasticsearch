@@ -28,7 +28,7 @@ export function getDateHistogramITC<TContext>(
       offset: getDateIntervalFC(opts),
       format: getDateFormatFC(opts),
       missing: 'String',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

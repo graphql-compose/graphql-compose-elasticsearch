@@ -56,6 +56,7 @@ export function getQueryITC<TContext>(opts: CommonOpts<TContext>): InputTypeComp
   return opts.getOrCreateITC(name, () => ({
     name,
     description,
+    // $FlowFixMe
     fields: {
       match_all: () => getMatchAllITC(opts),
 

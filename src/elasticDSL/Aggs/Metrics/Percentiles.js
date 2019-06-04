@@ -29,9 +29,9 @@ export function getPercentilesITC<TContext>(
       tdigest: `input ${getTypeName('AggsPercentilesTDigest', opts)} {
           compression: Int,
         }`,
-      hdr: () => getCommonsHdrITC(opts),
+      hdr: (): InputTypeComposer<TContext> => getCommonsHdrITC(opts),
       missing: 'Float',
-      script: () => getCommonsScriptITC(opts),
+      script: (): InputTypeComposer<TContext> => getCommonsScriptITC(opts),
     },
   }));
 }

@@ -19,7 +19,7 @@ export function getHasChildITC<TContext>(opts: CommonOpts<TContext>): InputTypeC
     description,
     fields: {
       type: 'String',
-      query: () => getQueryITC(opts),
+      query: (): InputTypeComposer<TContext> => getQueryITC(opts),
       score_mode: {
         type: 'String',
         description: 'Can be: `avg`, `sum`, `max`, `min`, `none`.',
