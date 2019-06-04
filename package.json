@@ -27,7 +27,7 @@
     "dox": "^0.9.0"
   },
   "peerDependencies": {
-    "elasticsearch": "^15.0.0 || ^14.0.0 || ^13.0.0 || ^12.0.0",
+    "elasticsearch": "^16.0.0 || ^15.0.0 || ^14.0.0 || ^13.0.0 || ^12.0.0",
     "graphql-compose": "^7.0.4"
   },
   "devDependencies": {
