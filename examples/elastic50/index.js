@@ -10,14 +10,14 @@ const expressPort = process.env.port || process.env.PORT || 9201;
 const server = express();
 server.use(
   '/',
-  graphqlHTTP({
+  (graphqlHTTP({
     schema: (schema: any),
     graphiql: true,
-    formatError: error => ({
+    customFormatErrorFn: error => ({
       message: error.message,
       stack: error.stack.split('\n'),
     }),
-  })
+  }): any)
 );
 
 server.listen(expressPort, () => {
