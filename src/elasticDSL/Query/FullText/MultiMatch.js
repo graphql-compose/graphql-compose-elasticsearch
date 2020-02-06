@@ -23,7 +23,7 @@ export function getMultiMatchITC<TContext>(
         type: '[String]!',
         description: desc(
           `
-            Array of fields [ "title", "*_name", "subject^3" ].
+            Array of fields [ title, *_name, subject^3 ].
             You may use wildcards and boosting field.
           `
         ),

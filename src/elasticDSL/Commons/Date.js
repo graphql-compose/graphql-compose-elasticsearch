@@ -28,7 +28,7 @@ export function getDateFormatFC(
     type: 'String',
     description: desc(
       `
-      Date Format/Patter. Eg "MM-yyy" returns "08-2012".
+      Date Format/Patter. Eg MM-yyy returns 08-2012.
       [JodaDate](http://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html)
     `
     ),
