@@ -10,7 +10,7 @@ export function getMoreLikeThisITC<TContext>(
   const name = getTypeName('QueryMoreLikeThis', opts);
   const description = desc(
     `
-    The More Like This Query (MLT Query) finds documents that are "like" a given set of documents.
+    The More Like This Query (MLT Query) finds documents that are like a given set of documents.
     [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-mlt-query.html)
   `
   );

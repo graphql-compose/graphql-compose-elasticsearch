@@ -183,7 +183,7 @@ input Elastic_AggsDateHistogram_50 {
   offset: String
 
   \\"\\"\\"
-  Date Format/Patter. Eg \\"MM-yyy\\" returns \\"08-2012\\". [JodaDate](http://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html) 
+  Date Format/Patter. Eg MM-yyy returns 08-2012. [JodaDate](http://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html) 
   \\"\\"\\"
   format: String
   missing: String
@@ -201,7 +201,7 @@ input Elastic_AggsDateRange_50 {
   field: String
 
   \\"\\"\\"
-  Date Format/Patter. Eg \\"MM-yyy\\" returns \\"08-2012\\". [JodaDate](http://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html) 
+  Date Format/Patter. Eg MM-yyy returns 08-2012. [JodaDate](http://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html) 
   \\"\\"\\"
   format: String
   ranges: [Elastic_DateRange_50]
@@ -965,7 +965,7 @@ input Elastic_QueryMatchAll_50 {
 }
 
 \\"\\"\\"
-The More Like This Query (MLT Query) finds documents that are \\"like\\" a given set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-mlt-query.html) 
+The More Like This Query (MLT Query) finds documents that are like a given set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-mlt-query.html) 
 \\"\\"\\"
 input Elastic_QueryMoreLikeThis_50 {
   fields: [String]
@@ -983,7 +983,7 @@ input Elastic_QueryMultiMatch_50 {
   query: String!
 
   \\"\\"\\"
-  Array of fields [ \\"title\\", \\"*_name\\", \\"subject^3\\" ]. You may use wildcards and boosting field. 
+  Array of fields [ title, *_name, subject^3 ]. You may use wildcards and boosting field. 
   \\"\\"\\"
   fields: [String]!
   type: Elastic_QueryMultiMatchTypeEnum_50

@@ -115,10 +115,12 @@ export async function fetchElasticMapping(
     );
   }
 
-  const elasticMapping = (await opts.elasticClient.indices.getMapping({
-    index: opts.elasticIndex,
-    type: opts.elasticType,
-  }))[opts.elasticIndex].mappings[opts.elasticType];
+  const elasticMapping = (
+    await opts.elasticClient.indices.getMapping({
+      index: opts.elasticIndex,
+      type: opts.elasticType,
+    })
+  )[opts.elasticIndex].mappings[opts.elasticType];
 
   return elasticMapping;
 }
