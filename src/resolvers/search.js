@@ -78,6 +78,7 @@ export default function createSearchResolver<TSource, TContext>(
     .removeField(topLevelArgs);
   Object.keys(argsConfigMap).forEach(argKey => {
     if (topLevelArgs.indexOf(argKey) === -1) {
+      // $FlowFixMe
       delete argsConfigMap[argKey];
     }
   });

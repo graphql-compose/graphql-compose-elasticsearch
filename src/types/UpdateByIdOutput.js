@@ -16,7 +16,7 @@ export function getUpdateByIdOutputTC<TContext>(
       _type: 'String',
       _version: 'Int',
       result: 'String',
-      ...sourceTC.getFields(),
+      ...(sourceTC.getFields(): any),
     },
   }));
 }

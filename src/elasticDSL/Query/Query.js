@@ -56,54 +56,53 @@ export function getQueryITC<TContext>(opts: CommonOpts<TContext>): InputTypeComp
   return opts.getOrCreateITC(name, () => ({
     name,
     description,
-    // $FlowFixMe
     fields: {
-      match_all: () => getMatchAllITC(opts),
+      match_all: getMatchAllITC(opts),
 
       // Compound quries
-      bool: () => getBoolITC(opts),
-      constant_score: () => getConstantScoreITC(opts),
-      dis_max: () => getDisMaxITC(opts),
-      boosting: () => getBoostingITC(opts),
-      function_score: () => getFunctionScoreITC(opts),
+      bool: getBoolITC(opts),
+      constant_score: getConstantScoreITC(opts),
+      dis_max: getDisMaxITC(opts),
+      boosting: getBoostingITC(opts),
+      function_score: getFunctionScoreITC(opts),
 
       // FullText queries
-      match: () => getMatchITC(opts),
-      match_phrase: () => getMatchPhraseITC(opts),
-      match_phrase_prefix: () => getMatchPhrasePrefixITC(opts),
-      multi_match: () => getMultiMatchITC(opts),
-      common: () => getCommonITC(opts),
-      query_string: () => getQueryStringITC(opts),
-      simple_query_string: () => getSimpleQueryStringITC(opts),
+      match: getMatchITC(opts),
+      match_phrase: getMatchPhraseITC(opts),
+      match_phrase_prefix: getMatchPhrasePrefixITC(opts),
+      multi_match: getMultiMatchITC(opts),
+      common: getCommonITC(opts),
+      query_string: getQueryStringITC(opts),
+      simple_query_string: getSimpleQueryStringITC(opts),
 
       // Term queries
-      exists: () => getExistsITC(opts),
-      fuzzy: () => getFuzzyITC(opts),
-      ids: () => getIdsITC(opts),
-      prefix: () => getPrefixITC(opts),
-      range: () => getRangeITC(opts),
-      regexp: () => getRegexpITC(opts),
-      type: () => getTypeITC(opts),
-      term: () => getTermITC(opts),
-      terms: () => getTermsITC(opts),
-      wildcard: () => getWildcardITC(opts),
+      exists: getExistsITC(opts),
+      fuzzy: getFuzzyITC(opts),
+      ids: getIdsITC(opts),
+      prefix: getPrefixITC(opts),
+      range: getRangeITC(opts),
+      regexp: getRegexpITC(opts),
+      type: getTypeITC(opts),
+      term: getTermITC(opts),
+      terms: getTermsITC(opts),
+      wildcard: getWildcardITC(opts),
 
       // Geo queries
-      geo_bounding_box: () => getGeoBoundingBoxITC(opts),
-      geo_distance: () => getGeoDistanceITC(opts),
-      geo_polygon: () => getGeoPolygonITC(opts),
-      geo_shape: () => getGeoShapeITC(opts),
+      geo_bounding_box: getGeoBoundingBoxITC(opts),
+      geo_distance: getGeoDistanceITC(opts),
+      geo_polygon: getGeoPolygonITC(opts),
+      geo_shape: getGeoShapeITC(opts),
 
       // Specialized queries
-      more_like_this: () => getMoreLikeThisITC(opts),
-      percolate: () => getPercolateITC(opts),
-      script: () => getScriptITC(opts),
+      more_like_this: getMoreLikeThisITC(opts),
+      percolate: getPercolateITC(opts),
+      script: getScriptITC(opts),
 
       // Joining queries
-      has_child: () => getHasChildITC(opts),
-      has_parent: () => getHasParentITC(opts),
-      nested: () => getNestedITC(opts),
-      parent_id: () => getParentIdITC(opts),
+      has_child: getHasChildITC(opts),
+      has_parent: getHasParentITC(opts),
+      nested: getNestedITC(opts),
+      parent_id: getParentIdITC(opts),
     },
   }));
 }

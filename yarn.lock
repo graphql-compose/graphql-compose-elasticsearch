@@ -3453,10 +3453,10 @@ flatted@^2.0.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-2.0.1.tgz#69e57caa8f0eacbc281d2e2cb458d46fdb449e08"
   integrity sha512-a1hQMktqW9Nmqr5aktAux3JMNqaucxGcjtjWnZLHX7yyPCmlSV3M54nGYbqT8K+0GhF3NBgmJCc3ma+WOgX8Jg==
 
-flow-bin@0.110.0:
-  version "0.110.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.110.0.tgz#c6c140e239f662839d8f61b64b7b911f12d3306c"
-  integrity sha512-mmdEPEMoTuX+mguy/tjRlOlCtPfVdXZQeMgCAsEDVDgWMA5vwWhM2y653OcJiKX38t4gtZ2e/MNVo0qzyYeZDQ==
+flow-bin@0.118.0:
+  version "0.118.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.118.0.tgz#fb706364a58c682d67a2ca7df39396467dc397d1"
+  integrity sha512-jlbUu0XkbpXeXhan5xyTqVK1jmEKNxE8hpzznI3TThHTr76GiFwK0iRzhDo4KNy+S9h/KxHaqVhTP86vA6wHCg==
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
@@ -3772,10 +3772,10 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
   integrity sha1-TK+tdrxi8C+gObL5Tpo906ORpyU=
 
-graphql-compose@7.11.0:
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-7.11.0.tgz#77e7435918f7f9a186ae9e939fa2c92c3bb85cdd"
-  integrity sha512-vmAaNA4BUM7PBe1PpujLRIsAlx1qjaoAsol1IvGQKBIi8TwdrLnFZEza0O7+AalqbmcP2eqZ5On/pALP/88ZiA==
+graphql-compose@7.12.0:
+  version "7.12.0"
+  resolved "https://registry.yarnpkg.com/graphql-compose/-/graphql-compose-7.12.0.tgz#223e3c811c18e18e153be2c77c632afa3015477a"
+  integrity sha512-AbuQl2LfHYWtgVNJd8De2m8+KtJnkIXII8QkuSt2NMsniFc7DUuIp3MBaNPS9pRCA6l1OTGk2labuWRSyXZVlw==
   dependencies:
     graphql-type-json "^0.3.1"
     object-path "^0.11.4"

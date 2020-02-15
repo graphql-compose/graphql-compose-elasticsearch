@@ -15,7 +15,7 @@ export function getFindByIdOutputTC<TContext>(
       _index: 'String',
       _type: 'String',
       _version: 'Int',
-      ...sourceTC.getFields(),
+      ...(sourceTC.getFields(): any),
     },
   }));
 }

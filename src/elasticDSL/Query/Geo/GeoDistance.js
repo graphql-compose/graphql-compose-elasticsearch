@@ -43,7 +43,7 @@ export function getGeoDistanceITC<TContext>(
           description: 'Eg. 12km',
         },
         distance_type: getDistanceCalculationModeFC(opts),
-        ...fields,
+        ...(fields: any),
         validation_method: 'String',
       },
     }));

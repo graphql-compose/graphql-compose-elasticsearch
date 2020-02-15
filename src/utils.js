@@ -38,7 +38,7 @@ export type CommonOpts<TContext = {}> = {
 
 export function prepareCommonOpts<TContext>(
   schemaComposer: SchemaComposer<TContext>,
-  opts: mixed = {}
+  opts: any = {}
 ): CommonOpts<TContext> {
   return {
     schemaComposer,
