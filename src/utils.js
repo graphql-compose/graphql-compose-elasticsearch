@@ -120,7 +120,6 @@ export async function fetchElasticMapping(
     type: opts.elasticType,
   });
 
-  // 92
   // Try index name, else resort to Value in case Index name is an alias
   const baseIndex = elasticMapping[opts.elasticIndex] || Object.values(elasticMapping)[0];
 
