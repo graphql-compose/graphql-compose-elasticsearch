@@ -39,7 +39,7 @@ export function getSortITC<TContext>(opts: CommonOpts<TContext>): ComposeInputTy
         value: '_score',
       },
     };
-    sortableFields.forEach(fieldName => {
+    sortableFields.forEach((fieldName) => {
       const dottedName = fieldName.replace(/__/g, '.');
       values[`${fieldName}__asc`] = {
         value: { [dottedName]: 'asc' },

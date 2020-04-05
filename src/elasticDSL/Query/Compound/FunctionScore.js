@@ -71,7 +71,7 @@ export function prepareFunctionScoreInResolve(
   }
 
   if (Array.isArray(function_score.functions)) {
-    function_score.functions = function_score.functions.map(func => {
+    function_score.functions = function_score.functions.map((func) => {
       if (func.filter) {
         func.filter = prepareQueryInResolve(func.filter, fieldMap);
       }

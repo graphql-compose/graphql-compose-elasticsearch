@@ -1,14 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AGGS args converter Query DSL 1`] = `
-"\\"\\"\\"
-The scripting module enables you to use scripts to evaluate custom expressions. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) 
-\\"\\"\\"
-input Elastic_CommonsScript_50 {
-  lang: String!
-  inline: String!
-  params: JSON
-  file: String
+"\\"\\"\\"\\"\\"\\"
+schema {
+  query: Query
+}
+
+type Query {
+  search(body: Elastic_Query_50): Int
 }
 
 \\"\\"\\"
@@ -33,16 +32,13 @@ input Elastic_Query_50 {
   match_phrase: JSON
 
   \\"\\"\\"
-  The match_phrase_prefix is the same as match_phrase, except that it allows for
-  prefix matches on the last term in the text. Eg \\"quick brown f\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html) 
+  The match_phrase_prefix is the same as match_phrase, except that it allows for prefix matches on the last term in the text. Eg \\"quick brown f\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase-prefix.html) 
   \\"\\"\\"
   match_phrase_prefix: JSON
   multi_match: Elastic_QueryMultiMatch_50
 
   \\"\\"\\"
-  The common terms query is a modern alternative to stopwords which improves the
-  precision and recall of search results (by taking stopwords into account),
-  without sacrificing performance. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-common-terms-query.html) 
+  The common terms query is a modern alternative to stopwords which improves the precision and recall of search results (by taking stopwords into account), without sacrificing performance. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-common-terms-query.html) 
   \\"\\"\\"
   common: JSON
   query_string: Elastic_QueryQueryString_50
@@ -56,8 +52,7 @@ input Elastic_Query_50 {
   ids: Elastic_QueryIds_50
 
   \\"\\"\\"
-  Matches documents that have fields containing terms with a specified prefix
-  (not analyzed). [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html) 
+  Matches documents that have fields containing terms with a specified prefix (not analyzed). [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-prefix-query.html) 
   \\"\\"\\"
   prefix: JSON
 
@@ -73,39 +68,32 @@ input Elastic_Query_50 {
   type: Elastic_QueryType_50
 
   \\"\\"\\"
-  Find documents which contain the exact term specified in the field specified.
-  { fieldName: value } or { fieldName: { value: value, boost: 2.0 } } [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html) 
+  Find documents which contain the exact term specified in the field specified. { fieldName: value } or { fieldName: { value: value, boost: 2.0 } } [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html) 
   \\"\\"\\"
   term: JSON
 
   \\"\\"\\"
-  Filters documents that have fields that match any of the provided terms (not
-  analyzed). { fieldName: [values] } [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html) 
+  Filters documents that have fields that match any of the provided terms (not analyzed). { fieldName: [values] } [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html) 
   \\"\\"\\"
   terms: JSON
 
   \\"\\"\\"
-  Matches documents that have fields matching a wildcard expression (not
-  analyzed). In order to prevent extremely SLOW wildcard queries, term should
-  not start from * or ?. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html) 
+  Matches documents that have fields matching a wildcard expression (not analyzed). In order to prevent extremely SLOW wildcard queries, term should not start from * or ?. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-wildcard-query.html) 
   \\"\\"\\"
   wildcard: JSON
 
   \\"\\"\\"
-  A query allowing to filter hits based on a point location using a bounding
-  box. Requires the geo_point Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-bounding-box-query.html) 
+  A query allowing to filter hits based on a point location using a bounding box. Requires the geo_point Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-bounding-box-query.html) 
   \\"\\"\\"
   geo_bounding_box: JSON
 
   \\"\\"\\"
-  Filters documents that include only hits that exists within a specific
-  distance from a geo point. Requires the geo_point Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-distance-query.html) 
+  Filters documents that include only hits that exists within a specific distance from a geo point. Requires the geo_point Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-distance-query.html) 
   \\"\\"\\"
   geo_distance: JSON
 
   \\"\\"\\"
-  A query allowing to include hits that only fall within a polygon of points.
-  Requires the geo_point Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-polygon-query.html) 
+  A query allowing to include hits that only fall within a polygon of points. Requires the geo_point Mapping. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-geo-polygon-query.html) 
   \\"\\"\\"
   geo_polygon: JSON
 
@@ -123,9 +111,14 @@ input Elastic_Query_50 {
 }
 
 \\"\\"\\"
-A query that matches documents matching boolean combinations of other queries.
-The bool query maps to Lucene BooleanQuery. It is built using one or more
-boolean clauses, each clause with a typed occurrence. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) 
+The most simple query, which matches all documents, giving them all a _score of 1.0. 
+\\"\\"\\"
+input Elastic_QueryMatchAll_50 {
+  boost: Float
+}
+
+\\"\\"\\"
+A query that matches documents matching boolean combinations of other queries. The bool query maps to Lucene BooleanQuery. It is built using one or more boolean clauses, each clause with a typed occurrence. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html) 
 \\"\\"\\"
 input Elastic_QueryBool_50 {
   \\"\\"\\"
@@ -134,17 +127,12 @@ input Elastic_QueryBool_50 {
   must: [Elastic_Query_50]
 
   \\"\\"\\"
-  The clause (query) must appear in matching documents. However unlike must the
-  score of the query will be ignored. Filter clauses are executed in filter
-  context, meaning that scoring is ignored and clauses are considered for caching. 
+  The clause (query) must appear in matching documents. However unlike must the score of the query will be ignored. Filter clauses are executed in filter context, meaning that scoring is ignored and clauses are considered for caching. 
   \\"\\"\\"
   filter: [Elastic_Query_50]
 
   \\"\\"\\"
-  The clause (query) should appear in the matching document. In a boolean query
-  with no must or filter clauses, one or more should clauses must match a
-  document. The minimum number of should clauses to match can be set using the
-  minimum_should_match parameter. 
+  The clause (query) should appear in the matching document. In a boolean query with no must or filter clauses, one or more should clauses must match a document. The minimum number of should clauses to match can be set using the minimum_should_match parameter. 
   \\"\\"\\"
   should: [Elastic_Query_50]
 
@@ -152,13 +140,27 @@ input Elastic_QueryBool_50 {
   minimum_should_match: String
 
   \\"\\"\\"
-  The clause (query) must not appear in the matching documents. Clauses are
-  executed in filter context meaning that scoring is ignored and clauses are
-  considered for caching. Because scoring is ignored, a score of 0 for all
-  documents is returned. 
+  The clause (query) must not appear in the matching documents. Clauses are executed in filter context meaning that scoring is ignored and clauses are considered for caching. Because scoring is ignored, a score of 0 for all documents is returned. 
   \\"\\"\\"
   must_not: [Elastic_Query_50]
   boost: Float
+}
+
+\\"\\"\\"
+A query that wraps another query and simply returns a constant score equal to the query boost for every document in the filter. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html) 
+\\"\\"\\"
+input Elastic_QueryConstantScore_50 {
+  filter: Elastic_Query_50!
+  boost: Float!
+}
+
+\\"\\"\\"
+A query that generates the union of documents produced by its subqueries, and that scores each document with the maximum score for that document as produced by any subquery, plus a tie breaking increment for any additional matching subqueries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-dis-max-query.html) 
+\\"\\"\\"
+input Elastic_QueryDisMax_50 {
+  queries: [Elastic_Query_50]
+  boost: Float
+  tie_breaker: Float
 }
 
 \\"\\"\\"
@@ -171,37 +173,7 @@ input Elastic_QueryBoosting_50 {
 }
 
 \\"\\"\\"
-A query that wraps another query and simply returns a constant score equal to
-the query boost for every document in the filter. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-constant-score-query.html) 
-\\"\\"\\"
-input Elastic_QueryConstantScore_50 {
-  filter: Elastic_Query_50!
-  boost: Float!
-}
-
-\\"\\"\\"
-A query that generates the union of documents produced by its subqueries, and
-that scores each document with the maximum score for that document as produced
-by any subquery, plus a tie breaking increment for any additional matching subqueries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-dis-max-query.html) 
-\\"\\"\\"
-input Elastic_QueryDisMax_50 {
-  queries: [Elastic_Query_50]
-  boost: Float
-  tie_breaker: Float
-}
-
-\\"\\"\\"
-Returns documents that have at least one non-null value in the original field. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html) 
-\\"\\"\\"
-input Elastic_QueryExists_50 {
-  field: String
-}
-
-\\"\\"\\"
-The function_score allows you to modify the score of documents that are
-retrieved by a query. This can be useful if, for example, a score function is
-computationally expensive and it is sufficient to compute the score on a
-filtered set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html) 
+The function_score allows you to modify the score of documents that are retrieved by a query. This can be useful if, for example, a score function is computationally expensive and it is sufficient to compute the score on a filtered set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html) 
 \\"\\"\\"
 input Elastic_QueryFunctionScore_50 {
   query: Elastic_Query_50
@@ -218,6 +190,10 @@ input Elastic_QueryFunctionScore_50 {
   min_score: Float
 }
 
+input Elastic_QueryFunctionScoreRandom_50 {
+  seed: Float
+}
+
 input Elastic_QueryFunctionScoreFunction_50 {
   filter: Elastic_Query_50
   random_score: Elastic_QueryFunctionScoreRandom_50
@@ -229,61 +205,10 @@ input Elastic_QueryFunctionScoreFunction_50 {
   exp: JSON
 }
 
-input Elastic_QueryFunctionScoreRandom_50 {
-  seed: Float
-}
-
 \\"\\"\\"
-The has_child filter accepts a query and the child type to run against, and
-results in parent documents that have child docs matching the query. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-child-query.html) 
+The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 \\"\\"\\"
-input Elastic_QueryHasChild_50 {
-  type: String
-  query: Elastic_Query_50
-
-  \\"\\"\\"Can be: \`avg\`, \`sum\`, \`max\`, \`min\`, \`none\`.\\"\\"\\"
-  score_mode: String
-  min_children: Int
-  max_children: Int
-}
-
-\\"\\"\\"
-The has_parent query accepts a query and a parent type. The query is executed in
-the parent document space, which is specified by the parent type [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-parent-query.html) 
-\\"\\"\\"
-input Elastic_QueryHasParent_50 {
-  parent_type: String
-  query: Elastic_Query_50
-  score: Boolean
-  ignore_unmapped: Boolean
-}
-
-\\"\\"\\"
-Filters documents that only have the provided ids. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html) 
-\\"\\"\\"
-input Elastic_QueryIds_50 {
-  type: String!
-  values: [String]!
-}
-
-\\"\\"\\"
-The most simple query, which matches all documents, giving them all a _score of 1.0. 
-\\"\\"\\"
-input Elastic_QueryMatchAll_50 {
-  boost: Float
-}
-
-\\"\\"\\"
-The More Like This Query (MLT Query) finds documents that are like a given set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-mlt-query.html) 
-\\"\\"\\"
-input Elastic_QueryMoreLikeThis_50 {
-  fields: [String]
-  like: JSON
-  unlike: JSON
-  min_term_freq: Int
-  max_query_terms: Int
-  boost: Float
-}
+scalar JSON
 
 \\"\\"\\"
 The multi_match query builds on the match query to allow multi-field queries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html) 
@@ -309,11 +234,6 @@ input Elastic_QueryMultiMatch_50 {
   cutoff_frequency: Float
 }
 
-enum Elastic_QueryMultiMatchOperatorEnum_50 {
-  and
-  or
-}
-
 enum Elastic_QueryMultiMatchTypeEnum_50 {
   best_fields
   most_fields
@@ -322,42 +242,13 @@ enum Elastic_QueryMultiMatchTypeEnum_50 {
   phrase_prefix
 }
 
-\\"\\"\\"
-Nested query allows to query nested objects / docs. The query is executed
-against the nested objects / docs as if they were indexed as separate docs. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html) 
-\\"\\"\\"
-input Elastic_QueryNested_50 {
-  path: String
-
-  \\"\\"\\"Can be: \`avg\`, \`sum\`, \`max\`, \`min\`, \`none\`.\\"\\"\\"
-  score_mode: String
-  query: Elastic_Query_50
+enum Elastic_QueryMultiMatchOperatorEnum_50 {
+  and
+  or
 }
 
 \\"\\"\\"
-The parent_id query can be used to find child documents which belong to a
-particular parent. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-parent-id-query.html) 
-\\"\\"\\"
-input Elastic_QueryParentId_50 {
-  type: String
-  id: String
-  ignore_unmapped: Boolean
-}
-
-\\"\\"\\"
-The percolate query can be used to match queries stored in an index. The
-percolate query itself contains the document that will be used as query to match
-with the stored queries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-percolate-query.html) 
-\\"\\"\\"
-input Elastic_QueryPercolate_50 {
-  field: String
-  document_type: String!
-  document: JSON!
-}
-
-\\"\\"\\"
-A query that uses a query parser in order to parse its content. Eg. \\"this AND
-that OR thus\\" or \\"(content:this OR name:this) AND (content:that OR name:that)\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html) 
+A query that uses a query parser in order to parse its content. Eg. \\"this AND that OR thus\\" or \\"(content:this OR name:this) AND (content:that OR name:that)\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html) 
 \\"\\"\\"
 input Elastic_QueryQueryString_50 {
   query: String!
@@ -390,18 +281,7 @@ enum Elastic_QueryQueryStringOperatorEnum_50 {
 }
 
 \\"\\"\\"
-A query allowing to define scripts as queries. They are typically used in a
-filter context. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-query.html) 
-\\"\\"\\"
-input Elastic_QueryScript_50 {
-  script: Elastic_CommonsScript_50
-}
-
-\\"\\"\\"
-A query that uses the SimpleQueryParser to parse its context. Unlike the regular
-query_string query, the simple_query_string query will never throw an exception,
-and discards invalid parts of the query. Eg. \\"this AND that OR thus\\" or
-\\"(content:this OR name:this) AND (content:that OR name:that)\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html) 
+A query that uses the SimpleQueryParser to parse its context. Unlike the regular query_string query, the simple_query_string query will never throw an exception, and discards invalid parts of the query. Eg. \\"this AND that OR thus\\" or \\"(content:this OR name:this) AND (content:that OR name:that)\\" [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html) 
 \\"\\"\\"
 input Elastic_QuerySimpleQueryString_50 {
   query: String!
@@ -410,9 +290,7 @@ input Elastic_QuerySimpleQueryString_50 {
   analyzer: String
 
   \\"\\"\\"
-  Can provided several flags, eg \\"OR|AND|PREFIX\\". The available flags are: ALL,
-  NONE, AND, OR, NOT, PREFIX, PHRASE, PRECEDENCE, ESCAPE, WHITESPACE, FUZZY,
-  NEAR, and SLOP. 
+  Can provided several flags, eg \\"OR|AND|PREFIX\\". The available flags are: ALL, NONE, AND, OR, NOT, PREFIX, PHRASE, PRECEDENCE, ESCAPE, WHITESPACE, FUZZY, NEAR, and SLOP. 
   \\"\\"\\"
   flags: String
   analyze_wildcard: Boolean
@@ -428,6 +306,21 @@ enum Elastic_QuerySimpleQueryStringOperatorEnum_50 {
 }
 
 \\"\\"\\"
+Returns documents that have at least one non-null value in the original field. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html) 
+\\"\\"\\"
+input Elastic_QueryExists_50 {
+  field: String
+}
+
+\\"\\"\\"
+Filters documents that only have the provided ids. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-ids-query.html) 
+\\"\\"\\"
+input Elastic_QueryIds_50 {
+  type: String!
+  values: [String]!
+}
+
+\\"\\"\\"
 Filters documents matching the provided document / mapping type. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-type-query.html) 
 \\"\\"\\"
 input Elastic_QueryType_50 {
@@ -435,12 +328,84 @@ input Elastic_QueryType_50 {
 }
 
 \\"\\"\\"
-The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+The More Like This Query (MLT Query) finds documents that are like a given set of documents. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-mlt-query.html) 
 \\"\\"\\"
-scalar JSON
+input Elastic_QueryMoreLikeThis_50 {
+  fields: [String]
+  like: JSON
+  unlike: JSON
+  min_term_freq: Int
+  max_query_terms: Int
+  boost: Float
+}
 
-type Query {
-  search(body: Elastic_Query_50): Int
+\\"\\"\\"
+The percolate query can be used to match queries stored in an index. The percolate query itself contains the document that will be used as query to match with the stored queries. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-percolate-query.html) 
+\\"\\"\\"
+input Elastic_QueryPercolate_50 {
+  field: String
+  document_type: String!
+  document: JSON!
+}
+
+\\"\\"\\"
+A query allowing to define scripts as queries. They are typically used in a filter context. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-script-query.html) 
+\\"\\"\\"
+input Elastic_QueryScript_50 {
+  script: Elastic_CommonsScript_50
+}
+
+\\"\\"\\"
+The scripting module enables you to use scripts to evaluate custom expressions. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html) 
+\\"\\"\\"
+input Elastic_CommonsScript_50 {
+  lang: String!
+  inline: String!
+  params: JSON
+  file: String
+}
+
+\\"\\"\\"
+The has_child filter accepts a query and the child type to run against, and results in parent documents that have child docs matching the query. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-child-query.html) 
+\\"\\"\\"
+input Elastic_QueryHasChild_50 {
+  type: String
+  query: Elastic_Query_50
+
+  \\"\\"\\"Can be: \`avg\`, \`sum\`, \`max\`, \`min\`, \`none\`.\\"\\"\\"
+  score_mode: String
+  min_children: Int
+  max_children: Int
+}
+
+\\"\\"\\"
+The has_parent query accepts a query and a parent type. The query is executed in the parent document space, which is specified by the parent type [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-has-parent-query.html) 
+\\"\\"\\"
+input Elastic_QueryHasParent_50 {
+  parent_type: String
+  query: Elastic_Query_50
+  score: Boolean
+  ignore_unmapped: Boolean
+}
+
+\\"\\"\\"
+Nested query allows to query nested objects / docs. The query is executed against the nested objects / docs as if they were indexed as separate docs. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html) 
+\\"\\"\\"
+input Elastic_QueryNested_50 {
+  path: String
+
+  \\"\\"\\"Can be: \`avg\`, \`sum\`, \`max\`, \`min\`, \`none\`.\\"\\"\\"
+  score_mode: String
+  query: Elastic_Query_50
+}
+
+\\"\\"\\"
+The parent_id query can be used to find child documents which belong to a particular parent. [Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-parent-id-query.html) 
+\\"\\"\\"
+input Elastic_QueryParentId_50 {
+  type: String
+  id: String
+  ignore_unmapped: Boolean
 }
 "
 `;

@@ -79,7 +79,7 @@ export function getBoolITC<TContext>(opts: CommonOpts<TContext>): InputTypeCompo
 
 function prepareQueryMayBeArray(vals, fieldMap) {
   if (Array.isArray(vals)) {
-    return vals.map(val => prepareQueryInResolve(val, fieldMap));
+    return vals.map((val) => prepareQueryInResolve(val, fieldMap));
   }
   return prepareQueryInResolve(vals, fieldMap);
 }

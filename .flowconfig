@@ -33,8 +33,11 @@
 .*/node_modules/travis.*
 .*/node_modules/uglify.*
 .*/node_modules/yargs.*
-.*/node_modules/express-graphql/dist/index.js.flow
-.*/node_modules/graphql/utilities/buildASTSchema.js.flow
+.*/node_modules/express-graphql/index.js.flow
+
+# Redundant argument. This argument doesn't change any lint settings.
+#   flowlint uninitialized-instance-property:off
+.*/node_modules/graphql/error/GraphQLError.js.flow
 
 [include]
 

@@ -76,7 +76,7 @@ export default function createSearchResolver<TSource, TContext>(
       fields: { ...argsConfigMap },
     })
     .removeField(topLevelArgs);
-  Object.keys(argsConfigMap).forEach(argKey => {
+  Object.keys(argsConfigMap).forEach((argKey) => {
     if (topLevelArgs.indexOf(argKey) === -1) {
       // $FlowFixMe
       delete argsConfigMap[argKey];
@@ -189,7 +189,7 @@ export default function createSearchResolver<TSource, TContext>(
 
 export function toDottedList(projection: ProjectionType, prev?: string[]): string[] | boolean {
   let result = [];
-  Object.keys(projection).forEach(k => {
+  Object.keys(projection).forEach((k) => {
     if (isObject(projection[k])) {
       const tmp = toDottedList(projection[k], prev ? [...prev, k] : [k]);
       if (Array.isArray(tmp)) {

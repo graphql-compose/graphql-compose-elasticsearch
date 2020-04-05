@@ -20,8 +20,8 @@ export const ElasticGeoPointType = new GraphQLScalarType({
     Array GeoJson format (lat, lon): [4.894, 52.3760]
   `
   ),
-  serialize: v => v,
-  parseValue: v => v,
+  serialize: (v) => v,
+  parseValue: (v) => v,
   parseLiteral(ast) {
     switch (ast.kind) {
       case Kind.STRING:
@@ -29,7 +29,7 @@ export const ElasticGeoPointType = new GraphQLScalarType({
       case Kind.OBJECT: {
         let lat;
         let lon;
-        ast.fields.forEach(field => {
+        ast.fields.forEach((field) => {
           if (field.name.value === 'lat') {
             lat = parseFloat(field.value);
           }

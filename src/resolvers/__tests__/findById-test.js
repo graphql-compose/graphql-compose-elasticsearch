@@ -32,10 +32,10 @@ describe('findById', () => {
   it('resolve', async () => {
     await findByIdResolver
       .resolve({ args: { id: '4554' }, context: { elasticClient } })
-      .then(res => {
+      .then((res) => {
         console.log(res); // eslint-disable-line
       })
-      .catch(e => {
+      .catch((e) => {
         expect(e).toMatchObject({ message: /unknown error/ });
       });
   });

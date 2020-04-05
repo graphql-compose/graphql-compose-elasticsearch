@@ -94,7 +94,7 @@ export function convertToSourceTC<TContext>(
   const fields = {};
   const pluralFields = opts.pluralFields || [];
 
-  Object.keys(properties).forEach(sourceName => {
+  Object.keys(properties).forEach((sourceName) => {
     const fieldName = sourceName.replace(/[^_a-zA-Z0-9]/g, '_');
     const gqType = propertyToSourceGraphQLType(
       schemaComposer,
@@ -109,7 +109,7 @@ export function convertToSourceTC<TContext>(
       if (pluralFields.indexOf(sourceName) >= 0) {
         fields[fieldName] = {
           type: [gqType],
-          resolve: source => {
+          resolve: (source) => {
             if (Array.isArray(source[sourceName])) {
               return source[sourceName];
             }
@@ -119,7 +119,7 @@ export function convertToSourceTC<TContext>(
       } else {
         fields[fieldName] = {
           type: gqType,
-          resolve: source => {
+          resolve: (source) => {
             if (Array.isArray(source[sourceName])) {
               return source[sourceName][0];
             }
@@ -169,10 +169,10 @@ export function inputPropertiesToGraphQLTypes(
   // mapping
   const { properties } = ((prop: any): ElasticMappingT);
   if (properties && isObject(properties)) {
-    Object.keys(properties).forEach(subFieldName => {
+    Object.keys(properties).forEach((subFieldName) => {
       inputPropertiesToGraphQLTypes(
         properties[subFieldName],
-        [fieldName, subFieldName].filter(o => !!o).join('__'),
+        [fieldName, subFieldName].filter((o) => !!o).join('__'),
         result
       );
     });
@@ -182,10 +182,10 @@ export function inputPropertiesToGraphQLTypes(
   // object type with subfields
   const { fields } = ((prop: any): ElasticPropertyT);
   if (fields && isObject(fields)) {
-    Object.keys(fields).forEach(subFieldName => {
+    Object.keys(fields).forEach((subFieldName) => {
       inputPropertiesToGraphQLTypes(
         fields[subFieldName],
-        [fieldName, subFieldName].filter(o => !!o).join('__'),
+        [fieldName, subFieldName].filter((o) => !!o).join('__'),
         result
       );
     });
@@ -213,6 +213,6 @@ export function inputPropertiesToGraphQLTypes(
 export function getSubFields(fieldName: string, pluralFields?: ?(string[])): string[] {
   const st = `${fieldName}.`;
   return (pluralFields || [])
-    .filter(o => typeof o === 'string' && o.startsWith(st))
-    .map(v => v.slice(st.length));
+    .filter((o) => typeof o === 'string' && o.startsWith(st))
+    .map((v) => v.slice(st.length));
 }

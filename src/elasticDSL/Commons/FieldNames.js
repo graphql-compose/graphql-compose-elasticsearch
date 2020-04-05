@@ -113,9 +113,9 @@ export function getAllAsFieldConfigMap(opts: CommonOpts<any>, fc: mixed) {
 
 export function getFieldNamesByElasticType(fieldMap: any, types: ElasticDataType[]): string[] {
   const fieldNames = [];
-  types.forEach(type => {
+  types.forEach((type) => {
     if (typeof fieldMap[type] === 'object') {
-      Object.keys(fieldMap[type]).forEach(fieldName => {
+      Object.keys(fieldMap[type]).forEach((fieldName) => {
         fieldNames.push(fieldName);
       });
     }
@@ -139,7 +139,7 @@ export function getFieldNamesType(
   }
   if (!typePrefix) {
     types.sort();
-    typePrefix = types.map(t => upperFirst(t)).join('');
+    typePrefix = types.map((t) => upperFirst(t)).join('');
   }
   const name = getTypeName(`${typePrefix}Fields`, opts);
   const description = desc(`Avaliable fields from mapping.`);
@@ -173,7 +173,7 @@ function getEnumValues(
       value: '_all',
     };
   }
-  getFieldNamesByElasticType(fieldMap, types).forEach(fieldName => {
+  getFieldNamesByElasticType(fieldMap, types).forEach((fieldName) => {
     values[fieldName] = {
       value: fieldName.replace(/__/g, '.'),
     };
@@ -204,7 +204,7 @@ export function getFieldConfigMap(
   if (addAll) {
     fcMap._all = fc;
   }
-  getFieldNamesByElasticType(opts.fieldMap, types).forEach(fieldName => {
+  getFieldNamesByElasticType(opts.fieldMap, types).forEach((fieldName) => {
     fcMap[fieldName] = fc;
   });
 

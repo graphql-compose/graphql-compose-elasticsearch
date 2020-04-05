@@ -154,7 +154,7 @@ export default class ElasticApiParser {
   static parseParamsDescription(doxItemAST: any): { [fieldName: string]: string } {
     const descriptions = {};
     if (Array.isArray(doxItemAST.tags)) {
-      doxItemAST.tags.forEach(tag => {
+      doxItemAST.tags.forEach((tag) => {
         if (!tag || tag.type !== 'param') return;
         if (tag.name === 'params') return;
 
@@ -209,7 +209,7 @@ export default class ElasticApiParser {
     if (parts.length === 1) {
       return parts[0];
     } else {
-      return parts.filter(o => o !== 'prototype');
+      return parts.filter((o) => o !== 'prototype');
     }
   }
 
@@ -225,7 +225,7 @@ export default class ElasticApiParser {
       throw Error('Incorrect responce from dox.parseComments');
     }
 
-    doxAST.forEach(item => {
+    doxAST.forEach((item) => {
       if (!item.ctx || !item.ctx.string) {
         return;
       }
@@ -254,7 +254,7 @@ export default class ElasticApiParser {
 
   generateFieldMap(): ObjectTypeComposerFieldConfigMapDefinition<any, any> {
     const result = {};
-    Object.keys(this.parsedSource).forEach(methodName => {
+    Object.keys(this.parsedSource).forEach((methodName) => {
       result[methodName] = this.generateFieldConfig(methodName);
     });
 
@@ -437,7 +437,7 @@ export default class ElasticApiParser {
     }
 
     if (params) {
-      Object.keys(params).forEach(k => {
+      Object.keys(params).forEach((k) => {
         const fieldConfig = this.paramToGraphQLArgConfig(params[k], k, descriptions[k]);
         if (fieldConfig) {
           result[k] = fieldConfig;
@@ -448,9 +448,9 @@ export default class ElasticApiParser {
     const urlList = urls || (url ? [url] : null);
 
     if (Array.isArray(urlList)) {
-      urlList.forEach(item => {
+      urlList.forEach((item) => {
         if (item.req) {
-          Object.keys(item.req).forEach(k => {
+          Object.keys(item.req).forEach((k) => {
             const fieldConfig = this.paramToGraphQLArgConfig(item.req[k], k, descriptions[k]);
             if (fieldConfig) {
               result[k] = fieldConfig;
@@ -467,7 +467,7 @@ export default class ElasticApiParser {
     fields: ObjectTypeComposerFieldConfigMapDefinition<any, any>
   ): ObjectTypeComposerFieldConfigMapDefinition<any, any> {
     const result = {};
-    Object.keys(fields).forEach(k => {
+    Object.keys(fields).forEach((k) => {
       const names = k.split('.');
       if (names.length === 1) {
         result[names[0]] = fields[k];

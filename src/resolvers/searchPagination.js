@@ -39,7 +39,7 @@ export default function createSearchPaginationResolver<TSource, TContext>(
       .reorderFields(['items', 'count', 'pageInfo', 'aggregations'])
   );
 
-  resolver.resolve = async rp => {
+  resolver.resolve = async (rp) => {
     const { args = {}, projection = {} } = rp;
 
     const page = args.page || 1;

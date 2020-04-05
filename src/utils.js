@@ -82,7 +82,7 @@ export function desc(str: string): string {
 export function reorderKeys<T: Object>(obj: T, names: string[]): T {
   const orderedFields = {};
   const fields = { ...obj };
-  names.forEach(name => {
+  names.forEach((name) => {
     if (fields[name]) {
       orderedFields[name] = fields[name];
       delete fields[name];

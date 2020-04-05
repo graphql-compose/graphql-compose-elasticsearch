@@ -30,7 +30,7 @@ export function getDisMaxITC<TContext>(opts: CommonOpts<TContext>): InputTypeCom
 /* eslint-disable no-param-reassign, camelcase */
 export function prepareDisMaxResolve(dis_max: any, fieldMap: mixed): { [argName: string]: any } {
   if (Array.isArray(dis_max.queries)) {
-    dis_max.queries = dis_max.queries.map(query => prepareQueryInResolve(query, fieldMap));
+    dis_max.queries = dis_max.queries.map((query) => prepareQueryInResolve(query, fieldMap));
   }
 
   return dis_max;

@@ -41,7 +41,7 @@ export function prepareAggsInResolve(
 
 export function convertAggsBlocks(blockList: GqlAggBlock[]): ElasticAggsT {
   const result = {};
-  blockList.forEach(block => {
+  blockList.forEach((block) => {
     if (block.key && block.value) {
       result[block.key] = convertAggsRules(block.value);
     }
@@ -51,7 +51,7 @@ export function convertAggsBlocks(blockList: GqlAggBlock[]): ElasticAggsT {
 
 export function convertAggsRules(rules: GqlAggRules): ElasticAggsRulesT {
   const result = {};
-  Object.keys(rules).forEach(key => {
+  Object.keys(rules).forEach((key) => {
     if (key === 'aggs' && rules.aggs) {
       result.aggs = convertAggsBlocks(rules.aggs);
     } else {

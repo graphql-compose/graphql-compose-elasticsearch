@@ -46,7 +46,7 @@ export default function createSearchConnectionResolver<TSource, TContext>(
       .reorderFields(['count', 'pageInfo', 'edges', 'aggregations'])
   );
 
-  resolver.resolve = async rp => {
+  resolver.resolve = async (rp) => {
     const { args = {}, projection = {} } = rp;
 
     if (!args.sort || !Array.isArray(args.sort) || args.sort.length === 0) {
@@ -99,7 +99,7 @@ export default function createSearchConnectionResolver<TSource, TContext>(
     const hasExtraRecords = list.length > limit;
     if (hasExtraRecords) list = list.slice(0, limit);
     const cursorMap = new Map();
-    const edges = list.map(node => {
+    const edges = list.map((node) => {
       const cursor = dataToCursor(node.sort);
       if (cursorMap.has(cursor)) {
         throw new Error(
