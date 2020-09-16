@@ -177,7 +177,7 @@ export default function createSearchResolver<TSource, TContext>(
 
         const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
 
-        res.count = typeof(res.hits.total?.value) === "number" ? res.hits.total.value ? res.hits.total;
+        res.count = typeof(res.hits.total?.value) === "number" ? res.hits.total.value : res.hits.total;
         res.max_score = res.hits.max_score;
         res.hits = res.hits.hits;
 
