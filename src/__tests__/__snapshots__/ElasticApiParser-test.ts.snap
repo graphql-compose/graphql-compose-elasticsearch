@@ -1,0 +1,1696 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ElasticApiParser generateFieldConfig() should generate fieldConfig 1`] = `
+Object {
+  "args": Object {
+    "_source": Object {
+      "description": "True or false to return the _source field or not, or a list of fields to return",
+      "type": "JSON",
+    },
+    "_sourceExclude": Object {
+      "description": "A list of fields to exclude from the returned _source field",
+      "type": "JSON",
+    },
+    "_sourceInclude": Object {
+      "description": "A list of fields to extract and return from the _source field",
+      "type": "JSON",
+    },
+    "allowNoIndices": Object {
+      "description": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+      "type": "Boolean",
+    },
+    "analyzeWildcard": Object {
+      "description": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+      "type": "Boolean",
+    },
+    "analyzer": Object {
+      "description": "The analyzer to use for the query string",
+      "type": "String",
+    },
+    "body": Object {
+      "type": "JSON",
+    },
+    "defaultOperator": Object {
+      "defaultValue": "OR",
+      "type": EnumTypeComposer {
+        "_gqType": "ElasticEnum_DefaultOperator",
+        "_gqcExtensions": undefined,
+        "_gqcFields": Object {
+          "AND": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "AND",
+          },
+          "OR": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "OR",
+          },
+        },
+        "_gqcIsModified": true,
+        "schemaComposer": "SchemaComposer",
+      },
+    },
+    "df": Object {
+      "description": "The field to use as default where no field prefix is given in the query string",
+      "type": "String",
+    },
+    "docvalueFields": Object {
+      "description": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+      "type": "JSON",
+    },
+    "expandWildcards": Object {
+      "defaultValue": "open",
+      "type": EnumTypeComposer {
+        "_gqType": "ElasticEnum_ExpandWildcards",
+        "_gqcExtensions": undefined,
+        "_gqcFields": Object {
+          "all": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "all",
+          },
+          "closed": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "closed",
+          },
+          "none": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "none",
+          },
+          "open": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "open",
+          },
+        },
+        "_gqcIsModified": true,
+        "schemaComposer": "SchemaComposer",
+      },
+    },
+    "explain": Object {
+      "description": "Specify whether to return detailed information about score computation as part of a hit",
+      "type": "Boolean",
+    },
+    "fielddataFields": Object {
+      "description": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+      "type": "JSON",
+    },
+    "from": Object {
+      "description": "Starting offset (default: 0)",
+      "type": "Float",
+    },
+    "ignoreUnavailable": Object {
+      "description": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+      "type": "Boolean",
+    },
+    "index": Object {
+      "description": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+      "type": "JSON",
+    },
+    "lenient": Object {
+      "description": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+      "type": "Boolean",
+    },
+    "preference": Object {
+      "description": "Specify the node or shard the operation should be performed on (default: random)",
+      "type": "String",
+    },
+    "q": Object {
+      "description": "Query in the Lucene query string syntax",
+      "type": "String",
+    },
+    "requestCache": Object {
+      "description": "Specify if request cache should be used for this request or not, defaults to index level setting",
+      "type": "Boolean",
+    },
+    "routing": Object {
+      "description": "A comma-separated list of specific routing values",
+      "type": "JSON",
+    },
+    "scroll": Object {
+      "description": "Specify how long a consistent view of the index should be maintained for scrolled search",
+      "type": "String",
+    },
+    "searchType": Object {
+      "description": "Search operation type",
+      "type": EnumTypeComposer {
+        "_gqType": "ElasticEnum_SearchType",
+        "_gqcExtensions": undefined,
+        "_gqcFields": Object {
+          "dfs_query_then_fetch": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "dfs_query_then_fetch",
+          },
+          "query_then_fetch": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "query_then_fetch",
+          },
+        },
+        "_gqcIsModified": true,
+        "schemaComposer": "SchemaComposer",
+      },
+    },
+    "size": Object {
+      "description": "Number of hits to return (default: 10)",
+      "type": "Float",
+    },
+    "sort": Object {
+      "description": "A comma-separated list of <field>:<direction> pairs",
+      "type": "JSON",
+    },
+    "stats": Object {
+      "description": "Specific 'tag' of the request for logging and statistical purposes",
+      "type": "JSON",
+    },
+    "storedFields": Object {
+      "description": "A comma-separated list of stored fields to return as part of a hit",
+      "type": "JSON",
+    },
+    "suggestField": Object {
+      "description": "Specify which field to use for suggestions",
+      "type": "String",
+    },
+    "suggestMode": Object {
+      "defaultValue": "missing",
+      "type": EnumTypeComposer {
+        "_gqType": "ElasticEnum_SuggestMode",
+        "_gqcExtensions": undefined,
+        "_gqcFields": Object {
+          "always": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "always",
+          },
+          "missing": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "missing",
+          },
+          "popular": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "popular",
+          },
+        },
+        "_gqcIsModified": true,
+        "schemaComposer": "SchemaComposer",
+      },
+    },
+    "suggestSize": Object {
+      "description": "How many suggestions to return in response",
+      "type": "Float",
+    },
+    "suggestText": Object {
+      "description": "The source text for which the suggestions should be returned",
+      "type": "String",
+    },
+    "terminateAfter": Object {
+      "description": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+      "type": "Float",
+    },
+    "timeout": Object {
+      "description": "Explicit operation timeout",
+      "type": "String",
+    },
+    "trackScores": Object {
+      "description": "Whether to calculate and return scores even if they are not used for sorting",
+      "type": "Boolean",
+    },
+    "type": Object {
+      "description": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+      "type": "JSON",
+    },
+    "version": Object {
+      "description": "Specify whether to return document version as part of a hit",
+      "type": "Boolean",
+    },
+  },
+  "description": "Perform a [search](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-search.html) request",
+  "resolve": [Function],
+  "type": "JSON",
+}
+`;
+
+exports[`ElasticApiParser generateFieldConfig() should generate fieldConfig 2`] = `
+Object {
+  "args": Object {
+    "bytes": Object {
+      "description": "The unit in which to display byte values",
+      "type": EnumTypeComposer {
+        "_gqType": "ElasticEnum_Bytes",
+        "_gqcExtensions": undefined,
+        "_gqcFields": Object {
+          "b": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "b",
+          },
+          "g": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "g",
+          },
+          "gb": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "gb",
+          },
+          "k": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "k",
+          },
+          "kb": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "kb",
+          },
+          "m": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "m",
+          },
+          "mb": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "mb",
+          },
+          "p": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "p",
+          },
+          "pb": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "pb",
+          },
+          "t": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "t",
+          },
+          "tb": Object {
+            "deprecationReason": undefined,
+            "description": undefined,
+            "directives": Array [],
+            "extensions": Object {},
+            "value": "tb",
+          },
+        },
+        "_gqcIsModified": true,
+        "schemaComposer": "SchemaComposer",
+      },
+    },
+    "format": Object {
+      "defaultValue": "json",
+      "description": "a short version of the Accept header, e.g. json, yaml",
+      "type": "String",
+    },
+    "h": Object {
+      "description": "Comma-separated list of column names to display",
+      "type": "JSON",
+    },
+    "help": Object {
+      "description": "Return help information",
+      "type": "Boolean",
+    },
+    "local": Object {
+      "description": "Return local information, do not retrieve the state from master node (default: false)",
+      "type": "Boolean",
+    },
+    "masterTimeout": Object {
+      "description": "Explicit operation timeout for connection to master node",
+      "type": "String",
+    },
+    "nodeId": Object {
+      "description": "A comma-separated list of node IDs or names to limit the returned information",
+      "type": "JSON",
+    },
+    "s": Object {
+      "description": "Comma-separated list of column names or column aliases to sort by",
+      "type": "JSON",
+    },
+    "v": Object {
+      "description": "Verbose mode. Display column headers",
+      "type": "Boolean",
+    },
+  },
+  "description": "Perform a [cat.allocation](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/cat-allocation.html) request",
+  "resolve": [Function],
+  "type": "JSON",
+}
+`;
+
+exports[`ElasticApiParser generateFieldMap() should generate fieldMap 1`] = `
+Object {
+  "cat": Object {
+    "resolve": [Function],
+    "type": ObjectTypeComposer {
+      "_gqType": "Elastic_Cat",
+      "_gqcExtensions": undefined,
+      "_gqcFields": Object {
+        "allocation": Object {
+          "args": Object {
+            "bytes": Object {
+              "description": "The unit in which to display byte values",
+              "type": EnumTypeComposer {
+                "_gqType": "ElasticEnum_Bytes",
+                "_gqcExtensions": undefined,
+                "_gqcFields": Object {
+                  "b": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "b",
+                  },
+                  "g": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "g",
+                  },
+                  "gb": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "gb",
+                  },
+                  "k": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "k",
+                  },
+                  "kb": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "kb",
+                  },
+                  "m": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "m",
+                  },
+                  "mb": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "mb",
+                  },
+                  "p": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "p",
+                  },
+                  "pb": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "pb",
+                  },
+                  "t": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "t",
+                  },
+                  "tb": Object {
+                    "deprecationReason": undefined,
+                    "description": undefined,
+                    "directives": Array [],
+                    "extensions": Object {},
+                    "value": "tb",
+                  },
+                },
+                "_gqcIsModified": true,
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "format": Object {
+              "defaultValue": "json",
+              "description": "a short version of the Accept header, e.g. json, yaml",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "h": Object {
+              "description": "Comma-separated list of column names to display",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "help": Object {
+              "description": "Return help information",
+              "type": ScalarTypeComposer {
+                "_gqType": "Boolean",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "local": Object {
+              "description": "Return local information, do not retrieve the state from master node (default: false)",
+              "type": ScalarTypeComposer {
+                "_gqType": "Boolean",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "masterTimeout": Object {
+              "description": "Explicit operation timeout for connection to master node",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "nodeId": Object {
+              "description": "A comma-separated list of node IDs or names to limit the returned information",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "s": Object {
+              "description": "Comma-separated list of column names or column aliases to sort by",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "v": Object {
+              "description": "Verbose mode. Display column headers",
+              "type": ScalarTypeComposer {
+                "_gqType": "Boolean",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+          },
+          "description": "Perform a [cat.allocation](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/cat-allocation.html) request",
+          "resolve": [Function],
+          "type": ScalarTypeComposer {
+            "_gqType": "JSON",
+            "_gqcIsModified": false,
+            "_gqcParseLiteral": [Function],
+            "_gqcParseValue": [Function],
+            "_gqcSerialize": [Function],
+            "schemaComposer": "SchemaComposer",
+          },
+        },
+      },
+      "_gqcInterfaces": Array [],
+      "_gqcIsModified": true,
+      "schemaComposer": "SchemaComposer",
+    },
+  },
+  "indices": Object {
+    "resolve": [Function],
+    "type": ObjectTypeComposer {
+      "_gqType": "Elastic_Indices",
+      "_gqcExtensions": undefined,
+      "_gqcFields": Object {
+        "delete": Object {
+          "args": Object {
+            "index": Object {
+              "description": "A comma-separated list of indices to delete; use \`_all\` or \`*\` string to delete all indices",
+              "type": ScalarTypeComposer {
+                "_gqType": "JSON",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "masterTimeout": Object {
+              "description": "Specify timeout for connection to master",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+            "timeout": Object {
+              "description": "Explicit operation timeout",
+              "type": ScalarTypeComposer {
+                "_gqType": "String",
+                "_gqcIsModified": false,
+                "_gqcParseLiteral": [Function],
+                "_gqcParseValue": [Function],
+                "_gqcSerialize": [Function],
+                "schemaComposer": "SchemaComposer",
+              },
+            },
+          },
+          "description": "Perform a [indices.delete](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/indices-delete-index.html) request",
+          "resolve": [Function],
+          "type": ScalarTypeComposer {
+            "_gqType": "JSON",
+            "_gqcIsModified": false,
+            "_gqcParseLiteral": [Function],
+            "_gqcParseValue": [Function],
+            "_gqcSerialize": [Function],
+            "schemaComposer": "SchemaComposer",
+          },
+        },
+      },
+      "_gqcInterfaces": Array [],
+      "_gqcIsModified": true,
+      "schemaComposer": "SchemaComposer",
+    },
+  },
+  "search": Object {
+    "args": Object {
+      "_source": Object {
+        "description": "True or false to return the _source field or not, or a list of fields to return",
+        "type": "JSON",
+      },
+      "_sourceExclude": Object {
+        "description": "A list of fields to exclude from the returned _source field",
+        "type": "JSON",
+      },
+      "_sourceInclude": Object {
+        "description": "A list of fields to extract and return from the _source field",
+        "type": "JSON",
+      },
+      "allowNoIndices": Object {
+        "description": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+        "type": "Boolean",
+      },
+      "analyzeWildcard": Object {
+        "description": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+        "type": "Boolean",
+      },
+      "analyzer": Object {
+        "description": "The analyzer to use for the query string",
+        "type": "String",
+      },
+      "body": Object {
+        "type": "JSON",
+      },
+      "defaultOperator": Object {
+        "defaultValue": "OR",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_DefaultOperator",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "AND": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "AND",
+            },
+            "OR": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "OR",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "df": Object {
+        "description": "The field to use as default where no field prefix is given in the query string",
+        "type": "String",
+      },
+      "docvalueFields": Object {
+        "description": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+        "type": "JSON",
+      },
+      "expandWildcards": Object {
+        "defaultValue": "open",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_ExpandWildcards",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "all": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "all",
+            },
+            "closed": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "closed",
+            },
+            "none": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "none",
+            },
+            "open": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "open",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "explain": Object {
+        "description": "Specify whether to return detailed information about score computation as part of a hit",
+        "type": "Boolean",
+      },
+      "fielddataFields": Object {
+        "description": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+        "type": "JSON",
+      },
+      "from": Object {
+        "description": "Starting offset (default: 0)",
+        "type": "Float",
+      },
+      "ignoreUnavailable": Object {
+        "description": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+        "type": "Boolean",
+      },
+      "index": Object {
+        "description": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+        "type": "JSON",
+      },
+      "lenient": Object {
+        "description": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+        "type": "Boolean",
+      },
+      "preference": Object {
+        "description": "Specify the node or shard the operation should be performed on (default: random)",
+        "type": "String",
+      },
+      "q": Object {
+        "description": "Query in the Lucene query string syntax",
+        "type": "String",
+      },
+      "requestCache": Object {
+        "description": "Specify if request cache should be used for this request or not, defaults to index level setting",
+        "type": "Boolean",
+      },
+      "routing": Object {
+        "description": "A comma-separated list of specific routing values",
+        "type": "JSON",
+      },
+      "scroll": Object {
+        "description": "Specify how long a consistent view of the index should be maintained for scrolled search",
+        "type": "String",
+      },
+      "searchType": Object {
+        "description": "Search operation type",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_SearchType",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "dfs_query_then_fetch": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "dfs_query_then_fetch",
+            },
+            "query_then_fetch": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "query_then_fetch",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "size": Object {
+        "description": "Number of hits to return (default: 10)",
+        "type": "Float",
+      },
+      "sort": Object {
+        "description": "A comma-separated list of <field>:<direction> pairs",
+        "type": "JSON",
+      },
+      "stats": Object {
+        "description": "Specific 'tag' of the request for logging and statistical purposes",
+        "type": "JSON",
+      },
+      "storedFields": Object {
+        "description": "A comma-separated list of stored fields to return as part of a hit",
+        "type": "JSON",
+      },
+      "suggestField": Object {
+        "description": "Specify which field to use for suggestions",
+        "type": "String",
+      },
+      "suggestMode": Object {
+        "defaultValue": "missing",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_SuggestMode",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "always": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "always",
+            },
+            "missing": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "missing",
+            },
+            "popular": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "popular",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "suggestSize": Object {
+        "description": "How many suggestions to return in response",
+        "type": "Float",
+      },
+      "suggestText": Object {
+        "description": "The source text for which the suggestions should be returned",
+        "type": "String",
+      },
+      "terminateAfter": Object {
+        "description": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+        "type": "Float",
+      },
+      "timeout": Object {
+        "description": "Explicit operation timeout",
+        "type": "String",
+      },
+      "trackScores": Object {
+        "description": "Whether to calculate and return scores even if they are not used for sorting",
+        "type": "Boolean",
+      },
+      "type": Object {
+        "description": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+        "type": "JSON",
+      },
+      "version": Object {
+        "description": "Specify whether to return document version as part of a hit",
+        "type": "Boolean",
+      },
+    },
+    "description": "Perform a [search](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-search.html) request",
+    "resolve": [Function],
+    "type": "JSON",
+  },
+  "updateByQuery": Object {
+    "args": Object {
+      "_source": Object {
+        "description": "True or false to return the _source field or not, or a list of fields to return",
+        "type": "JSON",
+      },
+      "_sourceExclude": Object {
+        "description": "A list of fields to exclude from the returned _source field",
+        "type": "JSON",
+      },
+      "_sourceInclude": Object {
+        "description": "A list of fields to extract and return from the _source field",
+        "type": "JSON",
+      },
+      "allowNoIndices": Object {
+        "description": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+        "type": "Boolean",
+      },
+      "analyzeWildcard": Object {
+        "description": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+        "type": "Boolean",
+      },
+      "analyzer": Object {
+        "description": "The analyzer to use for the query string",
+        "type": "String",
+      },
+      "body": Object {
+        "type": "JSON",
+      },
+      "conflicts": Object {
+        "defaultValue": "abort",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_Conflicts",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "abort": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "abort",
+            },
+            "proceed": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "proceed",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "defaultOperator": Object {
+        "defaultValue": "OR",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_DefaultOperator",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "AND": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "AND",
+            },
+            "OR": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "OR",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "df": Object {
+        "description": "The field to use as default where no field prefix is given in the query string",
+        "type": "String",
+      },
+      "expandWildcards": Object {
+        "defaultValue": "open",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_ExpandWildcards",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "all": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "all",
+            },
+            "closed": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "closed",
+            },
+            "none": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "none",
+            },
+            "open": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "open",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "from": Object {
+        "description": "Starting offset (default: 0)",
+        "type": "Float",
+      },
+      "ignoreUnavailable": Object {
+        "description": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+        "type": "Boolean",
+      },
+      "index": Object {
+        "description": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+        "type": "JSON",
+      },
+      "lenient": Object {
+        "description": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+        "type": "Boolean",
+      },
+      "pipeline": Object {
+        "description": "Ingest pipeline to set on index requests made by this action. (default: none)",
+        "type": "String",
+      },
+      "preference": Object {
+        "description": "Specify the node or shard the operation should be performed on (default: random)",
+        "type": "String",
+      },
+      "q": Object {
+        "description": "Query in the Lucene query string syntax",
+        "type": "String",
+      },
+      "refresh": Object {
+        "description": "Should the effected indexes be refreshed?",
+        "type": "Boolean",
+      },
+      "requestCache": Object {
+        "description": "Specify if request cache should be used for this request or not, defaults to index level setting",
+        "type": "Boolean",
+      },
+      "requestsPerSecond": Object {
+        "description": "The throttle to set on this request in sub-requests per second. -1 means no throttle.",
+        "type": "Float",
+      },
+      "routing": Object {
+        "description": "A comma-separated list of specific routing values",
+        "type": "JSON",
+      },
+      "scroll": Object {
+        "description": "Specify how long a consistent view of the index should be maintained for scrolled search",
+        "type": "String",
+      },
+      "scrollSize": Object {
+        "description": "Size on the scroll request powering the update_by_query",
+        "type": "Float",
+      },
+      "searchTimeout": Object {
+        "description": "Explicit timeout for each search request. Defaults to no timeout.",
+        "type": "String",
+      },
+      "searchType": Object {
+        "description": "Search operation type",
+        "type": EnumTypeComposer {
+          "_gqType": "ElasticEnum_SearchType",
+          "_gqcExtensions": undefined,
+          "_gqcFields": Object {
+            "dfs_query_then_fetch": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "dfs_query_then_fetch",
+            },
+            "query_then_fetch": Object {
+              "deprecationReason": undefined,
+              "description": undefined,
+              "directives": Array [],
+              "extensions": Object {},
+              "value": "query_then_fetch",
+            },
+          },
+          "_gqcIsModified": true,
+          "schemaComposer": "SchemaComposer",
+        },
+      },
+      "size": Object {
+        "description": "Number of hits to return (default: 10)",
+        "type": "Float",
+      },
+      "slices": Object {
+        "defaultValue": 1,
+        "type": "Float",
+      },
+      "sort": Object {
+        "description": "A comma-separated list of <field>:<direction> pairs",
+        "type": "JSON",
+      },
+      "stats": Object {
+        "description": "Specific 'tag' of the request for logging and statistical purposes",
+        "type": "JSON",
+      },
+      "terminateAfter": Object {
+        "description": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+        "type": "Float",
+      },
+      "timeout": Object {
+        "defaultValue": "1m",
+        "type": "String",
+      },
+      "type": Object {
+        "description": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+        "type": "JSON",
+      },
+      "version": Object {
+        "description": "Specify whether to return document version as part of a hit",
+        "type": "Boolean",
+      },
+      "versionType": Object {
+        "description": "Should the document increment the version number (internal) on hit or not (reindex)",
+        "type": "Boolean",
+      },
+      "waitForActiveShards": Object {
+        "description": "Sets the number of shard copies that must be active before proceeding with the update by query operation. Defaults to 1, meaning the primary shard only. Set to \`all\` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)",
+        "type": "String",
+      },
+      "waitForCompletion": Object {
+        "description": "Should the request should block until the update by query operation is complete.",
+        "type": "Boolean",
+      },
+    },
+    "description": "Perform a [updateByQuery](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/docs-update-by-query.html) request",
+    "resolve": [Function],
+    "type": "JSON",
+  },
+}
+`;
+
+exports[`ElasticApiParser static methods parseSource() should return ElasticParsedSourceT 1`] = `
+Object {
+  "cat.allocation": Object {
+    "argsDescriptions": Object {
+      "bytes": "The unit in which to display byte values",
+      "format": "a short version of the Accept header, e.g. json, yaml",
+      "h": "Comma-separated list of column names to display",
+      "help": "Return help information",
+      "local": "Return local information, do not retrieve the state from master node (default: false)",
+      "masterTimeout": "Explicit operation timeout for connection to master node",
+      "nodeId": "A comma-separated list of node IDs or names to limit the returned information",
+      "s": "Comma-separated list of column names or column aliases to sort by",
+      "v": "Verbose mode. Display column headers",
+    },
+    "argsSettings": Object {
+      "params": Object {
+        "bytes": Object {
+          "options": Array [
+            "b",
+            "k",
+            "kb",
+            "m",
+            "mb",
+            "g",
+            "gb",
+            "t",
+            "tb",
+            "p",
+            "pb",
+          ],
+          "type": "enum",
+        },
+        "format": Object {
+          "type": "string",
+        },
+        "h": Object {
+          "type": "list",
+        },
+        "help": Object {
+          "default": false,
+          "type": "boolean",
+        },
+        "local": Object {
+          "type": "boolean",
+        },
+        "masterTimeout": Object {
+          "name": "master_timeout",
+          "type": "time",
+        },
+        "s": Object {
+          "type": "list",
+        },
+        "v": Object {
+          "default": false,
+          "type": "boolean",
+        },
+      },
+      "urls": Array [
+        Object {
+          "fmt": "/_cat/allocation/<%=nodeId%>",
+          "req": Object {
+            "nodeId": Object {
+              "type": "list",
+            },
+          },
+        },
+        Object {
+          "fmt": "/_cat/allocation",
+        },
+      ],
+    },
+    "description": "Perform a [cat.allocation](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/cat-allocation.html) request",
+    "elasticMethod": Array [
+      "cat",
+      "allocation",
+    ],
+  },
+  "indices.delete": Object {
+    "argsDescriptions": Object {
+      "index": "A comma-separated list of indices to delete; use \`_all\` or \`*\` string to delete all indices",
+      "masterTimeout": "Specify timeout for connection to master",
+      "timeout": "Explicit operation timeout",
+    },
+    "argsSettings": Object {
+      "method": "DELETE",
+      "params": Object {
+        "masterTimeout": Object {
+          "name": "master_timeout",
+          "type": "time",
+        },
+        "timeout": Object {
+          "type": "time",
+        },
+      },
+      "url": Object {
+        "fmt": "/<%=index%>",
+        "req": Object {
+          "index": Object {
+            "type": "list",
+          },
+        },
+      },
+    },
+    "description": "Perform a [indices.delete](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/indices-delete-index.html) request",
+    "elasticMethod": Array [
+      "indices",
+      "delete",
+    ],
+  },
+  "search": Object {
+    "argsDescriptions": Object {
+      "[params.defaultOperator=OR]": "The default operator for query string query (AND or OR)",
+      "[params.expandWildcards=open]": "Whether to expand wildcard expression to concrete indices that are open, closed or both.",
+      "[params.suggestMode=missing]": "Specify suggest mode",
+      "_source": "True or false to return the _source field or not, or a list of fields to return",
+      "_sourceExclude": "A list of fields to exclude from the returned _source field",
+      "_sourceInclude": "A list of fields to extract and return from the _source field",
+      "allowNoIndices": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+      "analyzeWildcard": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+      "analyzer": "The analyzer to use for the query string",
+      "df": "The field to use as default where no field prefix is given in the query string",
+      "docvalueFields": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+      "explain": "Specify whether to return detailed information about score computation as part of a hit",
+      "fielddataFields": "A comma-separated list of fields to return as the docvalue representation of a field for each hit",
+      "from": "Starting offset (default: 0)",
+      "ignoreUnavailable": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+      "index": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+      "lenient": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+      "preference": "Specify the node or shard the operation should be performed on (default: random)",
+      "q": "Query in the Lucene query string syntax",
+      "requestCache": "Specify if request cache should be used for this request or not, defaults to index level setting",
+      "routing": "A comma-separated list of specific routing values",
+      "scroll": "Specify how long a consistent view of the index should be maintained for scrolled search",
+      "searchType": "Search operation type",
+      "size": "Number of hits to return (default: 10)",
+      "sort": "A comma-separated list of <field>:<direction> pairs",
+      "stats": "Specific 'tag' of the request for logging and statistical purposes",
+      "storedFields": "A comma-separated list of stored fields to return as part of a hit",
+      "suggestField": "Specify which field to use for suggestions",
+      "suggestSize": "How many suggestions to return in response",
+      "suggestText": "The source text for which the suggestions should be returned",
+      "terminateAfter": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+      "timeout": "Explicit operation timeout",
+      "trackScores": "Whether to calculate and return scores even if they are not used for sorting",
+      "type": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+      "version": "Specify whether to return document version as part of a hit",
+    },
+    "argsSettings": Object {
+      "method": "POST",
+      "params": Object {
+        "_source": Object {
+          "type": "list",
+        },
+        "_sourceExclude": Object {
+          "name": "_source_exclude",
+          "type": "list",
+        },
+        "_sourceInclude": Object {
+          "name": "_source_include",
+          "type": "list",
+        },
+        "allowNoIndices": Object {
+          "name": "allow_no_indices",
+          "type": "boolean",
+        },
+        "analyzeWildcard": Object {
+          "name": "analyze_wildcard",
+          "type": "boolean",
+        },
+        "analyzer": Object {
+          "type": "string",
+        },
+        "defaultOperator": Object {
+          "default": "OR",
+          "name": "default_operator",
+          "options": Array [
+            "AND",
+            "OR",
+          ],
+          "type": "enum",
+        },
+        "df": Object {
+          "type": "string",
+        },
+        "docvalueFields": Object {
+          "name": "docvalue_fields",
+          "type": "list",
+        },
+        "expandWildcards": Object {
+          "default": "open",
+          "name": "expand_wildcards",
+          "options": Array [
+            "open",
+            "closed",
+            "none",
+            "all",
+          ],
+          "type": "enum",
+        },
+        "explain": Object {
+          "type": "boolean",
+        },
+        "fielddataFields": Object {
+          "name": "fielddata_fields",
+          "type": "list",
+        },
+        "from": Object {
+          "type": "number",
+        },
+        "ignoreUnavailable": Object {
+          "name": "ignore_unavailable",
+          "type": "boolean",
+        },
+        "lenient": Object {
+          "type": "boolean",
+        },
+        "preference": Object {
+          "type": "string",
+        },
+        "q": Object {
+          "type": "string",
+        },
+        "requestCache": Object {
+          "name": "request_cache",
+          "type": "boolean",
+        },
+        "routing": Object {
+          "type": "list",
+        },
+        "scroll": Object {
+          "type": "time",
+        },
+        "searchType": Object {
+          "name": "search_type",
+          "options": Array [
+            "query_then_fetch",
+            "dfs_query_then_fetch",
+          ],
+          "type": "enum",
+        },
+        "size": Object {
+          "type": "number",
+        },
+        "sort": Object {
+          "type": "list",
+        },
+        "stats": Object {
+          "type": "list",
+        },
+        "storedFields": Object {
+          "name": "stored_fields",
+          "type": "list",
+        },
+        "suggestField": Object {
+          "name": "suggest_field",
+          "type": "string",
+        },
+        "suggestMode": Object {
+          "default": "missing",
+          "name": "suggest_mode",
+          "options": Array [
+            "missing",
+            "popular",
+            "always",
+          ],
+          "type": "enum",
+        },
+        "suggestSize": Object {
+          "name": "suggest_size",
+          "type": "number",
+        },
+        "suggestText": Object {
+          "name": "suggest_text",
+          "type": "string",
+        },
+        "terminateAfter": Object {
+          "name": "terminate_after",
+          "type": "number",
+        },
+        "timeout": Object {
+          "type": "time",
+        },
+        "trackScores": Object {
+          "name": "track_scores",
+          "type": "boolean",
+        },
+        "version": Object {
+          "type": "boolean",
+        },
+      },
+      "urls": Array [
+        Object {
+          "fmt": "/<%=index%>/<%=type%>/_search",
+          "req": Object {
+            "index": Object {
+              "type": "list",
+            },
+            "type": Object {
+              "type": "list",
+            },
+          },
+        },
+        Object {
+          "fmt": "/<%=index%>/_search",
+          "req": Object {
+            "index": Object {
+              "type": "list",
+            },
+          },
+        },
+        Object {
+          "fmt": "/_search",
+        },
+      ],
+    },
+    "description": "Perform a [search](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-search.html) request",
+    "elasticMethod": "search",
+  },
+  "updateByQuery": Object {
+    "argsDescriptions": Object {
+      "[params.conflicts=abort]": "What to do when the update by query hits version conflicts?",
+      "[params.defaultOperator=OR]": "The default operator for query string query (AND or OR)",
+      "[params.expandWildcards=open]": "Whether to expand wildcard expression to concrete indices that are open, closed or both.",
+      "[params.slices=1]": "The number of slices this task should be divided into. Defaults to 1 meaning the task isn't sliced into subtasks.",
+      "[params.timeout=1m]": "Time each individual bulk request should wait for shards that are unavailable.",
+      "_source": "True or false to return the _source field or not, or a list of fields to return",
+      "_sourceExclude": "A list of fields to exclude from the returned _source field",
+      "_sourceInclude": "A list of fields to extract and return from the _source field",
+      "allowNoIndices": "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes \`_all\` string or when no indices have been specified)",
+      "analyzeWildcard": "Specify whether wildcard and prefix queries should be analyzed (default: false)",
+      "analyzer": "The analyzer to use for the query string",
+      "df": "The field to use as default where no field prefix is given in the query string",
+      "from": "Starting offset (default: 0)",
+      "ignoreUnavailable": "Whether specified concrete indices should be ignored when unavailable (missing or closed)",
+      "index": "A comma-separated list of index names to search; use \`_all\` or empty string to perform the operation on all indices",
+      "lenient": "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored",
+      "pipeline": "Ingest pipeline to set on index requests made by this action. (default: none)",
+      "preference": "Specify the node or shard the operation should be performed on (default: random)",
+      "q": "Query in the Lucene query string syntax",
+      "refresh": "Should the effected indexes be refreshed?",
+      "requestCache": "Specify if request cache should be used for this request or not, defaults to index level setting",
+      "requestsPerSecond": "The throttle to set on this request in sub-requests per second. -1 means no throttle.",
+      "routing": "A comma-separated list of specific routing values",
+      "scroll": "Specify how long a consistent view of the index should be maintained for scrolled search",
+      "scrollSize": "Size on the scroll request powering the update_by_query",
+      "searchTimeout": "Explicit timeout for each search request. Defaults to no timeout.",
+      "searchType": "Search operation type",
+      "size": "Number of hits to return (default: 10)",
+      "sort": "A comma-separated list of <field>:<direction> pairs",
+      "stats": "Specific 'tag' of the request for logging and statistical purposes",
+      "terminateAfter": "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early.",
+      "type": "A comma-separated list of document types to search; leave empty to perform the operation on all types",
+      "version": "Specify whether to return document version as part of a hit",
+      "versionType": "Should the document increment the version number (internal) on hit or not (reindex)",
+      "waitForActiveShards": "Sets the number of shard copies that must be active before proceeding with the update by query operation. Defaults to 1, meaning the primary shard only. Set to \`all\` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)",
+      "waitForCompletion": "Should the request should block until the update by query operation is complete.",
+    },
+    "argsSettings": Object {
+      "method": "POST",
+      "params": Object {
+        "_source": Object {
+          "type": "list",
+        },
+        "_sourceExclude": Object {
+          "name": "_source_exclude",
+          "type": "list",
+        },
+        "_sourceInclude": Object {
+          "name": "_source_include",
+          "type": "list",
+        },
+        "allowNoIndices": Object {
+          "name": "allow_no_indices",
+          "type": "boolean",
+        },
+        "analyzeWildcard": Object {
+          "name": "analyze_wildcard",
+          "type": "boolean",
+        },
+        "analyzer": Object {
+          "type": "string",
+        },
+        "conflicts": Object {
+          "default": "abort",
+          "options": Array [
+            "abort",
+            "proceed",
+          ],
+          "type": "enum",
+        },
+        "defaultOperator": Object {
+          "default": "OR",
+          "name": "default_operator",
+          "options": Array [
+            "AND",
+            "OR",
+          ],
+          "type": "enum",
+        },
+        "df": Object {
+          "type": "string",
+        },
+        "expandWildcards": Object {
+          "default": "open",
+          "name": "expand_wildcards",
+          "options": Array [
+            "open",
+            "closed",
+            "none",
+            "all",
+          ],
+          "type": "enum",
+        },
+        "from": Object {
+          "type": "number",
+        },
+        "ignoreUnavailable": Object {
+          "name": "ignore_unavailable",
+          "type": "boolean",
+        },
+        "lenient": Object {
+          "type": "boolean",
+        },
+        "pipeline": Object {
+          "type": "string",
+        },
+        "preference": Object {
+          "type": "string",
+        },
+        "q": Object {
+          "type": "string",
+        },
+        "refresh": Object {
+          "type": "boolean",
+        },
+        "requestCache": Object {
+          "name": "request_cache",
+          "type": "boolean",
+        },
+        "requestsPerSecond": Object {
+          "default": 0,
+          "name": "requests_per_second",
+          "type": "number",
+        },
+        "routing": Object {
+          "type": "list",
+        },
+        "scroll": Object {
+          "type": "time",
+        },
+        "scrollSize": Object {
+          "name": "scroll_size",
+          "type": "number",
+        },
+        "searchTimeout": Object {
+          "name": "search_timeout",
+          "type": "time",
+        },
+        "searchType": Object {
+          "name": "search_type",
+          "options": Array [
+            "query_then_fetch",
+            "dfs_query_then_fetch",
+          ],
+          "type": "enum",
+        },
+        "size": Object {
+          "type": "number",
+        },
+        "slices": Object {
+          "default": 1,
+          "type": "number",
+        },
+        "sort": Object {
+          "type": "list",
+        },
+        "stats": Object {
+          "type": "list",
+        },
+        "terminateAfter": Object {
+          "name": "terminate_after",
+          "type": "number",
+        },
+        "timeout": Object {
+          "default": "1m",
+          "type": "time",
+        },
+        "version": Object {
+          "type": "boolean",
+        },
+        "versionType": Object {
+          "name": "version_type",
+          "type": "boolean",
+        },
+        "waitForActiveShards": Object {
+          "name": "wait_for_active_shards",
+          "type": "string",
+        },
+        "waitForCompletion": Object {
+          "default": false,
+          "name": "wait_for_completion",
+          "type": "boolean",
+        },
+      },
+      "urls": Array [
+        Object {
+          "fmt": "/<%=index%>/<%=type%>/_update_by_query",
+          "req": Object {
+            "index": Object {
+              "type": "list",
+            },
+            "type": Object {
+              "type": "list",
+            },
+          },
+        },
+        Object {
+          "fmt": "/<%=index%>/_update_by_query",
+          "req": Object {
+            "index": Object {
+              "type": "list",
+            },
+          },
+        },
+      ],
+    },
+    "description": "Perform a [updateByQuery](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/docs-update-by-query.html) request",
+    "elasticMethod": "updateByQuery",
+  },
+}
+`;
