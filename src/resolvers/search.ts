@@ -175,13 +175,14 @@ export default function createSearchResolver<TSource, TContext>(
         }
 
         const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
-        if (typeof res.hits === "undefined") {
+        if (typeof res.hits === 'undefined') {
           res.count =
-            typeof res.body.hits.total?.value === 'number' ? res.body.hits.total.value : res.body.hits.total;
+            typeof res.body.hits.total?.value === 'number'
+              ? res.body.hits.total.value
+              : res.body.hits.total;
           res.max_score = res.body.hits.max_score;
           res.hits = res.body.hits.hits;
-        }
-        else {
+        } else {
           res.count =
             typeof res.hits.total?.value === 'number' ? res.hits.total.value : res.hits.total;
           res.max_score = res.hits.max_score;
