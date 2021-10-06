@@ -503,6 +503,14 @@ Object {
               "description": "Comma-separated list of column names to display",
               "type": ScalarTypeComposer {
                 "_gqType": "JSON",
+                "_gqcDirectives": Array [
+                  Object {
+                    "args": Object {
+                      "url": "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+                    },
+                    "name": "specifiedBy",
+                  },
+                ],
                 "_gqcIsModified": false,
                 "_gqcParseLiteral": [Function],
                 "_gqcParseValue": [Function],
@@ -547,6 +555,14 @@ Object {
               "description": "A comma-separated list of node IDs or names to limit the returned information",
               "type": ScalarTypeComposer {
                 "_gqType": "JSON",
+                "_gqcDirectives": Array [
+                  Object {
+                    "args": Object {
+                      "url": "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+                    },
+                    "name": "specifiedBy",
+                  },
+                ],
                 "_gqcIsModified": false,
                 "_gqcParseLiteral": [Function],
                 "_gqcParseValue": [Function],
@@ -558,6 +574,14 @@ Object {
               "description": "Comma-separated list of column names or column aliases to sort by",
               "type": ScalarTypeComposer {
                 "_gqType": "JSON",
+                "_gqcDirectives": Array [
+                  Object {
+                    "args": Object {
+                      "url": "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+                    },
+                    "name": "specifiedBy",
+                  },
+                ],
                 "_gqcIsModified": false,
                 "_gqcParseLiteral": [Function],
                 "_gqcParseValue": [Function],
@@ -581,6 +605,14 @@ Object {
           "resolve": [Function],
           "type": ScalarTypeComposer {
             "_gqType": "JSON",
+            "_gqcDirectives": Array [
+              Object {
+                "args": Object {
+                  "url": "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+                },
+                "name": "specifiedBy",
+              },
+            ],
             "_gqcIsModified": false,
             "_gqcParseLiteral": [Function],
             "_gqcParseValue": [Function],
@@ -606,6 +638,14 @@ Object {
               "description": "A comma-separated list of indices to delete; use \`_all\` or \`*\` string to delete all indices",
               "type": ScalarTypeComposer {
                 "_gqType": "JSON",
+                "_gqcDirectives": Array [
+                  Object {
+                    "args": Object {
+                      "url": "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+                    },
+                    "name": "specifiedBy",
+                  },
+                ],
                 "_gqcIsModified": false,
                 "_gqcParseLiteral": [Function],
                 "_gqcParseValue": [Function],
@@ -640,6 +680,14 @@ Object {
           "resolve": [Function],
           "type": ScalarTypeComposer {
             "_gqType": "JSON",
+            "_gqcDirectives": Array [
+              Object {
+                "args": Object {
+                  "url": "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf",
+                },
+                "name": "specifiedBy",
+              },
+            ],
             "_gqcIsModified": false,
             "_gqcParseLiteral": [Function],
             "_gqcParseValue": [Function],
