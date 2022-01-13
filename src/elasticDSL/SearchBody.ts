@@ -20,6 +20,7 @@ export function getSearchBodyITC<TContext>(
     description,
     fields: {
       query: { type: () => getQueryITC(opts) },
+      collapse: 'JSON',
       aggs: { type: () => getAggsITC(opts) },
       size: 'Int',
       from: 'Int',
