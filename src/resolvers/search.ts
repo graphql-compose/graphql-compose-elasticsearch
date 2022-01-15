@@ -66,9 +66,10 @@ export default function createSearchResolver<TSource, TContext>(
   argsConfigMap.query = searchITC.getField('query');
   argsConfigMap.aggs = searchITC.getField('aggs');
   argsConfigMap.sort = searchITC.getField('sort');
+  argsConfigMap.collapse = searchITC.getField('collapse');
   argsConfigMap.highlight = searchITC.getField('highlight');
 
-  const topLevelArgs = ['q', 'query', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
+  const topLevelArgs = ['q', 'query', 'collapse', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
   argsConfigMap.opts = schemaComposer
     .createInputTC({
       name: `${sourceTC.getTypeName()}Opts`,
@@ -145,6 +146,11 @@ export default function createSearchResolver<TSource, TContext>(
           args.body.query = args.query;
           delete args.query;
         }
+        
+        if (args.collapse) {
+          args.body.collapse = args.collapse;
+          delete args.collapse;
+        }
 
         if (args.aggs) {
           args.body.aggs = args.aggs;
@@ -191,7 +197,7 @@ export default function createSearchResolver<TSource, TContext>(
         return res;
       },
     })
-    .reorderArgs(['q', 'query', 'sort', 'limit', 'skip', 'aggs']);
+    .reorderArgs(['q', 'query', 'collapse', 'sort', 'limit', 'skip', 'aggs']);
 }
 
 export function toDottedList(projection: ProjectionType, prev?: string[]): string[] | boolean {
