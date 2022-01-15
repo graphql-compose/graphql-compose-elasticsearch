@@ -69,7 +69,17 @@ export default function createSearchResolver<TSource, TContext>(
   argsConfigMap.collapse = searchITC.getField('collapse');
   argsConfigMap.highlight = searchITC.getField('highlight');
 
-  const topLevelArgs = ['q', 'query', 'collapse', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
+  const topLevelArgs = [
+    'q',
+    'query',
+    'collapse',
+    'sort',
+    'limit',
+    'skip',
+    'aggs',
+    'highlight',
+    'opts',
+  ];
   argsConfigMap.opts = schemaComposer
     .createInputTC({
       name: `${sourceTC.getTypeName()}Opts`,
@@ -146,7 +156,7 @@ export default function createSearchResolver<TSource, TContext>(
           args.body.query = args.query;
           delete args.query;
         }
-        
+
         if (args.collapse) {
           args.body.collapse = args.collapse;
           delete args.collapse;
