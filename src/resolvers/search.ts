@@ -191,6 +191,15 @@ export default function createSearchResolver<TSource, TContext>(
         }
 
         const res: any = await searchFC.resolve(rp.source, args, rp.context, rp.info);
+        if (typeof res.aggregations === 'undefined') {
+          res.aggregations = res.body.aggregations;
+        }
+        if (typeof res.took === 'undefined') {
+          res.took = res.body.took;
+        }
+        if (typeof res.timed_out === 'undefined') {
+          res.timed_out = res.body.timed_out;
+        }
         if (typeof res.hits === 'undefined') {
           res.count =
             typeof res.body.hits.total?.value === 'number'
