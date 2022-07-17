@@ -52,8 +52,12 @@ export function convertAggsRules(rules: GqlAggRules): ElasticAggsRulesT {
   Object.keys(rules).forEach((key) => {
     if (key === 'aggs' && rules.aggs) {
       result.aggs = convertAggsBlocks(rules.aggs);
-    } else {
-      result[key] = rules[key];
+    } else if(Array.isArray(rules[key])) {
+      result[key.replace(/__/g, '.')] = rules[key].map(rule => convertAggsRules(rule))
+    } else if(typeof rules[key] === 'object') {
+      result[key.replace(/__/g, '.')] = convertAggsRules(rules[key]);
+    }else {
+      result[key.replace(/__/g, '.')] = rules[key];
     }
   });
   return result;
