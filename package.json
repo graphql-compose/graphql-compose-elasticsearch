@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "elasticsearch": "^16.0.0 || ^15.0.0 || ^14.0.0 || ^13.0.0 || ^12.0.0",
-    "graphql-compose": "^7.0.4"
+    "graphql-compose": "^7.0.4 || ^8.0.0 || ^9.0.0"
   },
   "devDependencies": {
     "@types/elasticsearch": "5.0.38",
