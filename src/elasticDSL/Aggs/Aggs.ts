@@ -48,6 +48,7 @@ export function convertAggsBlocks(blockList: GqlAggBlock[]): ElasticAggsT {
 }
 
 export function convertAggsRules(rules: GqlAggRules): ElasticAggsRulesT {
+  if (typeof rules === 'string') return rules;
   const result = {} as ElasticAggsRulesT;
   Object.keys(rules).forEach((key) => {
     if (key === 'aggs' && rules.aggs) {
