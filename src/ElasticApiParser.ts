@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/// <reference path="./types.d.ts" />
 
 import dox from 'dox';
 import fs from 'fs';
