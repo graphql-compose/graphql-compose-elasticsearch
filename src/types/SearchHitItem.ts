@@ -35,7 +35,7 @@ export function getSearchHitItemTC<TContext>(
         type: 'JSON',
         description: 'Returns data only if `args.collapse` is provided',
       },
-      
+
       highlight: {
         type: 'JSON',
         description: 'Returns data only if `args.highlight` is provided',
