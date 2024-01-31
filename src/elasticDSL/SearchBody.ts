@@ -46,6 +46,9 @@ export function getSearchBodyITC<TContext>(
 
 export function prepareBodyInResolve(body: any, fieldMap: any): { [argName: string]: any } {
   /* eslint-disable no-param-reassign */
+  if (body.post_filter) {
+    body.post_filter = prepareQueryInResolve(body.post_filter, fieldMap);
+  }
   if (body.query) {
     body.query = prepareQueryInResolve(body.query, fieldMap);
   }

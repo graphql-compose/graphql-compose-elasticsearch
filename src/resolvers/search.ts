@@ -68,8 +68,21 @@ export default function createSearchResolver<TSource, TContext>(
   argsConfigMap.sort = searchITC.getField('sort');
   argsConfigMap.collapse = searchITC.getField('collapse');
   argsConfigMap.highlight = searchITC.getField('highlight');
+  argsConfigMap.post_filter = searchITC.getField('post_filter');
 
-  const topLevelArgs = ['q', 'query', 'collapse', 'sort', 'limit', 'skip', 'aggs', 'highlight', 'opts'];
+  const topLevelArgs = [
+    'q',
+    'query',
+    'collapse',
+    'sort',
+    'limit',
+    'skip',
+    'aggs',
+    'highlight',
+    'opts',
+    'post_filter',
+  ];
+
   argsConfigMap.opts = schemaComposer
     .createInputTC({
       name: `${sourceTC.getTypeName()}Opts`,
@@ -146,7 +159,12 @@ export default function createSearchResolver<TSource, TContext>(
           args.body.query = args.query;
           delete args.query;
         }
-        
+
+        if (args.post_filter) {
+          args.body.post_filter = args.post_filter;
+          delete args.post_filter;
+        }
+
         if (args.collapse) {
           args.body.collapse = args.collapse;
           delete args.collapse;
